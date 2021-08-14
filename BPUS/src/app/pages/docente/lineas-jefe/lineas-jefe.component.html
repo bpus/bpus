@@ -1,0 +1,104 @@
+<div class="p-3" style="background-color: white;">
+
+    <button type="button" class="btn btnSuccess" data-toggle="modal" data-target="#addLinea" data-backdrop="static" data-keyboard="false">
+        Agregar línea &nbsp;<i class="fa fa-plus"></i>
+    </button>
+    
+    <!-- The Modal Add-->
+    <div class="modal fade" id="addLinea">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h3 class="modal-title">Agregar línea de investigación</h3>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+            <form (ngSubmit)="postLinea()">
+                <div class="form-group">
+                    <input type="text" [(ngModel)]="nombreLinea" class="form-control" id="nombreLinea" name="nombreLinea" placeholder="Nombre de la línea de investigación" maxlength="70" required autocomplete="off">
+                </div>
+                <!-- Modal footer -->
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btnInfo mr-3" [disabled]="nombreLinea === ''">Aceptar</button>
+                    <button (click)="resetNombre()" id="btnCancelarAdd" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- The Modal edit-->
+    <div class="modal fade" id="editLinea">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h3 class="modal-title">Editar - {{lineaSelected?.nombre}}</h3>
+            </div>
+            
+            <!-- Modal body -->
+            <div class="modal-body">
+            <form (ngSubmit)="postLinea()">
+                <div class="form-group">
+                    <input type="text" [(ngModel)]="nombreLineaEdit" class="form-control" id="nombreLinea" name="nombreLinea" placeholder="Nombre de la línea de investigación" maxlength="70" required autocomplete="off">
+                </div>
+                <!-- Modal footer -->
+                <div class="text-center mt-3">
+                    <button (click)="putLinea()" type="button" class="btn btnInfo mr-3" [disabled]="nombreLineaEdit === '' || nombreLineaEdit === lineaSelected?.nombre">Aceptar</button>
+                    <button id="btnCancelarEdit" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <ng-container *ngIf="lineas.length === 0; else elseLineas">
+        <div class="text-center my-3 mx-2 m-lg-5">
+            <h2>No hay líneas de investigación</h2>
+        </div>
+    </ng-container>
+
+    <ng-template #elseLineas>
+        <div class="table-responsive mt-3">
+            <table class="table borderless table-hover text-center">
+              <thead>
+                <tr>
+                  <th class="text-center">Nombre</th>
+                  <th class="text-center">Estado</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let linea of lineas">
+                    <td>{{linea.nombre}}</td>
+                    <td>
+                        <h3 *ngIf="linea.estado == true"><span class="badge badge-success">Activo</span></h3>
+                        <h3 *ngIf="linea.estado == false"><span class="badge btnSuccess">Inactivo</span></h3>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-info btn-sm mr-2" (click)="getLineaSelected(linea)" data-toggle="modal" data-target="#editLinea" data-backdrop="static" data-keyboard="false">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button *ngIf="linea.estado == true" type="button" (click)="cambiarEstadoLinea(linea._id, false)" class="btn btn-sm btnDanger">
+                            Desactivar <i class="fa fa-ban"></i>
+                        </button>
+                        <button *ngIf="linea.estado == false" type="button" (click)="cambiarEstadoLinea(linea._id, true)" class="btn btn-sm btn-success px-3">
+                            Activar <i class="fa fa-check-circle"></i>
+                        </button>
+                        <button type="button" (click)="deleteLinea(linea._id)" class="btn btn-sm btnSuccess ml-2">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+    </ng-template>
+
+</div>

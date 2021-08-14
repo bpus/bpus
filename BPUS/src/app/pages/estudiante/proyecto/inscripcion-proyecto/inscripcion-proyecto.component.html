@@ -1,0 +1,23 @@
+<div class="p-2 p-4" style="background-color: white;">
+    <a class="btn descargar btnSuccess mb-3" href="/assets/documentos/formatosSolicitudPasantia/formatoSolicitudPasantiaIngSoftware.docx" download target="_blank">
+        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Descargar formato</b></small>
+    </a>
+    
+    <div class="text-center">
+        <label for="fileInscripcion" id="labelInscripcion" class="labels custom-file-upload py-2 py-lg-4">
+            Click aquí para subir el documento de la propuesta
+        </label>
+        
+        <input name="fileInscripcion" id="fileInscripcion" (change)="getFileInscripcion( $event.target.files[0] )" 
+        type="file" accept="application/pdf" class="imagenes-secundarias" required />
+    
+        <h6 class="text-dark font-weight-bold small">
+            <u>El archivo tiene que ser en formato PDF y con un tamaño máximo de 1MB.</u>
+        </h6>
+    </div>
+    
+    <div class="text-center my-3 my-lg-5">
+        <button type="button" (click)="uploadInscripcion()" class="btn btnSuccess px-5 py-3" [disabled]="inscripcionValid === false">ENVIAR</button> 
+    </div>
+</div>
+

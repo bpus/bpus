@@ -1,0 +1,263 @@
+<div class="p-3" style="background-color: white;">
+
+    <!-- modal content -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" #yourModal>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Agregar empresa</h3>
+                </div>
+                <div class="modal-body">
+                    <form ngNativeValidate #f="ngForm" (ngSubmit)="postEmpresa(f)" class="form-horizontal">
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">NIT de la Empresa:</label>
+                                    <input ngModel name="nit" type="text" id="nit"
+                                        class="form-control" placeholder="NIT" minlength="10" maxlength="10" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Nombre de la Empresa:</label>
+                                    <input ngModel name="nombre" type="text" 
+                                        class="form-control" placeholder="Nombre" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Ciudad:</label>
+                                    <input ngModel name="ciudad" type="text" 
+                                        class="form-control" placeholder="Ciudad" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Dirección:</label>
+                                    <input ngModel name="direccion" type="text" 
+                                        class="form-control" placeholder="Direccion" required>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Teléfono de la Empresa</label>
+                                    <input ngModel name="telEmpresa" type="text" minlength="7" maxlength="10"
+                                        class="form-control" placeholder="Teléfono" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Naturaleza:</label>
+                                    <select ngModel name="naturaleza" class="form-control custom-select"
+                                        required>
+                                        <option value="Pública">Pública</option>
+                                        <option value="Privada">Privada</option>
+                                        <option value="Mixta">Mixta</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Actividad Económica:</label>
+                                    <input ngModel name="actividadEc" type="text" 
+                                        class="form-control" placeholder="Actividad" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btnInfo" [disabled]="f.invalid">
+                                Añadir <i class="fa fa-plus"></i>
+                            </button>
+                            <button type="reset" (click)="f.reset()" class="btn btnSuccess" id="btnCerraAdd"
+                                data-dismiss="modal">Cancelar <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+            
+                    </form>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- Modal Actualizar  -->
+    <!-- modal content -->
+    <div class="modal fade modal-actualizar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Editar empresa - {{nombre}}</h3>
+                </div>
+                <div class="modal-body">
+
+                    <form ngNativeValidate #updateEmpresa="ngForm" (ngSubmit)="putEmpresa(updateEmpresa)"
+                        class="form-horizontal">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">NIT de la Empresa:</label>
+                                    <input ngModel="{{nit}}" name="nit" type="text" minlength="10" maxlength="10"
+                                        class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' placeholder="NIT" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Nombre de la Empresa:</label>
+                                    <input ngModel="{{nombre}}" name="nombre" type="text" 
+                                        class="form-control" placeholder="Nombre" required>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Ciudad:</label>
+                                    <input ngModel="{{ciudad}}" name="ciudad" type="text" 
+                                        class="form-control" placeholder="Ciudad" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Dirección:</label>
+                                    <input [(ngModel)]="direccion" name="direccion" type="text"
+                                            class="form-control" placeholder="Direccion"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Teléfono de la Empresa</label>
+                                    <input [(ngModel)]="telefono" name="telEmpresa" type="text" minlength="7" maxlength="10"
+                                            class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' placeholder="Teléfono"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Naturaleza:</label>
+                                    <select [(ngModel)]="naturaleza" name="naturaleza"
+                                        class="form-control custom-select" required>
+                                        <option value="Pública">Pública</option>
+                                        <option value="Privada">Privada</option>
+                                        <option value="Mixta">Mixta</option>
+                                        <option value="Otra">Otra</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Actividad Económica:</label>
+                                    <input [(ngModel)]="actividad_economica" name="actividadEc"
+                                        type="text"  class="form-control"
+                                        placeholder="Actividad" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">Estado:</label>
+                                    <select [(ngModel)]="estado" name="estado"
+                                        class="form-control custom-select" required>
+                                        <option value="true">Activa</option>
+                                        <option value="false">Inactiva</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>  
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btnInfo waves-effect text-left">
+                                <b>Actualizar Empresa<i class="mdi mdi-update"></i></b>
+                            </button>
+                            <button type="reset" id="btnCerraEdit" class="btn btnSuccess waves-effect text-left"
+                                data-dismiss="modal" (click)="updateEmpresa.reset()" >Cancelar <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <button type="button" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn btnSuccess my-3" data-keyboard="false"> 
+        Agregar Empresa &nbsp;<i class="fa fa-plus"></i>
+    </button>
+
+    <input #dataBuscar (keyup)="buscarEmpresa(dataBuscar.value)" name="dataBuscar" type="text"  class="form-control mb-3" placeholder="Buscar por NIT, nombre, dirección, teléfono, naturaleza o actividad economica">
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center"><b>Nombre</b></th>
+                    <th class="text-center"><b>NIT</b></th>
+                    <th class="text-center"><b>Ciudad</b></th>
+                    <th class="text-center"><b>Naturaleza</b></th>
+                    <th class="text-center"><b>Estado</b></th>
+                    <th class="text-center"><b>Acción</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let empresa of empresas" class="text-center">
+                    <td>{{ empresa.nombre }}</td>
+                    <td>{{ empresa.nit }}</td>
+                    <td>{{ empresa.ciudad }}</td>
+                    <td>{{ empresa.naturaleza }}</td>
+                    <td *ngIf="empresa.estado" class="text-success">
+                        <h4><span class="label btn-success"> <b> Activa </b></span></h4>
+                    </td>
+                    <td *ngIf="!empresa.estado" class="text-danger">
+                        <span class="label btnSuccess"> <b> Inactiva </b></span>
+                    </td>
+                    <td>
+                        <button (click)="getDataPut(empresa)" data-toggle="modal" data-target=".modal-actualizar" data-keyboard="false" class="btn btn-sm btn-info mr-2">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" (click)="deleteEmpresa(empresa)" class="btn btn-sm btnSuccess">
+                            <i class="fa fa-trash"></i>
+                        </button> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

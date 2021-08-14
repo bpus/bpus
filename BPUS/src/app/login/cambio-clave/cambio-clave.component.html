@@ -1,0 +1,47 @@
+<div class="py-3 py-lg-5 cloud-container" style="background-color: #5C0E12;">
+    <div class="py-3 px-2 px-lg-4 mx-lg-5 shadow-lg rounded-lg" style="background-color: white; border-radius: 8px;">
+
+        <div class="text-center">
+            <img class="img-fluid" src="assets/images/logos/logo-horizontal.png" alt="">
+            <div class="text-uppercase mt-2">
+                <h5 class="font-weight-bold">Cambio de constraseña</h5>
+                <h6 style="color: #8F141B;"> <b> {{ info?.nombres }} {{ info?.apellidos }} </b> </h6>
+            </div>
+        </div>
+
+        <div class="mt-3 form-group">
+            <label for="newPassword" class="font-weight-bold ">CONTRASEÑA NUEVA:</label>
+            <p id="passwordPatter">Usa 8 o más caracteres con una combinación de letras, números y símbolos (<span class="font-weight-bold">!@#$%^&*=</span>)</p>
+            <div class="mb-2 input-group">
+                <input (keyup)="checkPassword()" type="password" class="form-control" id="newPassword" placeholder="Digite una nueva contraseña" maxlength="30" required>
+                <div class="input-group-append">
+                    <button class="btn btn-dark" type="button" (click)="showpassword('newPassword','showpass1')"><i class='fa fa-eye' id="showpass1"></i></button>
+                </div>
+            </div>
+        </div>
+        <p id="invalidPassword" class="font-weight-bold" style="color: red; display: none;">
+            Las contraseña invalida.
+        </p>
+        <div class="mt-3 mt-lg-4 form-group">
+            <label for="confirmNewPassword" class="font-weight-bold ">CONFIRME SU CONTRASEÑA:</label>
+            <div class="mb-2 input-group">
+                <input (keyup)="matchPasswords()" type="password" class="form-control" id="confirmNewPassword" placeholder="Confirme la contraseña" maxlength="30" required>
+                <div class="input-group-append">
+                    <button class="btn btn-dark" type="button" (click)="showpassword('confirmNewPassword','showpass2')"><i class='fa fa-eye' id="showpass2"></i></button>
+                </div>
+            </div>
+        </div>
+        <p id="mismatch" class="font-weight-bold" style="color: red; display: none;">
+            Las contraseñas no coinciden.
+        </p>
+        <div class="text-center mt-3">
+            <button type="button" (click)="cambiarClave()" [disabled]="invalidPassword == true || passwordsMatch == false" class="btn btnInfo mr-3">CONFIRMAR</button>
+            <a routerLink="/login" style="text-decoration: none;">
+                <button type="button" class="btn btnSuccess">
+                    CANCELAR
+                </button>
+            </a>
+        </div>
+
+    </div>
+</div>

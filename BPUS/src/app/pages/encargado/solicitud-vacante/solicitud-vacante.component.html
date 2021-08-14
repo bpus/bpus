@@ -1,0 +1,92 @@
+<div class="p-3" style="background-color: white;">
+
+    <ng-container *ngIf="pasantiaSelected !== undefined">
+        <div class="modal fade modal-info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+            aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h5 class="text-uppercase"> <b>Información del estudiante:</b></h5>
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                <i class="fa fa-user-circle-o"></i> &nbsp; <small class="text-uppercase">{{ pasantiaSelected.estudiante.nombres }} {{pasantiaSelected.estudiante.nombres }}</small>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{pasantiaSelected.estudiante.codigo}}</small>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{pasantiaSelected.estudiante.identificacion}}</small>
+                            </div>
+                        </div>
+                        <div class="row mt-lg-3 mt-md-3">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                <i class="mdi mdi-email"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{pasantiaSelected.estudiante.correo}}</small>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4" *ngIf="pasantiaSelected.estudiante.telefono">
+                                <i class="fa fa-phone"></i> &nbsp; <small class="text-justify">Tél:&nbsp; {{pasantiaSelected.estudiante.telefono}}</small>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                <i class="fa fa-phone"></i> &nbsp; <small class="text-justify">EPS:&nbsp; {{pasantiaSelected.estudiante.eps}}</small>
+                            </div>
+                        </div>
+                        <hr>
+                        <h5 class="text-uppercase mt-3"> <b>Información de la vacante:</b> </h5>
+                        <div class="ml-0 ml-lg-4">
+                            <small><i class="fa fa-briefcase"></i> &nbsp; {{pasantiaSelected.vacante.titulo}} - {{pasantiaSelected.vacante.convenio.empresa.nombre}} </small><br>
+                            <small><i class="fa fa-globe"></i> &nbsp; {{pasantiaSelected.vacante.ubicacion}}, &nbsp;{{pasantiaSelected.vacante.modalidad}}</small><br>
+                            <small><i class="fa fa-code"></i> &nbsp; {{pasantiaSelected.vacante.funciones}}</small><br>
+                            <small><i class="fa fa-money"></i>  &nbsp; Pagada: &nbsp;{{pasantiaSelected.vacante.pagada}}</small><br>
+                        </div>
+                        <div class="mt-3 ml-lg-4">
+                            <h5 class="text-uppercase"> <b>Descripción:</b></h5>
+                            <p class="mt-2 ml-lg-2">{{pasantiaSelected.vacante.descripcion}}</p> 
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="solicitudes?.length === 0">
+        <div class="text-center m-2 m-lg-5">
+            <h2>No hay solicitudes</h2>
+        </div>
+    </ng-container>
+
+    <ng-container *ngFor="let dato of solicitudes">
+        <div *ngIf="(info._id === dato.vacante.convenio.encargado._id)" class="row mt-2">
+            <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+                <div class="vacantes">
+                    <h5 class="text-uppercase"> <b>{{ dato.estudiante.nombres }}
+                            {{ dato.estudiante.apellidos }}</b></h5>
+                    <small style="margin-top: -50px;"><i class="fa fa-briefcase"></i> &nbsp;
+                        {{ dato.vacante.titulo }} - {{dato.vacante.convenio.empresa.nombre}}
+                    </small><br>
+                    <small><i class="fa fa-globe"></i>&nbsp; &nbsp;{{dato.vacante.ubicacion}},
+                        {{dato.vacante.modalidad}}
+                    </small><br>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4 text-center">
+                <div class="mt-2">
+                    <button type="button" (click)="getDataInfo(dato)" data-toggle="modal" data-target=".modal-info" class="btn btn btn-info mr-2">
+                        <i class="fa fa-info-circle"></i>
+                    </button>
+                    <button type="button" [disabled]="dato.estado == 'Aprobada'" (click)="getDataInfo(dato); aprobarSolicitud()" class="btn text-white mr-2" style="background-color: #6fbf73;">
+                        Aprobar
+                    </button>
+                    <button type="button" [disabled]="dato.estado == 'Rechazada'" (click)="getDataInfo(dato); rechazarSolicitud()" class="btn btnSuccess mr-2">
+                        Rechazar
+                    </button>
+                </div>
+            </div>
+        </div><hr>
+    </ng-container>
+
+</div>

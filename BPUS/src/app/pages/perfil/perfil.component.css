@@ -1,0 +1,42 @@
+.cloud-container{
+    padding-left: 15%;
+    padding-right: 15%;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+.telInput{
+    align-self: center;
+    border: none; 
+    color: #455a64;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    width: 110px;
+}
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 576px) {
+    .cloud-container{
+        padding-left: 1%;
+        padding-right: 1%;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+    }
+}
+
+@media only screen and (max-width: 576px) and (orientation: landscape) {
+    .cloud-container{
+        padding-left: 1%;
+        padding-right: 1%;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        overflow-x: scroll;
+    }
+  }

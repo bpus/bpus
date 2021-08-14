@@ -1,0 +1,97 @@
+.login-register {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background: url('src/assets/images/background/USCO-Huila.jpg') no-repeat center fixed;
+    background-size: cover;
+    display: grid;
+    place-items: center;
+}
+
+.login-box {
+    width: 50%;
+    min-width: 450px;
+    max-width: 700px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+label.loginInput{
+    margin-bottom:15px;
+    position:relative;
+}
+
+input[type=text], input[type=password] {
+    width:100%;
+    padding:10px 0px;
+    margin-top:20px;
+    border:none;
+    outline:none;
+}
+input[type=text]::placeholder, input[type=password]::placeholder{
+    opacity:0;
+}
+span{
+    position:absolute;
+    top:0;
+    left:0;
+    transform:translateY(30px);
+    font-size:0.825em;
+    transition-duration:300ms;
+    color: #839198;
+}
+
+label.loginInput:focus-within > span,
+input[type=text]:not(:placeholder-shown) + span{
+    color:#4D626C;
+    font-weight: bold;
+    transform:translateY(0px);
+}
+
+label.loginInput:focus-within > span,
+input[type=password]:not(:placeholder-shown) + span{
+    color:#4D626C;
+    font-weight: bold;
+    transform:translateY(0px);
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    border-bottom: 2px solid #8F141B;
+}
+
+input[type=text]:invalid:not(:focus), input[type=password]:invalid:not(:focus) {
+    border-bottom: 1px solid #DBE0E2;
+}
+
+input[type=text]:valid:not(:focus), input[type=password]:valid:not(:focus) {
+    border-bottom: 1px solid #DBE0E2;
+}
+
+#textoLog {
+    text-align: center;
+    color: darkslategrey;
+    font-weight: bold;
+}
+
+.textTitle {
+    background-color: #DFD4A6;
+    height: auto;
+    width: 100%;
+    align-items: center;
+}
+
+#checkbox-signup {
+    background-color: #8F141B;
+}
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 576px) {
+
+    .login-box {
+        width: 95%;
+        min-width: unset;
+        max-width: unset;
+        padding: 2% 0;
+    }
+}

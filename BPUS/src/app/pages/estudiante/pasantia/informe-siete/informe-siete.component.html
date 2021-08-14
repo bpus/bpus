@@ -1,0 +1,20 @@
+<div class="p-3 p-md-5 p-lg-5 text-center" style="background-color: white;">
+    <div class="p-lg-5 mx-lg-auto">
+    
+    <label for="filePropuesta" *ngIf="nombreArchivoInforme == null" class="labels custom-file-upload py-md-4 py-lg-4">Click aquí para subir el informe de la semana 7</label>
+
+    <label for="filePropuesta" *ngIf="nombreArchivoInforme != null"
+        class="labels custom-file-upload py-md-4 py-lg-4" style="color: #8F141B; font-weight: bold;">
+        {{ nombreArchivoInforme }}</label><br>
+    <small class="font-italic font-weight-bold">Recuerda que debe ser un archivo PDF, de tamaño menor a 1 MB.</small>
+
+    <input name="filePropuesta" id="filePropuesta"
+        (change)="getFileInforme( $event.target.files[0] )" type="file" accept="application/pdf"
+        class="imagenes-secundarias" required /> <br>
+
+    <button class="btn btnSuccess mt-3" (click)="enviarInforme()"  [disabled]="(nombreArchivoInforme === undefined)">
+        <b> Enviar Informe</b>
+    </button>
+    </div>
+</div>
+

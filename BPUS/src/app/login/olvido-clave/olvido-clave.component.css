@@ -1,0 +1,105 @@
+html{
+    min-height:100%;/* make sure it is at least as tall as the viewport */
+    overflow-x: hidden;
+}
+body{
+    height:100%; /* force the BODY element to match the height of the HTML element */
+}
+
+.cloud-container{
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index:-1; /* Remove this line if it's not going to be a background! */
+    background-color: #5C0E12;
+}
+
+.content-card{
+    background-color: #fff;
+    position: relative;
+    border-radius: 8px;
+    width: 50%;
+    min-width: 450px;
+    max-width: 700px;
+}
+
+label.olvidoInput{
+    margin-bottom:15px;
+    position:relative;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+select {
+    background-color: transparent;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
+
+input, select {
+    width:100%;
+    padding:10px 0px;
+    margin-top:20px;
+    border:none;
+    outline:none;
+}
+input::placeholder {
+    opacity:0;
+}
+
+span{
+    position:absolute;
+    top:0;
+    left:0;
+    transform:translateY(30px);
+    font-size:0.825em;
+    transition-duration:300ms;
+    color: #839198;
+}
+
+label.olvidoInput:focus-within > input + span,
+input:not(:placeholder-shown) + span{
+    color:#4D626C;
+    font-weight: bold;
+    transform:translateY(0px);
+}
+
+input:focus, select:focus {
+    border-bottom: 2px solid #8F141B;
+}
+
+input:invalid:not(:focus), select:invalid:not(:focus) {
+    border-bottom: 1px solid #DBE0E2;
+}
+
+input:valid:not(:focus), select:valid:not(:focus) {
+    border-bottom: 1px solid #DBE0E2;
+}
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 576px) {
+    .content-card{
+        width: 95%;
+        min-width: unset;
+        max-width: unset;
+    }
+
+    .cloud-container{
+        justify-content: unset;
+        align-items: unset;
+        display: grid;
+        place-items: center;
+        padding: 2% 0;
+    }
+}

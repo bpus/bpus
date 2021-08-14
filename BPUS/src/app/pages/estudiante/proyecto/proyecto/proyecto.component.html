@@ -1,0 +1,56 @@
+<div class="p-3" style="background-color: white;">
+
+    <div class="row px-3">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <h2>Título:</h2>
+            <h4>{{proyecto?.titulo}}</h4>
+            <h2>Descripción:</h2>
+            <h5>El documento a adjuntar debe contener:</h5>
+            <div class="pl-2 pl-sm-2 pl-md-5 pl-lg-5">
+                <h6>Contenido</h6>
+                <h6>Proponentes</h6>
+                <h6>Titulo</h6>
+                <h6>Área o línea de investigación </h6>
+                <h6>Antecedentes y justificación</h6>
+                <h6>Formulación del problema</h6>
+                <h6>Objetivos generales y específicos</h6>
+                <h6>Alcance y limitaciones</h6>
+                <h6>Metodología</h6>
+                <h6>Secuencia y actividades que se desarrollan</h6>
+                <h6>Cronograma</h6>
+                <h6>Análisis y diseño</h6>
+                <h6>Implementación</h6> 
+                <h6>Resultados</h6>
+                <h6>Conclusiones y recomendaciones</h6>
+                <h6>Recursos</h6>
+                <h6>Costos y fuentes de financiación </h6>
+                <h6>Bibliografía</h6>
+                <h6>Anexos</h6>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6 text-center mt-3 mt-md-0 mt-lg-0">
+            <div class="vertical-center">
+                <h4 class="font-weight-bold">TODO EL DOCUMENTO DEBE PRESENTARSE CON LAS NORMAS APA</h4>
+                <label for="fileproyecto" id="labelfileproyecto"
+                    class="labels custom-file-upload text-center py-3 mt-4">Click para subir el archivo del proyecto</label>
+    
+                <input name="fileproyecto" id="fileproyecto"
+                    (change)="getFilePropuesta( $event.target.files[0])" type="file" accept="application/pdf"
+                    class="imagenes-secundarias" required />
+                    
+                <h6 class="text-dark font-weight-bold small">
+                    <u>El archivo tiene que ser en formato PDF y con un tamaño máximo de 1MB.</u>
+                </h6>
+    
+                <div style="text-align: center;">
+                    <button type="submit" class="btn btnSuccess mt-4" [disabled]="!fileValid" (click)="uploadProyecto()">
+                        <b>Enviar Documento</b>
+                    </button>
+                </div>  
+            </div>
+        </div>
+    
+    </div>
+
+</div>

@@ -1,0 +1,80 @@
+.login-register {
+    background-size: 1000px 650px;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    padding: 10% 0;
+    position: fixed;
+}
+
+.requisitos-box {
+    width: 1180px;
+    height: 560px;
+    margin: 0 auto;
+    margin-top: -110px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    padding: 0px 40px 0px 40px;
+}
+
+a:hover {
+    color: #8F141B;
+}
+
+.contenido {
+    margin-top: -10px;
+}
+
+.list-box {
+    margin-left: 0px;
+}
+
+.list-box ul li {
+    text-decoration: none;
+}
+
+.btnRegresar button {
+    background-color: #8F141B;
+    border-color: #8F141B;
+    color: #ffffff;
+}
+
+.btnSolicitud button {
+    background-color: #8F141B;
+    border-color: #8F141B;
+    color: #ffffff;
+}
+
+
+/* Responsive */
+
+@media only screen and (max-width: 479px) {
+    .login-register {
+        background-size: 1000px 650px;
+        height: 100%;
+        width: 100%;
+        padding: 10% 0;
+        position: relative;
+    }
+    .requisitos-box {
+        width: 400px;
+        position: relative;
+        height: auto;
+        margin: 0 auto;
+        margin-top: 35px;
+        padding-bottom: 15px;
+    }
+    img {
+        margin-top: 30px;
+    }
+    .botones-aceptar button {
+        margin-top: 10px;
+    }
+    #btnRegresar {
+        margin-left: 17px;
+        width: 238px;
+    }
+    img {
+        margin-left: -20px;
+    }
+}

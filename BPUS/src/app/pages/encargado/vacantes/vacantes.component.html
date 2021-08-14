@@ -1,0 +1,308 @@
+<div class="p-3" style="background-color: white;">
+
+    <div class="col-md-3">
+        <!-- modal content -->
+        <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+            aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-capitalize" id="myLargeModalLabel"> <b> Añade una
+                                Vacante</b> </h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <form ngNativeValidate #f="ngForm" (ngSubmit)="postVacante(f)" class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Título:</label>
+                                        <input ngModel name="titulo" type="text" 
+                                            class="form-control" placeholder="Título de la Vacante"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Funciones:</label>
+                                        <input ngModel name="funciones" type="text" 
+                                            class="form-control" placeholder="Funciones a Realizar"
+                                            required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Modalidad:</label>
+                                        <select ngModel name="modalidad" class="form-control custom-select"
+                                            required>
+                                            <option value="Presencial">Presencial</option>
+                                            <option value="Semipresencial">Semipresencial</option>
+                                            <option value="Remoto">Remoto</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Empresa:</label>
+                                        <input *ngIf="encargado" ngModel name="empresa" type="text" 
+                                        class="form-control" placeholder="{{convenio?.empresa.nombre}}"
+                                        value="{{convenio?.empresa.nombre}}" required disabled>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Ubicación:</label>
+                                        <input ngModel name="ubicacion" type="text" 
+                                            class="form-control" placeholder="Ubicación" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">¿Es Pagada?:</label>
+                                        <select ngModel name="pagada" class="form-control custom-select"
+                                            required>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                            <option value="A conveniencia">A conveniencia</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Cantidad de Puestos:</label>
+                                        <input ngModel name="cantidad" type="number" 
+                                            class="form-control" placeholder="Cantidad" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Descripción:</label>
+                                        <textarea ngModel name="descripcion" class="form-control" rows="5"
+                                            required></textarea>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btnInfo">
+                                    Añadir <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btnSuccess" data-dismiss="modal">
+                                    Cancelar <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+
+    <!-- Modal Actualizar  -->
+    <div class="col-md-3">
+        <!-- modal content -->
+        <div class="modal fade modal-actualizar" tabindex="-1" role="dialog"
+            aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-capitalize" id="myLargeModalLabel"> <b> Actualiza la
+                                Vacante: {{titulo}}</b> </h4>
+                        <button type="button" class="close" data-dismiss="modal"
+                            aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+
+
+                        <form ngNativeValidate #form="ngForm" (ngSubmit)="putVacante(form)"
+                            class="form-horizontal">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Título:</label>
+                                        <input [(ngModel)]="titulo" name="titulo" type="text" 
+                                            class="form-control" placeholder="Título de la Vacante"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Funciones:</label>
+                                        <input [(ngModel)]="funciones" name="funciones" type="text"
+                                                class="form-control"
+                                            placeholder="Funciones a Realizar" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Modalidad:</label>
+                                        <select [(ngModel)]="modalidad" name="modalidad"
+                                            class="form-control custom-select" required>
+                                            <option value="Presencial">Presencial</option>
+                                            <option value="Semipresencial">Semipresencial</option>
+                                            <option value="Remoto">Remoto</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Empresa:</label>
+                                        <input *ngIf="encargado" type="text" 
+                                        class="form-control" placeholder="{{convenio?.empresa.nombre}}"
+                                        value="{{convenio?.empresa.nombre}}" required disabled>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Ubicación:</label>
+                                        <input [(ngModel)]="ubicacion" name="ubicacion" type="text"
+                                                class="form-control" placeholder="Ubicación"
+                                            required>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">¿Es Pagada?:</label>
+                                        <select [(ngModel)]="pagada" name="pagada"
+                                            class="form-control custom-select" required>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                            <option value="A conveniencia">A conveniencia</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Cantidad de Puestos:</label>
+                                        <input [(ngModel)]="cantidad" name="cantidad" type="number"
+                                                class="form-control" placeholder="Cantidad"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Estado:</label>
+                                        <select [(ngModel)]="estado" name="estado"
+                                            class="form-control custom-select" required>
+                                            <option value="true">Activa</option>
+                                            <option value="false">Inactiva</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">Descripción:</label>
+                                        <textarea [(ngModel)]="descripcion" name="descripcion"
+                                            class="form-control" rows="4" required></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btnInfo">
+                                    <b>Actualizar</b>
+                                </button>
+                                <button type="button" class="btn btnSuccess"
+                                    data-dismiss="modal">Cancelar <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>
+
+    <button type="button" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn btnSuccess mb-3"> 
+        <b> Agregar Vacante &nbsp;<i class="fa fa-plus"></i> </b></button>
+
+    
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center"><b>Título</b></th>
+                    <th class="text-center"><b>Empresa</b></th>
+                    <th class="text-center"><b>Modalidad</b></th>
+                    <th class="text-center"><b>Cantidad</b></th>
+                    <th class="text-center"><b>Estado</b></th>
+                    <th class="text-center"><b>Acción</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dato of vacantes" class="text-center">
+                    <td>{{ dato.titulo }}</td>
+                    <td>{{ dato.convenio.empresa.nombre }}</td>
+                    <td>{{ dato.modalidad }}</td>
+                    <td>{{ dato.cantidad }}</td>
+                    <td *ngIf="dato.estado == true" class="text-success"><span
+                            class="label btnSuccess"> <b> Activa</b></span>
+                    </td>
+                    <td *ngIf="dato.estado == false" class="text-danger"><span
+                            class="label btnDanger"> <b> Inactiva </b></span>
+                    </td>
+                    <td>
+
+                        <button (click)="getDataPut(dato)" data-toggle="modal"
+                            data-target=".modal-actualizar"
+                            class="btn btnInfo btn-sm"><b>
+                                <i class="fa fa-edit"></i></b></button>&nbsp;
+                        <button (click)="deleteVacante(dato)" type="button"
+                            class="btn btnSuccess btn-sm" data-dismiss="modal"> <i
+                                class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

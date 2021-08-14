@@ -1,0 +1,80 @@
+<div class="p-3" style="background-color: white;">
+
+    <button type="button" data-toggle="modal" data-target="#ActualizarEstudiantes" class="btn btnSuccess mb-3" data-keyboard="false" data-backdrop="static"> 
+        <b> Actualizar estudiantes &nbsp;<i class="fa fa-plus"></i> </b>
+    </button>
+
+    <div class="form-group">
+        <input #dataBuscar (keyup)="getDataBuscar(dataBuscar.value)" name="dataBuscar" type="text"  class="form-control" placeholder="Buscar por identificación, nombres, apellidos, teléfono, correo">
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal fade" id="ActualizarEstudiantes">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="text-center">
+                        <h2><b>¿Actualizar estudiantes?</b></h2>
+                    </div>
+                    <div class="alert alert-warning alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Atención!</strong> Esta operación puede tardar varios segundos
+                    </div>
+                    <div class="alert alert-info alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Nota:</strong> Si el estudiante ya existe se actualizarán los creditos aprobados, si no se crea
+                      </div>
+                    <div class="px-5">
+                        <label for="fileEst" *ngIf="nombreArchivoEst == null" class="labels custom-file-upload py-3 mt-2">
+                            Seleccione el documento a cargar</label>
+    
+                        <label for="fileEst" *ngIf="nombreArchivoEst != null"
+                            class="labels custom-file-upload text-center py-3 mt-2" style="color: #8F141B; font-weight: bold;">
+                            {{ nombreArchivoEst }}</label><br>
+    
+                        <input name="fileEst" id="fileEst" (change)="getFileEst($event.target.files[0])" type="file" accept="application/xlsx" class="imagenes-secundarias" required />
+                    </div>
+                    <div class="text-center mt-3">
+                        <button (click)="uploadEst()" [disabled]="!nombreArchivoEst" type="button" class="btn text-white mr-2" style="background-color: #6fbf73;" data-dismiss="modal">Enviar</button>
+                        <button (click)="clearModal()" id="closeModal" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+                    </div> 
+                </div>
+        
+            </div>
+        </div>
+    </div>
+    <ul class="pagination">
+        <li class="page-item"><button class="page-link" (click)="cambiarDesde(-10)" [disabled]="totalpaginas === 1">Anteriores</button></li>
+        <li class="page-item"><input (change)="cambiarDesdeInput(input.value)" #input class="form-control" type="number" id="pagina" value="{{pagina}}" min="1" max="{{totalpaginas}}"></li>
+        <li class="page-item"><button class="page-link">/ {{totalpaginas}}</button></li>
+        <li class="page-item"><button class="page-link" (click)="cambiarDesde(10)" [disabled]="totalpaginas === 1">Siguientes</button></li>
+    </ul>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Código</th>
+                <th>Identificación</th>
+                <th>Nombres</th>
+                <th>Apellidos</th>
+                <th>Teléfono</th>
+                <th class="text-center">Cred.aprobados</th>
+                <th>EPS</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let estudiante of estudiantes">
+                <td>{{estudiante.codigo}}</td>
+                <td>{{estudiante.identificacion}}</td>
+                <td>{{estudiante.nombres}}</td>
+                <td>{{estudiante.apellidos}}</td>
+                <td>{{estudiante.telefono}}</td>
+                <td class="text-center">{{estudiante.creditos_aprobados}}</td>
+                <td>{{estudiante.eps}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

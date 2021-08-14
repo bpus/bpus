@@ -1,0 +1,447 @@
+<div class="p-3" style="background-color: white;">
+
+    <div class="row mb-3">
+        <div class="col-6 col-md-2 col-lg-1 mt-md-3 mt-lg-3 mr-lg-3">
+            <h5><b>Modalidad:</b></h5>
+        </div>
+        <div class="col-6 col-md-3 col-lg-2 mt-md-2 mt-lg-2">
+            <select (change)="getModalidadSelected()" [(ngModel)]="modalidadSelected" class="custom-select form-control">
+                <option value="">Seleccionar...</option>
+                <option value="Pasantias">Pasantias</option>
+                <option value="Proyectos">Proyectos</option>
+                <option value="Ambas">Ambas</option>
+            </select>
+        </div>
+        <div *ngIf="modalidadSelected == 'Pasantias' || modalidadSelected == 'Proyectos' || modalidadSelected == 'Ambas'" class="col-6 col-md-3 col-lg-2 mt-3 mt-md-3 mt-lg-3">
+            <h5><b>Fecha de inicio:</b></h5>
+        </div>
+        <div *ngIf="modalidadSelected == 'Pasantias' || modalidadSelected == 'Proyectos' || modalidadSelected == 'Ambas'" class="col-6 col-md-4 col-lg-3 mt-2 mt-md-2 mt-lg-2">
+            <input type="date" id="fecha" class="form-control" (change)="getFecha()"> 
+        </div>
+        <div *ngIf="modalidadSelected == 'Pasantias' || modalidadSelected == 'Proyectos' || modalidadSelected == 'Ambas'" class="col-6 col-md-2 col-lg-2 ml-lg-5 mt-md-2 mt-lg-2">
+            <button (click)="verOcultarFiltros()" type="button" id="btnFiltros" class="btn btn-dark">Ocultar filtros</button>
+        </div>
+    </div>
+
+    <div class="collapse show" id="filtros">
+        <div class="row mb-3" *ngIf="modalidadSelected == 'Pasantias' || modalidadSelected == 'Ambas'">
+            <div class="col-12 col-md-3 col-lg-3 mb-3 mb-md-0 mb-lg-0">
+                <h5 *ngIf="modalidadSelected == 'Pasantias'"><b>Por docentes:</b></h5>
+                <h5 *ngIf="modalidadSelected == 'Ambas'"><b>Pasantias - por docentes:</b></h5>
+                <select id="tutorPasantia" (change)="getTutorPasantia()" [(ngModel)]="tutorPasantia" class="custom-select form-control">
+                    <option value="">Seleccionar...</option>
+                    <ng-container *ngFor="let docente of docentes">
+                        <option value="{{docente._id}}">{{docente.nombres}} {{docente.apellidos}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3 mb-3 mb-md-0 mb-lg-0">
+                <h5 *ngIf="modalidadSelected == 'Pasantias'"><b>Por línea invest:</b></h5>
+                <h5 *ngIf="modalidadSelected == 'Ambas'"><b>Pasantias - por línea invest:</b></h5>
+                <select id="lineaPasantia" (change)="getLineaPasantia()" [(ngModel)]="lineaPasantia" class="custom-select form-control">
+                    <option value="">Seleccionar...</option>
+                    <ng-container *ngFor="let linea of lineas">
+                        <option value="{{linea._id}}">{{linea.nombre}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3 mb-3 mb-md-0 mb-lg-0">
+                <h5 *ngIf="modalidadSelected == 'Pasantias'"><b>Por estado:</b></h5>
+                <h5 *ngIf="modalidadSelected == 'Ambas'"><b>Pasantias - por estado:</b></h5>
+                <select (change)="getEstadoPasantia()" [(ngModel)]="estadoPasantia" class="custom-select form-control">
+                    <option value="">Seleccionar...</option>
+                    <option value="PreInscrita">PreInscrita</option>
+                    <option value="Enviada">Enviada</option>
+                    <option value="Ajustar">Ajustar</option>
+                    <option value="En ejecución">En ejecución</option>
+                    <option value="Sustentación">Sustentación</option>
+                    <option value="Aprobada">Aprobada</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3" *ngIf="estadoPasantia == 'En ejecución' || estadoPasantia == 'Sustentación'">
+                <h5 *ngIf="modalidadSelected == 'Pasantias'"><b>Por fases:</b></h5>
+                <h5 *ngIf="modalidadSelected == 'Ambas'"><b>Pasantias - por fases:</b></h5>
+                <select (change)="getEstadoFasePasantia()" [(ngModel)]="estadoFasePasantia" class="custom-select form-control">
+                    <option value="">Seleccionar...</option>
+                    <option value="estado_propuesta:Enviada">Propuesta - Enviada</option>
+                    <option value="estado_propuesta:Aprobada">Propuesta - Aprobada</option>
+                    <option value="estado_propuesta:Ajustar">Propuesta - Ajustar</option>
+                    <option value="estado_actaInicio:Enviada">Acta de inicio - Enviada</option>
+                    <option value="estado_actaInicio:Aprobada">Acta de inicio - Aprobada</option>
+                    <option value="estado_actaInicio:Ajustar">Acta de inicio - Ajustar</option>
+                    <option value="estado_informe7:Enviado">Informe 7 - Enviado</option>
+                    <option value="estado_informe7:Aprobado">Informe 7 - Aprobado</option>
+                    <option value="estado_informe7:Ajustar">Informe 7 - Ajustar</option>
+                    <option value="estado_informe14:Enviado">Informe 14 - Enviado</option>
+                    <option value="estado_informe14:Aprobado">Informe 14 - Aprobado</option>
+                    <option value="estado_informe14:Ajustar">Informe 14 - Ajustar</option>
+                    <option value="estado_informeFinal:Enviado">Informe Final - Enviado</option>
+                    <option value="estado_informeFinal:Aprobado">Informe Final - Aprobado</option>
+                    <option value="estado_informeFinal:Ajustar">Informe Final - Ajustar</option>
+                    <option *ngIf="estadoPasantia == 'Sustentación'" value="evaluacion_jurado1:Aprobada">Calificación  - jurado 1 - Aprobado</option>
+                    <option *ngIf="estadoPasantia == 'Sustentación'" value="evaluacion_jurado1:Ajustar">Calificacion  - jurado 1 - Ajustar</option>
+                    <option *ngIf="estadoPasantia == 'Sustentación'" value="evaluacion_jurado2:Aprobada">Calificación  - jurado 2 - Aprobado</option>
+                    <option *ngIf="estadoPasantia == 'Sustentación'" value="evaluacion_jurado2:Ajustar">Calificacion  - jurado 2 - Ajustar</option>
+                </select>
+            </div>
+        </div>
+    
+        <div *ngIf="(modalidadSelected == 'Pasantias' || modalidadSelected == 'Ambas') && estadoPasantia !== '' || tutorPasantia !== '' || lineaPasantia !== ''" class="mb-3">
+            <span *ngIf="tutorPasantiaNombre !== ''" class="label btnSuccess mr-1">director : {{tutorPasantiaNombre}}<i class="fa fa-times-circle ml-1" (click)="filtroPasantiaRemove('tutor')"></i></span>
+            <span *ngIf="lineaPasantiaNombre !== ''" class="label btnSuccess mr-1">linea : {{lineaPasantiaNombre}}<i class="fa fa-times-circle ml-1" (click)="filtroPasantiaRemove('lineaInvestigacion')"></i></span>
+            <ng-container *ngFor="let property of filtroPasantia | keyvalue">
+                <span *ngIf="property.key !== 'programa' && property.key !== 'tutor' && property.key !== 'lineaInvestigacion'" class="label btnSuccess mr-1">{{property.key}} : {{property.value}}<i class="fa fa-times-circle ml-1" (click)="filtroPasantiaRemove(property.key)"></i></span>
+            </ng-container>
+        </div>
+    
+        <div class="row mb-3" *ngIf="modalidadSelected == 'Proyectos' || modalidadSelected == 'Ambas'">
+            <div class="col-12 col-md-3 col-lg-3 mb-3 mb-md-0 mb-lg-0">
+                <h5 *ngIf="modalidadSelected == 'Proyectos'"><b>Por docentes:</b></h5>
+                <h5 *ngIf="modalidadSelected == 'Ambas'"><b>Proyectos - por docentes:</b></h5>
+                <select id="directorProyecto" (change)="getDirectorProyecto()" [(ngModel)]="directorProyecto" class="custom-select form-control">
+                    <option value="">Seleccionar...</option>
+                    <ng-container *ngFor="let docente of docentes">
+                        <option value="{{docente._id}}">{{docente.nombres}} {{docente.apellidos}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3 mb-3 mb-md-0 mb-lg-0">
+                <h5 *ngIf="modalidadSelected == 'Proyectos'"><b>Por línea invest:</b></h5>
+                <h5 *ngIf="modalidadSelected == 'Ambas'"><b>Proyectos - por línea invest:</b></h5>
+                <select id="lineaProyecto" (change)="getLineaProyecto()" [(ngModel)]="lineaProyecto" class="custom-select form-control">
+                    <option value="">Seleccionar...</option>
+                    <ng-container *ngFor="let linea of lineas">
+                        <option value="{{linea._id}}">{{linea.nombre}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3 mb-3 mb-md-0 mb-lg-0">
+                <h5 *ngIf="modalidadSelected == 'Proyectos'"><b>Por estado:</b></h5>
+                <h5 *ngIf="modalidadSelected == 'Ambas'"><b>Proyectos - por estado:</b></h5>
+                <select (change)="getEstadoProyecto()" [(ngModel)]="estadoProyecto" class="custom-select form-control">
+                    <option value="">Seleccionar...</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Enviado">Enviado</option>
+                    <option value="Ajustar">Ajustar</option>
+                    <option value="En ejecución">En ejecución</option>
+                    <option value="Sustentación">Sustentación</option>
+                    <option value="Aprobado">Aprobado</option>
+                </select>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3" *ngIf="estadoProyecto == 'En ejecución' || estadoProyecto == 'Sustentación'">
+                <h5 *ngIf="modalidadSelected == 'Proyectos'"><b>Por fases</b></h5>
+                <h5 *ngIf="modalidadSelected == 'Ambas'"><b>Proyectos - por fases</b></h5>
+                <select (change)="getEstadoFaseProyecto()" [(ngModel)]="estadoFaseProyecto" class="custom-select form-control">
+                    <option value="">Seleccionar...</option>
+                    <option value="estado_propuesta:Enviada">Propuesta - Enviada</option>
+                    <option value="estado_propuesta:Aprobada">Propuesta - Aprobada</option>
+                    <option value="estado_propuesta:Ajustar">Propuesta - Ajustar</option>
+                    <option value="estado_anteproyecto:Enviado">Anteproyecto - Enviado</option>
+                    <option value="estado_anteproyecto:Aprobado">Anteproyecto - Aprobado</option>
+                    <option value="estado_anteproyecto:Ajustar">Anteproyecto - Ajustar</option>
+                    <option value="estado_proyecto:Enviado">Proyecto - Enviado</option>
+                    <option value="estado_proyecto:Aprobado">Proyecto - Aprobado</option>
+                    <option value="estado_proyecto:Ajustar">Proyecto - Ajustar</option>
+                    <option *ngIf="estadoProyecto == 'Sustentación'" value="evaluacion_jurado1:Aprobada">Calificación  - jurado 1 - Aprobado</option>
+                    <option *ngIf="estadoProyecto == 'Sustentación'" value="evaluacion_jurado1:Ajustar">Calificacion  - jurado 1 - Ajustar</option>
+                    <option *ngIf="estadoProyecto == 'Sustentación'" value="evaluacion_jurado2:Aprobada">Calificación  - jurado 2 - Aprobado</option>
+                    <option *ngIf="estadoProyecto == 'Sustentación'" value="evaluacion_jurado2:Ajustar">Calificacion  - jurado 2 - Ajustar</option>
+                </select>
+            </div>
+        </div>
+    
+        <div *ngIf="(modalidadSelected == 'Proyectos' || modalidadSelected == 'Ambas') && estadoProyecto !== '' || directorProyecto !== '' || lineaProyecto !== ''">
+            <span *ngIf="directorProyectoNombre !== ''" class="label btnSuccess mr-1">director : {{directorProyectoNombre}}<i class="fa fa-times-circle ml-1" (click)="filtroProyectoRemove('director')"></i></span>
+            <span *ngIf="lineaProyectoNombre !== ''" class="label btnSuccess mr-1">linea : {{lineaProyectoNombre}}<i class="fa fa-times-circle ml-1" (click)="filtroProyectoRemove('lineaInvestigacion')"></i></span>
+            <ng-container *ngFor="let property of filtroProyecto | keyvalue">
+                <span *ngIf="property.key !== 'programa' && property.key !== 'director' && property.key !== 'lineaInvestigacion'" class="label btnSuccess mr-1">{{property.key}} : {{property.value}}<i class="fa fa-times-circle ml-1" (click)="filtroProyectoRemove(property.key)"></i></span>
+            </ng-container>
+        </div>
+    </div>
+
+    <div *ngIf="proyectos || pasantias"  class="mt-4">
+        <div class="row mb-3" *ngIf="proyectos.length > 0 || pasantias.length > 0">
+            <div class="col-6 col-md-3 col-lg-2 mt-md-3 mt-lg-3">
+                <h3 class="font-weight-bold">Resultados: </h3>
+            </div>
+            <div class="col-6 col-md-3 col-lg-3 mt-md-2 mt-lg-2">
+                <button (click)="generarPDf()" type="button" class="btn btnSuccess">
+                    Generar PDF &nbsp;<i class="fa fa-file-pdf-o"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="text-center p-0 p-md-5 p-lg-5" id="divResultados" style="display: none;">
+            <h3>No se encontro ningún resultado</h3>
+        </div>
+            
+        <ng-container *ngFor="let pasantia of pasantias">
+            <div class="row">
+                <div class="col-12 col-md-7 col-lg-9">
+                    <h5 *ngIf="pasantia.titulo"><b>Pasantia</b> - {{pasantia.titulo}}</h5>
+                    <h5 *ngIf="!pasantia.titulo"><b>Pasantia</b> - {{pasantia.estudiante.nombres}} {{pasantia.estudiante.apellidos}}</h5>
+                    <h5 *ngIf="pasantia.fecha_actaInicio !== '---'"><b>Inicio:</b> {{pasantia.fecha_actaInicio}} <span class="font-italic font-weight-bold">({{pasantia.semanas}} semanas)</span></h5>
+                    <h5 *ngIf="pasantia.fecha_actaInicio === '---'"><b>Inicio:</b> No ha iniciado</h5>
+                </div>
+                <div class="col-9 col-md-3 col-lg-2">
+                    <h6><b>Estado:</b></h6>
+                    <h6> 
+                        <ng-container *ngIf="pasantia?.estado == 'En ejecución'" class="text-success">
+                            <span class="label btnDanger"> <b> {{ pasantia?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="pasantia?.estado == 'Sustentación'" class="text-success">
+                            <span class="label btn-warning text-dark"> <b> {{ pasantia?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="pasantia?.estado == 'Enviada' || pasantia?.estado == 'PreInscrita'" class="text-success">
+                            <span class="label btnInfo"> <b> {{ pasantia?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="pasantia?.estado == 'Ajustar'" class="text-success">
+                            <span class="label btnSuccess"> <b> {{ pasantia?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="pasantia?.estado == 'Aprobada'" class="text-success">
+                            <span class="label btn-success"> <b> {{ pasantia?.estado }} </b></span>
+                        </ng-container>
+                    </h6>
+                </div>
+                <div class="col-2 col-md-2 col-lg-1 mt-2">
+                    <button type="button" (click)="getPasantiaSelected(pasantia)" data-toggle="modal" data-target="#infoPasantia" class="btn btn-info btn-sm">
+                        <i class="fa fa-info-circle" style="font-size: 20px;"></i>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </ng-container>
+        <ng-container *ngFor="let proyecto of proyectos">
+            <div class="row">
+                <div class="col-12 col-md-7 col-lg-9">
+                    <h5><b>Proyecto</b> - {{proyecto.titulo}}</h5>
+                    <h5 *ngIf="proyecto.fecha_aprobacion !== '---'"><b>Inicio:</b> {{proyecto.fecha_aprobacion}} <span class="font-italic font-weight-bold">({{proyecto.semanas}} semanas)</span></h5>
+                    <h5 *ngIf="proyecto.fecha_aprobacion === '---'"><b>Inicio:</b> No ha iniciado</h5>
+                </div>
+                <div class="col-9 col-md-3 col-lg-2">
+                    <h6><b>Estado:</b></h6>
+                    <h6> 
+                        <ng-container *ngIf="proyecto?.estado == 'En ejecución'" class="text-success">
+                            <span class="label btnDanger"> <b> {{ proyecto?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="proyecto?.estado == 'Sustentación'" class="text-success">
+                            <span class="label btn-warning text-dark"> <b> {{ proyecto?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="proyecto?.estado == 'Enviado'" class="text-success">
+                            <span class="label btnInfo"> <b> {{ proyecto?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="proyecto?.estado == 'Ajustar'" class="text-success">
+                            <span class="label btnSuccess"> <b> {{ proyecto?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="proyecto?.estado == 'Aprobado'" class="text-success">
+                            <span class="label btn-success"> <b> {{ proyecto?.estado }} </b></span>
+                        </ng-container>
+                    </h6>
+                </div>
+                <div class="col-2 col-md-2 col-lg-1 mt-2">
+                    <button type="button" (click)="getProyectoSelected(proyecto)" data-toggle="modal" data-target="#infoProyecto" class="btn btn-info btn-sm">
+                        <i class="fa fa-info-circle" style="font-size: 20px;"></i>
+                    </button>
+                </div>
+            </div>
+            <hr>
+        </ng-container>
+    </div>
+
+    <div class="modal fade" id="infoProyecto">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5><b>Título:</b> &nbsp; {{proyectoSelected?.titulo}}</h5>
+                    <h5><b>ID de la solicitud:</b> &nbsp; {{proyectoSelected?._id}}</h5>
+                    <h5 *ngIf="proyectoSelected?.fecha_aprobacion !== '---'"><b>Inicio:</b> {{proyectoSelected?.fecha_aprobacion}} <span class="font-italic font-weight-bold">({{proyectoSelected?.semanas}} semanas)</span></h5>
+                    <h5 *ngIf="proyectoSelected?.fecha_aprobacion === '---'"><b>Inicio:</b> No ha iniciado</h5>
+                    <h5 class="font-weight-bold">Estado:
+                        <ng-container *ngIf="proyectoSelected?.estado == 'En ejecución' || proyectoSelected?.estado === 'Pendiente'" class="text-success">
+                            <span class="label btnDanger"> <b> {{ proyectoSelected.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="proyectoSelected?.estado == 'Sustentación'" class="text-success">
+                            <span class="label btn-warning text-dark"> <b> {{ proyectoSelected?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="proyectoSelected?.estado == 'Enviado'" class="text-success">
+                            <span class="label btnInfo"> <b> {{ proyectoSelected?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="proyectoSelected?.estado == 'Ajustar'" class="text-success">
+                            <span class="label btnSuccess"> <b> {{ proyectoSelected?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="proyectoSelected?.estado == 'Aprobado'" class="text-success">
+                            <span class="label btn-success"> <b> {{ proyectoSelected?.estado }} </b></span>
+                        </ng-container>
+                    </h5>
+                    <h5><b>Linea de investigación:</b> &nbsp; {{proyectoSelected?.lineaInvestigacion.nombre}}</h5>
+                    <h5><b>Director:</b> &nbsp; {{proyectoSelected?.director.nombres}} {{proyectoSelected?.director.apellidos}}</h5>
+                    <hr>
+                    <h5 > <b>{{ proyectoSelected?.estudiante.nombres }} {{proyectoSelected?.estudiante.apellidos}}</b></h5>
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante.correo}}</small>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                            <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante.codigo}}</small>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                            <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante.identificacion}}</small>
+                        </div>
+                    </div>
+                    <div class="row mt-0 mt-md-3 mt-lg-3">
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                            <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante.creditos_aprobados}}</small>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="proyectoSelected?.estudiante2">
+                        <hr>
+                        <h5 > <b>{{ proyectoSelected?.estudiante2.nombres }} {{proyectoSelected?.estudiante2.apellidos}}</b></h5>
+                        <div class="row mt-3">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante2.correo}}</small>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante2.codigo}}</small>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante2.identificacion}}</small>
+                            </div>
+                        </div>
+                        <div class="row mt-0 mt-md-3 mt-lg-3">
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante2.creditos_aprobados}}</small>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="proyectoSelected?.estudiante3">
+                        <hr>
+                        <h5 > <b>{{ proyectoSelected?.estudiante3.nombres }} {{proyectoSelected?.estudiante3.apellidos}}</b></h5>
+                        <div class="row mt-3">
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante3.correo}}</small>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante3.codigo}}</small>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante3.identificacion}}</small>
+                            </div>
+                        </div>
+                        <div class="row mt-0 mt-md-3 mt-lg-3">
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante3.creditos_aprobados}}</small>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="infoPasantia">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h5 *ngIf="pasantiaSelected?.titulo"><b>Título:</b> &nbsp; {{pasantiaSelected?.titulo}}</h5>
+                    <h5><b>ID de la solicitud:</b> &nbsp; {{pasantiaSelected?._id}}</h5>
+                    <h5 *ngIf="pasantiaSelected?.fecha_actaInicio !== '---'"><b>Inicio:</b> {{pasantiaSelected?.fecha_actaInicio}} <span class="font-italic font-weight-bold">({{pasantiaSelected?.semanas}} semanas)</span></h5>
+                    <h5 *ngIf="pasantiaSelected?.fecha_actaInicio === '---'"><b>Inicio:</b> No ha iniciado</h5>
+                    <h5 class="font-weight-bold">Estado:
+                        <ng-container *ngIf="pasantiaSelected?.estado == 'En ejecución'" class="text-success">
+                            <span class="label btnDanger"> <b> {{ pasantiaSelected?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="pasantiaSelected?.estado == 'Sustentación'" class="text-success">
+                            <span class="label btn-warning text-dark"> <b> {{ pasantiaSelected?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="pasantiaSelected?.estado == 'Enviada' || pasantiaSelected?.estado == 'PreInscrita'" class="text-success">
+                            <span class="label btnInfo"> <b> {{ pasantiaSelected?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="pasantiaSelected?.estado == 'Ajustar'" class="text-success">
+                            <span class="label btnSuccess"> <b> {{ pasantiaSelected?.estado }} </b></span>
+                        </ng-container>
+                        <ng-container *ngIf="pasantiaSelected?.estado == 'Aprobada'" class="text-success">
+                            <span class="label btn-success"> <b> {{ pasantiaSelected?.estado }} </b></span>
+                        </ng-container>
+                    </h5>
+                    <h5><b>Linea de investigación:</b> &nbsp; {{pasantiaSelected?.lineaInvestigacion.nombre}}</h5>
+                    <h5 *ngIf="pasantiaSelected?.tutor"><b>Director:</b> &nbsp; {{pasantiaSelected?.tutor.nombres}} {{pasantiaSelected?.tutor.apellidos}}</h5>
+                    <hr>
+                    <h5> <b>Información del estudiante:</b></h5>
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                            <i class="fa fa-user-circle-o"></i> &nbsp; <small>{{ pasantiaSelected?.estudiante.nombres }} {{pasantiaSelected?.estudiante.apellidos}}</small>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                            <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{pasantiaSelected?.estudiante.codigo}}</small>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                            <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{pasantiaSelected?.estudiante.identificacion}}</small>
+                        </div>
+                    </div>
+                    <div class="row mt-0 mt-lg-3">
+                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{pasantiaSelected?.estudiante.correo}}</small>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-4 col-lg-4" *ngIf="pasantiaSelected?.telefono">
+                            <i class="fa fa-phone"></i> &nbsp; <small class="text-justify">Tél:&nbsp; {{pasantiaSelected?.estudiante.telefono}}</small>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                            <i class="fa fa-hospital-o"></i> &nbsp; <small class="text-justify">EPS:&nbsp; {{pasantiaSelected?.estudiante.eps}}</small>
+                        </div>
+                    </div>
+                    <ng-container *ngIf="pasantiaSelected?.vacante">
+                        <h5 class="mt-3"> <b>Información de la vacante:</b></h5>
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                                <div class="vacantesInfo">
+                                    <small><i class="fa fa-briefcase"></i> &nbsp; {{pasantiaSelected?.vacante.titulo}} - {{pasantiaSelected?.vacante.convenio.empresa.nombre}} </small><br>
+                                    <small><i class="fa fa-globe"></i> &nbsp; {{pasantiaSelected?.vacante.ubicacion}}, &nbsp;{{pasantiaSelected?.vacante.modalidad}}</small><br>
+                                    <small><i class="fa fa-code"></i> &nbsp; {{pasantiaSelected?.vacante.funciones}}</small><br>
+                                    <small><i class="fa fa-money"></i>  &nbsp; Pagada: &nbsp;{{pasantiaSelected?.vacante.pagada}}</small><br>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mt-2 mt-lg-0">
+                                <h5><b>Persona a Cargo:</b></h5>
+                                <i class="fa fa-user"></i> &nbsp; <small class="text-justify"> {{pasantiaSelected?.vacante.convenio.encargado.nombres}} {{pasantiaSelected?.vacante.convenio.encargado.apellidos}}</small><br>
+                                <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">{{pasantiaSelected?.vacante.convenio.encargado.correo}}</small><br>
+                                <i class="fa fa-phone"></i> &nbsp;<small class="text-justify"> {{pasantiaSelected?.vacante.convenio.encargado.telefono}}</small>
+                            </div>
+                        </div>
+                        <div class="mt-3 ml-0 ml-lg-4">
+                            <h5><b>Descripción:</b></h5>
+                            <p class="mt-2 ml-0 ml-lg-2">{{pasantiaSelected?.vacante.descripcion}}</p> 
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!pasantiaSelected?.vacante">
+                        <h5 class="mt-3"> <b>Información de empresa:</b></h5>
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                                <div class="vacantesInfo">
+                                    <small><i class="fa fa-briefcase"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.nombre}} </small><br>
+                                    <small><i class="fa fa-globe"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.ciudad}}, &nbsp;{{pasantiaSelected?.convenio.empresa.direccion}}</small><br>
+                                    <small><i class="fa fa-phone"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.telefono}}</small><br>
+                                    <small><i class="fa fa-money"></i>  &nbsp; Pagada: &nbsp;{{pasantiaSelected?.convenio.empresa.naturaleza}}</small><br>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mt-2 mt-lg-0">
+                                <h5><b>Persona a Cargo:</b></h5>
+                                <i class="fa fa-user"></i> &nbsp; <small class="text-justify"> {{pasantiaSelected?.convenio.encargado.nombres}} {{pasantiaSelected?.convenio.encargado.apellidos}}</small><br>
+                                <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">{{pasantiaSelected?.convenio.encargado.correo}}</small><br>
+                                <i class="fa fa-phone"></i> &nbsp;<small class="text-justify"> {{pasantiaSelected?.convenio.encargado.telefono}}</small>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="modal-footer mt-3">
+                        <button type="button" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<img id='headerUsco' src='../../../../assets/images/headerUsco.png' style='display:none'/>
+<img id='footerUsco' src='../../../../assets/images/footerUsco.png' style='display:none'/>

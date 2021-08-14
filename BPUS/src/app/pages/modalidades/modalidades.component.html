@@ -1,0 +1,63 @@
+<!-- ============================================================== -->
+<!-- Main wrapper - style you can find in pages.scss -->
+<!-- ============================================================== -->
+
+<div class="login-register" style="background-color: #5C0E12;">
+    <div class="requisitos-box">
+
+        <br>
+
+        <a routerLink='/login' id="btnRegresar" class="text-uppercase" type="submit"><i class="fa fa-times"></i>&nbsp;<b><b>salir</b></b> </a>
+
+        <div class="contenido">
+            <div class="text-center">
+                <img src="assets/images/logos/logo-horizontal.png" alt="">
+                <br>
+                <br>
+
+                <div class="text-uppercase text-center">
+                    <h5 class="font-weight-bold">Bienvenido(a) {{ info.nombres }}, por favor selecciona tu modalidad de Grado</h5>
+                    <small> 
+                    Recuerda que has cumplido con el {{ porcentajeAprobado }}% ({{ info.creditos_aprobados }}) 
+                    de los créditos totales de tu carrera.
+                </small>
+                </div>
+                <br>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-12 col-md-4" *ngFor="let modalidad of modalidades">
+
+                    <div class=" card-info border border-secondary rounded ">
+                        <h6 class="card-header text-uppercase " style="background-color: #8F141B; color: #ffffff; "><b>{{ modalidad.nombre }}</b> </h6>
+                        <div class="card-body " style="border-color: #8F141B; ">
+                            <h5 class="card-title ">Requisitos:</h5>
+                            <ul>
+                                <li>
+                                    <p> Cumplir más del {{ modalidad.porcentaje_creditos *100 }}% o más de los créditos totales. </p>
+                                </li>
+
+                                <li>
+                                    <p> Haber aprobado el curso de Modalidad de grado. </p>
+                                </li>
+                            </ul>
+
+                            <div class="text-left ">
+                                <div class="btnSolicitud ">
+                                    <button routerLink="{{modalidad.url}}" class="btn btn-sm" [disabled]="porcentajeAprobado < modalidad.porcentaje_creditos*100" ><i class="fa fa-clipboard " ></i>&nbsp; <b>Hacer Solicitud</b> </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- End Wrapper -->
+<!-- ============================================================== -->

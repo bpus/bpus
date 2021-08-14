@@ -1,0 +1,101 @@
+<div class="p-3" style="background-color: white;">
+    <button type="button" class="btn btnSuccess" data-toggle="modal" data-target="#addModalidad" data-backdrop="static" data-keyboard="false"> 
+        Agregar modalidad&nbsp;&nbsp;<i class="fa fa-plus"></i>
+    </button>
+
+   <!-- The Modal Add-->
+   <div class="modal fade" id="addModalidad">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Agregar modalidad</h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form ngNativeValidate #addModalidad="ngForm" (ngSubmit)="postModalidad(addModalidad)">
+            <label for="nombre">Nombre de la modalidad:</label>
+            <input type="text" ngModel class="form-control" id="nombre" name="nombre" placeholder="Nombre" maxlength="50" required autocomplete="off" autofocus>
+            <label class="mt-2" for="porcentaje_creditos">Porcentaje creditos <span class="font-weight-bold">(Mayor a 50)</span>:</label>
+            <input type="text" (keyup)="checkPorcentaje()" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' ngModel class="form-control" id="porcentaje_creditos" name="porcentaje_creditos" placeholder="Porcentaje creditos" maxlength="2" minlength="2" required autocomplete="off">
+            <label class="mt-2" for="url">URL <span class="font-weight-bold">(escribir sin '/')</span> :</label>
+            <input type="text" ngModel class="form-control" id="url" name="url" placeholder="URL" maxlength="75" required autocomplete="off">
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btnInfo" [disabled]="addModalidad.invalid || porcentajeAddValid == false">Aceptar</button>
+              <button (click)="addModalidad.reset();" id="btnCancelarAdd" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- The Modal edit -->
+  <div class="modal fade" id="editModalidad">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Editar modalidad</h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form ngNativeValidate #editModalidad="ngForm" (ngSubmit)="putModalidad(editModalidad)">
+            <label for="nombre">Nombre de la modalidad:</label>
+            <input type="text" (keyup)="checkNombreEdit(); checkEdit()" ngModel class="form-control" id="nombreEdit" name="nombre" maxlength="50" required autocomplete="off" autofocus>
+            <label class="mt-2" for="porcentaje_creditos">Porcentaje creditos:</label>
+            <input type="text" (keyup)="checkPorcentajeEdit();  checkEdit()" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' 
+                ngModel class="form-control" id="porcentaje_creditosEdit" name="porcentaje_creditos" maxlength="2" required autocomplete="off">
+            <!-- Modal footer -->
+            <label class="mt-2" for="urlEdit">URL <span class="font-weight-bold">(escribir sin '/')</span> :</label>
+            <input type="text" (keyup)="checkUrlEdit(); checkEdit()" ngModel class="form-control" id="urlEdit" name="url" maxlength="75" required autocomplete="off">
+            <div class="modal-footer">
+              <button type="submit" class="btn btnInfo" [disabled]="editValid == false || (porcentajeAddValidEdit == false && nombreEditValid == false && urlEditValid == false)">Aceptar</button>
+              <button (click)="editModalidad.reset();" id="btnCancelarEdit" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+    <ng-container *ngIf="modalidades; else sinModalidades">
+        <div class="table-responsive mt-3">
+            <table class="table table-hover text-center">
+                <thead>
+                  <tr>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Porcentaje creditos</th>
+                    <th class="text-center">URL</th>
+                    <th class="text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let modalidad of modalidades">
+                        <td style="width: 350px;">{{modalidad.nombre}}</td>
+                        <td>{{(modalidad.porcentaje_creditos*100).toFixed(0)}}</td>
+                        <td style="width: 350px;">{{modalidad.url}}</td>
+                        <td>
+                            <button (click)="getModalidadSelected(modalidad)" type="button" class="btn btn-info mr-2" data-toggle="modal" data-target="#editModalidad" data-backdrop="static" data-keyboard="false"><i class="fa fa-edit"></i></button>
+                            <button (click)="deleteModalidad(modalidad)" type="button" class="btn btnSuccess"><i class="fa fa-trash"></i></button>
+                        </td>
+                  </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+
+    <ng-template #sinModalidades>
+        <div>
+            <h2>No hay modalidades...</h2>
+        </div>
+    </ng-template>
+
+</div>

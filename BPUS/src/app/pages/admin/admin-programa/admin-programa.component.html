@@ -1,0 +1,107 @@
+<div class="p-3" style="background-color: white;">
+
+  <button type="button" class="btn btnSuccess" data-toggle="modal" data-target="#addPrograma" data-backdrop="static" data-keyboard="false">
+    Agregar programa &nbsp;<i class="fa fa-plus"></i>
+  </button> 
+
+  <!-- The Modal Add-->
+  <div class="modal fade" id="addPrograma">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Agregar programa</h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form ngNativeValidate #addPrograma="ngForm" (ngSubmit)="postPrograma(addPrograma)">
+            <label for="nombre">Nombre del programa:</label>
+            <input type="text" ngModel class="form-control" id="nombre" name="nombre" placeholder="Nombre" maxlength="150" required autocomplete="off"> 
+            <label class="mt-2" for="creditos_totales">Creditos totales:</label>
+            <input type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' ngModel class="form-control" id="creditos_totales" name="creditos_totales" placeholder="creditos totales" maxlength="3" required autocomplete="off">
+            <label class="mt-2" for="jefe">Jefe de programa:</label>
+            <input (keyup)="checkJefe()" class="form-control" ngModel name="jefe" id="jefe" list="docentes" required autocomplete="off">
+            <datalist id="docentes">
+                <ng-container *ngFor="let docente of docentes">
+                    <option value="{{docente.nombres}}">
+                </ng-container>
+            </datalist>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btnInfo" [disabled]="addPrograma.invalid || !jefeAddValid">Aceptar</button>
+              <button (click)="addPrograma.reset();" id="btnCancelarAdd" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- The Modal edit -->
+  <div class="modal fade" id="editPrograma">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Editar programa</h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form ngNativeValidate #f="ngForm" (ngSubmit)="putPrograma()">
+            <label for="nombre">Nombre del programa:</label>
+            <input (keyup)="checkEdit()" type="text" ngModel class="form-control" id="nombreEdit" name="nombre" maxlength="150" required autocomplete="off"> 
+            <label class="mt-2" for="creditos_totales">Creditos totales:</label>
+            <input (keyup)="checkEdit()" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' ngModel class="form-control" id="cred_totales_edit" name="creditos_totales" maxlength="3" required autocomplete="off">
+            <label class="mt-2" for="jefe">Jefe de programa:</label>
+            <input (keyup)="checkEdit()" class="form-control" ngModel name="jefe" id="jefeEdit" list="docentesEdit" required autocomplete="off">
+            <datalist id="docentesEdit">
+                <ng-container *ngFor="let docente of docentes">
+                    <option value="{{docente.nombres}}">
+                </ng-container>
+            </datalist>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btnInfo" [disabled]="!editValid || !editChange">Aceptar</button>
+              <button (click)="f.reset();" id="btnCancelarEdit" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+    <ul class="pagination mt-3">
+        <li class="page-item"><button class="page-link" (click)="cambiarDesde(-10)">Anteriores</button></li>
+        <li class="page-item"><input (change)="cambiarDesdeInput(input.value)" #input class="form-control" type="number" id="pagina" value="{{pagina}}" min="1" max="{{totalpaginas}}"></li>
+        <li class="page-item"><button class="page-link">/ {{totalpaginas}}</button></li>
+        <li class="page-item"><button class="page-link" (click)="cambiarDesde(10)">Siguientes</button></li>
+    </ul>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Creditos totales</th>
+                <th class="text-center">Jefe</th>
+                <th class="text-center">Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let programa of programas; let indice=index">
+                    <td class="text-center">{{programa.nombre}}</td>
+                    <td class="text-center">{{programa.creditos_totales}}</td>
+                    <td>{{programa.jefe?.nombres}} {{programa.jefe?.apellidos}}</td>
+                    <td class="text-center">
+                        <button (click)="getProgramaSelected(programa)" stype="button" class="btn btn-info mr-2" data-toggle="modal" data-target="#editPrograma" data-backdrop="static" data-keyboard="false"><i class="fa fa-edit"></i></button>
+                        <button (click)="deletePrograma(programa)" type="button" class="btn btnSuccess"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<div id="main-wrapper">
+
+    <!-- Selector del header -->
+    <app-navbar-inscripcion></app-navbar-inscripcion>
+
+    <!-- ============================================================== -->
+    <!-- Container fluid  -->
+    <!-- ============================================================== -->
+    <div class="container-fluid pt-5 px-4 p-md-5 p-lg-5">
+        <button routerLink='/solicitud-pasantia-supervisada' class="btn btn-sm btnSuccess mt-5 px-3" type="submit">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+        <hr>
+        <div class="modal fade modal-info" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h3><b>Información de la vacante:</b></h3>
+                        <hr>
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                                <div class="vacantesInfo">
+                                    <small><i class="fa fa-briefcase"></i> &nbsp; {{vacanteSelected?.titulo}} - {{vacanteSelected?.convenio.empresa.nombre}} </small><br>
+                                    <small><i class="fa fa-globe"></i> &nbsp; {{vacanteSelected?.ubicacion}}, &nbsp;{{vacanteSelected?.modalidad}}</small><br>
+                                    <small><i class="fa fa-code"></i> &nbsp; {{vacanteSelected?.funciones}}</small><br>
+                                    <small><i class="fa fa-money"></i>  &nbsp; Pagada: &nbsp;{{vacanteSelected?.pagada}}</small><br>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-5 col-lg-5 mt-2 mt-lg-0">
+                                <h5><b>Persona a Cargo:</b></h5>
+                                <i class="fa fa-user"></i> &nbsp; <small class="text-justify"> {{vacanteSelected?.convenio.encargado.nombres}} {{vacanteSelected?.convenio.encargado.apellidos}}</small><br>
+                                <i class="mdi mdi-email"></i> &nbsp;<small class="text-justify">{{vacanteSelected?.convenio.encargado.correo}}</small><br>
+                                <i class="fa fa-phone"></i> &nbsp;<small class="text-justify"> {{vacanteSelected?.convenio.encargado.telefono}}</small>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <h5><b>Descripción:</b></h5>
+                            <p class="mt-2 ml-0 ml-lg-4">{{vacanteSelected?.descripcion}}</p> 
+                        </div>
+                        <div class="modal-footer mt-3">
+                            <button type="button" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form ngNativeValidate #f="ngForm" (ngSubmit)="postSolicitud(f)" id="loginform">
+            <div class="row">
+                <div class="col-sm-12 col-md-4 col-lg-4">
+                    <h3 class="card-title text-uppercase"><b>1. Datos estudiante: </b></h3>
+                    <p class="font-weight-bold text-dark">Nombre:</p>
+                    <p>{{info.nombres}} {{info.apellidos}}</p>
+                    <p><span class="font-weight-bold text-dark mr-2">Código: </span>{{info.codigo}} <span class="ml-3 font-weight-bold text-dark">ID:</span> {{info.identificacion}}</p>
+                    <p><span class="font-weight-bold text-dark mr-2">Programa: </span> {{programa}}</p>
+                    <p><span class="font-weight-bold text-dark mr-2">Correo: </span> {{info.correo}}</p>
+                    <label for="eps" class="font-weight-bold text-dark">Empresa de Salud:</label>
+                    <div class="input-group">
+                        <input [(ngModel)]="info.eps" name="eps" type="text" class="form-control" id="eps" value="{{info.eps}}" placeholder="{{info.eps}}" required>
+                    </div>
+                    <label for="lineaInvestigacion" class="font-weight-bold text-dark mt-3">Linea de investigación:</label><br>
+                    <select [(ngModel)]="lineaInvestigacion" class="form-control custom-select" id="lineaInvestigacion" name="lineaInvestigacion">
+                        <option value="" selected>Seleccione...</option>
+                        <ng-container *ngFor="let linea of lineas">
+                            <option value="{{linea._id}}">{{linea.nombre}}</option>
+                        </ng-container>
+                    </select>
+                </div>
+                <div class="col-sm-12 col-md-8 col-lg-8 mt-lg-0 mt-3">
+                    <h3 class="card-title text-uppercase"><b>2. Vacantes Disponibles: </b></h3>
+                    <div class="row" *ngFor="let dato of vacantes">
+                        <ng-container *ngIf="(info.programa === dato.convenio.programa)">
+                            <div class="col-sm-12 col-md-7 col-lg-7 mb-3">
+                                <h5 class="text-uppercase"> <b>{{ dato.titulo }}</b></h5>
+                                <small style="margin-top: -50px;"><i class="fa fa-briefcase"></i> &nbsp;
+                                    {{dato.convenio.empresa.nombre}}
+                                </small><br>
+                                <small><i class="fa fa-globe"></i>&nbsp; &nbsp;{{dato.ubicacion}},
+                                    {{dato.modalidad}}
+                                </small> <br>
+                                <small><i class="fa fa-code"></i>&nbsp; &nbsp;{{dato.funciones}}
+                                </small>
+                            </div>
+                            <div class="col-sm-12 col-md-5 col-lg-5">
+                                <div class="buttons">
+                                    <button type="button" (click)="getDataInfo(dato)" data-toggle="modal"
+                                        data-target=".modal-info" class="btn btn-info mr-2"><b>
+                                            <i class="fa fa-info-circle"></i></b>
+                                    </button>
+        
+                                    <button type="submit" (click)="getVacanteSelected(dato); getDataInfo(dato);"
+                                        class="btn btnInfo" [disabled]="lineaInvestigacion === '' || !info.eps"><b>
+                                        Pre-Incribirme
+                                        <i class="fa fa-check"></i></b>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+    </div>
+</div>

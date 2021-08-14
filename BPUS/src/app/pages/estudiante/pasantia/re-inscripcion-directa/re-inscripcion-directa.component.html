@@ -1,0 +1,91 @@
+<div class="px-3 py-3 px-md-4 px-lg-5" style="background-color: white;">
+
+    <button routerLink='/re-inscripcion' class="d-inline btn btn-sm btnSuccess btn-sm px-3" type="submit">
+        <i class="fa fa-arrow-left"></i>
+    </button>
+
+    <hr>
+    
+    <form (ngSubmit)="postSolicitud()">
+
+        <label for="tituloPasantia" class="font-weight-bold text-dark">Titulo de la pasantía:</label>
+        <div class="input-group">
+            <input name="tituloPasantia" type="text" class="form-control" id="tituloPasantia" (change)="getInfoPropuesta()" placeholder="Titulo de la pasantía" required>
+        </div>
+
+        <label for="descripcion" class="font-weight-bold text-dark mt-2">Descripción de la pasantía:</label>
+        <textarea id="descripcion" class="form-control" rows="2" placeholder="Descripción de la pasantía" maxlength="500" required (keyup)="getInfoPropuesta()" style="resize: none;"></textarea>
+        
+        <div class="row mt-2">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <label for="empresa" class="font-weight-bold text-dark">Empresa de la pasantía:</label>
+                <select name="empresa" id="mySelect" class="form-control custom-select" (change)="getInfoPropuesta()" required>
+                    <option value="" selected>Seleccione...</option>
+                    <ng-container *ngFor="let convenio of convenios">
+                        <option>{{convenio.empresa.nombre}}</option>
+                    </ng-container>
+                </select>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <label for="lineaInvestigacion" class="font-weight-bold text-dark">Linea de investigación:</label><br>
+                <select (change)="getInfoPropuesta()" class="form-control custom-select" id="lineaInvestigacion" name="lineaInvestigacion">
+                    <option value="" selected>Seleccione...</option>
+                    <ng-container *ngFor="let linea of lineas">
+                        <option value="{{linea._id}}">{{linea.nombre}}</option>
+                    </ng-container>
+                </select>
+            </div>
+        </div>
+
+        <hr>
+
+        <a href="/assets/documentos/formatoSolicitudPasantiaIngSoftware.docx" download target="_blank">
+            <button type="button" class="btn btnSuccess">
+                <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Descargar formato</b></small>
+            </button>
+        </a>
+
+        <div class="row">
+            <div class="col-sm-12 col-lg-6">
+                <label for="filePropuesta" *ngIf="nombreArchivoP == null" class="labels custom-file-upload py-4 mt-4">
+                    Click aquí para subir la Propuesta</label>
+
+                <label for="filePropuesta" *ngIf="nombreArchivoP != null"
+                    class="labels custom-file-upload text-center py-3 mt-4" style="color: #8F141B; font-weight: bold;">
+                    {{ nombreArchivoP }}</label><br>
+
+                <input name="filePropuesta" id="filePropuesta"
+                    (change)="getFilePropuesta( $event.target.files[0] )" type="file" accept="application/pdf"
+                    class="imagenes-secundarias" required /> 
+            </div>
+            <div class="col-sm-12 col-lg-6">
+                <label for="fileFicha" *ngIf="nombreArchivoF == null" class="labels custom-file-upload py-4 mt-4">
+                    Click aquí para subir la ficha academica</label>
+
+                <label for="fileFicha" *ngIf="nombreArchivoF != null"
+                    class="labels custom-file-upload text-center py-3 mt-4" style="color: #8F141B; font-weight: bold;">
+                    {{ nombreArchivoF }}</label><br>
+
+                <input name="fileFicha" id="fileFicha"
+                    (change)="getFileFicha( $event.target.files[0] )" type="file" accept="application/pdf"
+                    class="imagenes-secundarias" required />
+            </div>
+        </div>
+         
+        <div class="mt-3" style="text-align: center;">
+            <h5 class="text-dark pl-0 pl-md-4 pl-lg-4 font-weight-bold font-italic"><u>Los archivos tienen que ser en formato PDF y con un tamaño máximo de 1MB.</u></h5>
+        </div>
+
+        <div style="text-align: center;">
+            <button type="submit" class="btn btnInfo mt-4 mr-3"
+            [disabled]="(nombreArchivoF === undefined) || (nombreArchivoP === undefined) || (nombreEmpresa === undefined)
+                        || (nombreEmpresa === '') || (tituloPasantia === undefined) || (tituloPasantia === '')
+                        || (descripcion === undefined) || (descripcion === '')">
+                <b>Enviar propuesta</b>
+            </button>
+
+            <button type="reset" (click)="cleardata()" class="btn btnSuccess mt-4">Restablecer</button>
+        </div> 
+
+    </form>
+</div>

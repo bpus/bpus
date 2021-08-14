@@ -1,0 +1,13 @@
+.container-main {
+    height: 200px;
+    position: relative;
+    text-align: center;
+  }
+  .center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }

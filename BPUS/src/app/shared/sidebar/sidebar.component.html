@@ -1,0 +1,152 @@
+<aside class="left-sidebar" *ngIf="menuEstudiante == false">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul>
+                <li *ngFor="let item of menu"> 
+                    <a [routerLink]="[item.url]" class="text-usco-color">
+                        <i class="{{item.icono}}"></i>&nbsp;<span class="hide-menu">{{item.titulo}}</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
+    </div>
+    <!-- End Sidebar scroll-->
+</aside>
+
+<aside class="left-sidebar" *ngIf="menuEstudiante && pasantia">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul>
+                
+                <li>
+                    <a class="text-usco-color" *ngIf="pasantia?.aprobacionEmpresa === false && pasantia?.estado ==='Ajustar';" routerLink="/re-inscripcion" aria-expanded="false">
+                        <i class="fa fa-check-square-o"></i><span class="hide-menu">Pre-Inscripción</span>
+                    </a>
+                </li>
+                <li> 
+                    <a class="text-usco-color" *ngIf="(pasantia?.estado ==='PreInscrita' && pasantia?.aprobacionEmpresa === true) || (pasantia.estado_propuesta === 'Ajustar'); else elsePropuesta"routerLink="/inscripcion-propuesta" aria-expanded="false">
+                        <i class="fa fa-book"></i>&nbsp;<span class="hide-menu">Propuesta</span>
+                    </a>
+                    <ng-template #elsePropuesta>
+                        <a class="isDisabled" style="color: #687384;" aria-expanded="false">
+                            <i class="fa fa-book"></i>&nbsp;<span class="hide-menu">Propuesta</span>
+                        </a>
+                    </ng-template>
+                </li>
+                <li> 
+                    <a class="text-usco-color" *ngIf="pasantia?.estado_propuesta && pasantia.estado === 'En ejecución'; else elseInicio" routerLink="/acta-inicio" aria-expanded="false">
+                        <i class="fa fa-flag"></i>&nbsp;<span class="hide-menu">Inicio Pasantia</span>
+                    </a>
+                    <ng-template #elseInicio>
+                        <a class="isDisabled" style="color: #687384;">
+                            <i class="fa fa-flag"></i>&nbsp;<span class="hide-menu">Inicio Pasantia</span>
+                        </a>
+                    </ng-template>
+                </li>
+                <!-- ============================================================== -->
+                <!--                Bloqueo de  Envío de documentos                 -->
+                <!-- ============================================================== -->
+                <li> 
+                    <a class="text-usco-color" *ngIf="(diff >= 7 && pasantia?.estado === 'En ejecución' && !pasantia?.estado_informe7) || pasantia?.estado_informe7 === 'Ajustar'; else elseInforme7" routerLink="/informe-siete" aria-expanded="false">
+                        <i class="fa fa-file-pdf-o"></i><span class="hide-menu">Informe - Semana 7</span>
+                    </a>
+                    <ng-template #elseInforme7>
+                        <a class="isDisabled" style="color: #687384;">
+                            <i class="fa fa-file-pdf-o"></i><span class="hide-menu">Informe - Semana 7</span>
+                        </a>
+                    </ng-template>
+                </li>
+                <li> 
+                    <a class="text-usco-color" routerLink="/informe-catorce" *ngIf="(diff >= 14 && pasantia?.estado === 'En ejecución' && !pasantia?.estado_informe14) || pasantia?.estado_informe14 === 'Ajustar'; else elseInforme14" aria-expanded="false">
+                        <i class="fa fa-file-text-o"></i><span class="hide-menu">Informe - Semana 14</span>
+                    </a>
+                    <ng-template #elseInforme14>
+                        <a class="isDisabled" style="color: #687384;">
+                            <i class="fa fa-file-text-o"></i><span class="hide-menu">Informe - Semana 14</span>
+                        </a>
+                    </ng-template>
+                </li>
+                <li> 
+                    <a class="text-usco-color" routerLink="/informe-final" *ngIf="(diff >= 24 && pasantia?.estado === 'En ejecución' && !pasantia?.estado_informeFinal) || pasantia?.estado_informeFinal === 'Ajustar'; else elseInformeFinal" aria-expanded="false">
+                        <i class="fa fa-file-word-o"></i><span class="hide-menu">Informe Final</span>
+                    </a>
+                    <ng-template #elseInformeFinal>
+                        <a class="isDisabled" style="color: #687384;">
+                            <i class="fa fa-file-word-o"></i><span class="hide-menu">Informe Final</span>
+                        </a>
+                    </ng-template>
+                </li>
+                <li *ngIf="pasantia?.estado === 'Sustentación'">                    
+                    <a routerLink="/sustentacion" routerLinkActive="nav-link" style="background-color: transparent;">
+                        <i class="fa fa-certificate"></i>&nbsp;<span class="hide-menu">Sustentación</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="text-usco-color" aria-expanded="false" routerLink="/mi-modalidad">
+                        <i class="fa fa-info-circle"></i><span class="hide-menu">Estado de mi Modalidad</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>
+
+<aside class="left-sidebar" *ngIf="menuEstudiante && proyecto">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav">
+                <li class="nav-small-cap"><b> Módulo proyecto de grado </b></li>
+                <li *ngIf="proyecto.estado_propuesta === 'Ajustar';">
+                    <a class="text-usco-color" aria-expanded="false" routerLink="/propuesta-proyecto">
+                        <i class="fa fa-check-square-o"></i><span class="hide-menu">Propuesta</span>
+                    </a>
+                </li>
+                <li *ngIf="(proyecto?.estado === 'En ejecución' && !proyecto.estado_anteproyecto) || proyecto.estado_anteproyecto === 'Ajustar'; else anteproyecto">
+                    <a class="text-usco-color" aria-expanded="false" routerLink="/anteproyecto">
+                        <i class="fa fa-file-pdf-o"></i><span class="hide-menu">Ante-Proyecto</span>
+                    </a>
+                </li>
+                <ng-template #anteproyecto>
+                    <li>
+                        <a class="isDisabled" aria-expanded="false" style="color: #687384;">
+                            <i class="fa fa-file-pdf-o"></i><span class="hide-menu">Ante-Proyecto</span>
+                        </a>
+                    </li>
+                </ng-template>
+                <li *ngIf="(proyecto.estado === 'En ejecución' && proyecto.estado_anteproyecto && !proyecto.estado_proyecto) || proyecto.estado_proyecto === 'Ajustar'; else elseproyecto">
+                    <a class="text-usco-color" aria-expanded="false" routerLink="/proyecto">
+                        <i class="fa fa-book"></i><span class="hide-menu">Proyecto</span>
+                    </a>
+                </li>
+                <ng-template #elseproyecto>
+                    <li>
+                        <a class="isDisabled" aria-expanded="false"  style="color: #687384;">
+                            <i class="fa fa-book"></i><span class="hide-menu">Proyecto</span>
+                        </a>
+                    </li>
+                </ng-template>
+                <li *ngIf="proyecto?.estado === 'Sustentación'">                    
+                    <a class="text-usco-color" aria-expanded="false" routerLink="/sustentacion">
+                        <i class="fa fa-certificate"></i>&nbsp;<span class="hide-menu">Sustentación</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="text-usco-color" aria-expanded="false" routerLink="/mi-modalidad">
+                        <i class="fa fa-info-circle"></i><span class="hide-menu">Estado de mi Modalidad</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>
+
+<!-- ============================================================== -->
+<!-- End Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->

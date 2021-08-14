@@ -1,0 +1,44 @@
+<div *ngIf="pasantia.estado === 'En ejecución'" class="py-3 px-2 p-md-5 p-lg-5 text-center" style="background-color: white;">
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-6">
+            <label for="fileFinal" *ngIf="nombreArchivoInforme == null" class="labels custom-file-upload py-3 py-md-4 py-lg-5">
+                Click aquí para subir el informe final</label>
+    
+            <label for="fileFinal" *ngIf="nombreArchivoInforme != null" class="labels custom-file-upload py-3 py-md-4 py-lg-5" style="color: #8F141B; font-weight: bold;">
+                {{ nombreArchivoInforme }}</label><br>
+    
+            <input name="fileFinal" id="fileFinal" (change)="getFileInforme($event.target.files[0] )" type="file" accept="application/pdf"
+                class="imagenes-secundarias" required />
+        </div>
+        <div class="col-12 col-md-6 col-lg-6">
+            <label for="fileCertificado" *ngIf="nombreArchivoEmpresa == null" class="labels custom-file-upload py-2 py-md-4 py-lg-5">
+                Click aquí para subir el certificado de la empresa</label>
+    
+            <label for="fileCertificado" *ngIf="nombreArchivoEmpresa != null" class="labels custom-file-upload py-2 py-md-4 py-lg-5" style="color: #8F141B; font-weight: bold;">
+                {{ nombreArchivoEmpresa }}</label><br>
+    
+            <input name="fileCertificado" id="fileCertificado" (change)="getFileEmpresa($event.target.files[0] )" type="file" accept="application/pdf"
+                class="imagenes-secundarias" required />
+        </div>
+    </div>
+    <br>
+    <small class="font-italic font-weight-bold">Recuerda que debe ser un archivo PDF, de tamaño menor a 1 MB.</small><br>
+    <button class="btn btnSuccess mt-3" (click)="enviarInforme()"  [disabled]="(nombreArchivoInforme === undefined || nombreArchivoEmpresa === undefined)">
+        <b> Enviar Informe</b>
+    </button>
+</div>
+<div *ngIf="pasantia.estado === 'Sustentación'" class="py-3 px-2 p-md-5 p-lg-5 text-center" style="background-color: white;">
+    <label for="fileFinal" *ngIf="nombreArchivoInforme == null" class="labels custom-file-upload py-3 py-md-4 py-lg-5">
+        Click aquí para subir el informe final</label>
+
+    <label for="fileFinal" *ngIf="nombreArchivoInforme != null" class="labels custom-file-upload py-3 py-md-4 py-lg-5" style="color: #8F141B; font-weight: bold;">
+        {{ nombreArchivoInforme }}</label><br>
+
+    <input name="fileFinal" id="fileFinal" (change)="getFileInforme($event.target.files[0] )" type="file" accept="application/pdf"
+        class="imagenes-secundarias" required />
+    <br>
+    <small class="font-italic font-weight-bold">Recuerda que debe ser un archivo PDF, de tamaño menor a 1 MB.</small><br>
+    <button class="btn btnSuccess mt-3" (click)="enviarInformeSus()" [disabled]="nombreArchivoInforme === undefined">
+        <b> Enviar Informe</b>
+    </button>
+</div>

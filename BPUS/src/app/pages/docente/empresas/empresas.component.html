@@ -1,0 +1,454 @@
+<div style="background-color: white;">
+
+    <!-- modal content -->
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true" #yourModal>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-body">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#empresa">Empresa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#encargado">Encargado</a>
+                        </li>
+                    </ul>
+
+                    <form ngNativeValidate #f="ngForm" (ngSubmit)="postEmpresa(f)" class="form-horizontal">
+
+                        <div class="tab-content">
+                            <div id="empresa" class="container tab-pane active"><br>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">NIT de la Empresa:</label>
+                                            <input ngModel name="nit" type="text" id="nit"
+                                                class="form-control" placeholder="NIT" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Nombre de la Empresa:</label>
+                                            <input ngModel name="nombre" type="text" 
+                                                class="form-control" placeholder="Nombre" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Ciudad:</label>
+                                            <input ngModel name="ciudad" type="text" 
+                                                class="form-control" placeholder="Ciudad" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Dirección:</label>
+                                            <input ngModel name="direccion" type="text" 
+                                                class="form-control" placeholder="Direccion" required>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Teléfono de la Empresa</label>
+                                            <input ngModel name="telEmpresa" type="text" 
+                                                class="form-control" placeholder="Teléfono" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Naturaleza:</label>
+                                            <select ngModel name="naturaleza" class="form-control custom-select"
+                                                required>
+                                                <option value="Pública">Pública</option>
+                                                <option value="Privada">Privada</option>
+                                                <option value="Mixta">Mixta</option>
+                                                <option value="Otra">Otra</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Actividad Económica:</label>
+                                            <input ngModel name="actividadEc" type="text" 
+                                                class="form-control" placeholder="Actividad" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                <label class="control-label">Convenio:</label>
+
+                                <label for="fileConvenio" *ngIf="nombreArchivoC == null" class="labels custom-file-upload py-3 mt-1">
+                                    Click aquí para subir el convenio</label>
+            
+                                <label for="fileConvenio" *ngIf="nombreArchivoC != null"
+                                    class="labels custom-file-upload text-center py-3 mt-1" style="color: #8F141B; font-weight: bold;">
+                                    {{ nombreArchivoC }}</label><br>
+            
+                                <input id="fileConvenio" ngModel name="filePropuesta" (change)="getFileConvenio( $event.target.files[0] )" type="file" accept="application/pdf" class="imagenes-secundarias"> 
+                                    </div>
+                                </div>
+                        
+                            </div>
+                            <br>
+                            <div id="encargado" class="container tab-pane">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Nombre(s):</label>
+                                            <input ngModel name="nombres" type="text" 
+                                                class="form-control" placeholder="Nombre(s)" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Apellidos:</label>
+                                            <input ngModel name="apellidos" type="text" 
+                                                class="form-control" placeholder="Apellidos" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Cedula:</label>
+                                            <input ngModel name="cedula" type="text" id="cedula"
+                                                class="form-control" placeholder="Cedula" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Correo Electrónico:</label>
+                                            <input ngModel name="correo" type="text" 
+                                                class="form-control" placeholder="Correo" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Cargo:</label>
+                                            <input ngModel name="puesto" type="text" 
+                                                class="form-control" placeholder="Puesto" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Teléfono:</label>
+                                            <input ngModel name="telPersona" type="text" 
+                                                class="form-control" placeholder="Teléfono" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btnInfo waves-effect text-left" [disabled]="f.invalid">
+                                Añadir<i class="fa fa-plus"></i>
+                            </button>
+                            <button type="reset" (click)="f.reset()" class="btn btnSuccess" id="btnCerraAdd"
+                                data-dismiss="modal">Cancelar <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+            
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- Modal Actualizar  -->
+    <!-- modal content -->
+    <div class="modal fade modal-actualizar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#Putempresa">Actualizar Empresa</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#Putencargado">Actualizar Encargado</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content pt-3">
+                        <div id="Putempresa" class="container tab-pane active">
+                            <form ngNativeValidate #updateEmpresa="ngForm" (ngSubmit)="putEmpresa(updateEmpresa)"
+                                class="form-horizontal">
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">NIT de la Empresa:</label>
+                                            <input [(ngModel)]="nit" name="nit" type="text"
+                                                class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' placeholder="NIT" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Nombre de la Empresa:</label>
+                                            <input [(ngModel)]="nombre" name="nombre" type="text" 
+                                                class="form-control" placeholder="Nombre" required>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Ciudad:</label>
+                                            <input [(ngModel)]="ciudad" name="ciudad" type="text" 
+                                                class="form-control" placeholder="Ciudad" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Dirección:</label>
+                                            <input [(ngModel)]="direccion" name="direccion" type="text"
+                                                 class="form-control" placeholder="Direccion"
+                                                required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Teléfono de la Empresa</label>
+                                            <input [(ngModel)]="telefono" name="telEmpresa" type="text"
+                                                 class="form-control" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' placeholder="Teléfono"
+                                                required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Naturaleza:</label>
+                                            <select [(ngModel)]="naturaleza" name="naturaleza"
+                                                class="form-control custom-select" required>
+                                                <option value="Pública">Pública</option>
+                                                <option value="Privada">Privada</option>
+                                                <option value="Mixta">Mixta</option>
+                                                <option value="Otra">Otra</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Actividad Económica:</label>
+                                            <input [(ngModel)]="actividad_economica" name="actividadEc"
+                                                type="text"  class="form-control"
+                                                placeholder="Actividad" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Estado:</label>
+                                            <select [(ngModel)]="estado" name="estado"
+                                                class="form-control custom-select" required>
+                                                <option value="true">Activa</option>
+                                                <option value="false">Inactiva</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <label class="control-label">Convenio:</label>
+
+                                <ng-container *ngIf="rutapdf">
+                                    <a class="btn btnSuccess mb-2 ml-3" [href]="rutapdf | documentoConvenio: _id" download="rutapdf" target="_blank">
+                                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver convenio</b></small>
+                                    </a>
+                                    <a class="ml-3" href="#actDocumento" data-toggle="collapse">Actualizar</a>
+
+                                    <div id="actDocumento" class="collapse">
+                                        <label for="nombreArchivoCUpdate" *ngIf="nombreArchivoCUpdate == undefined" class="labels custom-file-upload py-3 mt-2">
+                                            Click aquí para subir el convenio</label>
+                                            
+                                        <label for="nombreArchivoCUpdate" *ngIf="nombreArchivoCUpdate != undefined"
+                                        class="labels custom-file-upload text-center py-3 mt-2" style="color: #8F141B; font-weight: bold;">
+                                        {{ nombreArchivoCUpdate }}</label><br>
+                
+                                        <input name="filePropuesta" id="nombreArchivoCUpdate"
+                                        (change)="getFileConvenioUpdate($event.target.files[0])" type="file" accept="application/pdf"
+                                        ngModel class="imagenes-secundarias"/>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container *ngIf="!rutapdf">
+                                    <label for="nombreArchivoCUpdate" *ngIf="nombreArchivoCUpdate == undefined" class="labels custom-file-upload py-3 mt-4">
+                                        Click aquí para subir el convenio</label>
+
+                                    <label for="nombreArchivoCUpdate" *ngIf="nombreArchivoCUpdate != undefined"
+                                    class="labels custom-file-upload text-center py-3 mt-4" style="color: #8F141B; font-weight: bold;">
+                                    {{ nombreArchivoCUpdate }}</label><br>
+            
+                                    <input name="filePropuesta" id="nombreArchivoCUpdate"
+                                    (change)="getFileConvenioUpdate($event.target.files[0])" type="file" accept="application/pdf"
+                                    ngModel class="imagenes-secundarias"/>
+
+                                </ng-container>    
+    
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btnInfo waves-effect text-left">
+                                        <b>Actualizar Empresa<i class="mdi mdi-update"></i></b>
+                                    </button>
+                                    <button type="reset" class="btn btnSuccess waves-effect text-left"
+                                        data-dismiss="modal" (click)="clearDocumentoUpdate(); updateEmpresa.reset()" >Cancelar <i class="fa fa-times"></i>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="Putencargado" class="container tab-pane">
+                            <form ngNativeValidate #updateEncargado="ngForm" (ngSubmit)="putEncargado(updateEncargado)" class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Nombre(s):</label>
+                                            <input [(ngModel)]="nombres_persona" name="nombres" type="text" 
+                                                class="form-control" placeholder="Nombre(s)" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Apellidos:</label>
+                                            <input [(ngModel)]="apellidos_persona" name="apellidos" type="text" 
+                                                class="form-control" placeholder="Apellidos" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Cedula:</label>
+                                            <input [(ngModel)]="cedula" name="cedula" type="text" id="cedulaEdit"
+                                                class="form-control" placeholder="Cedula" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Correo Electrónico:</label>
+                                            <input [(ngModel)]="correo_persona" name="correo" type="text" 
+                                                class="form-control" placeholder="Correo" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Puesto:</label>
+                                            <input [(ngModel)]="cargo_persona" name="puesto" type="text"  class="form-control" placeholder="Puesto" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="control-label">Teléfono:</label>
+                                            <input [(ngModel)]="telefono_persona" name="telPersona" type="text"  class="form-control" placeholder="Teléfono" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btnInfo waves-effect text-left">
+                                        <b>Actualizar<i class="mdi mdi-update"></i></b>
+                                    </button>
+                                    <button type="reset" class="btn btnSuccess waves-effect text-left" id="btnCerraEdit"
+                                    (click)="clearDocumentoUpdate();" data-dismiss="modal">Cancelar <i class="fa fa-times"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <button type="button" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn btnSuccess my-3 ml-3" data-keyboard="false"> 
+        Agregar Empresa &nbsp;<i class="fa fa-plus"></i>
+    </button>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th><b>Empresa</b></th>
+                    <th><b>Encargado</b></th>
+                    <th><b>Convenio</b></th>
+                    <th><b>Estado</b></th>
+                    <th><b>Acción</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dato of convenios">
+                    <td>{{ dato.empresa.nombre }}</td>
+                    <td>{{dato.encargado.nombres}} {{dato.encargado.apellidos}}</td>
+                    <td>
+                        <ng-container *ngIf="dato.rutapdf">
+                            <a class="btn btnSuccess btn-sm mb-2 mr-3" [href]="dato.rutapdf | documentoConvenio: dato.empresa._id" download="dato.rutapdf" target="_blank">
+                                <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver convenio</b></small>
+                            </a>
+                        </ng-container>
+                        <ng-container *ngIf="!dato.rutapdf">
+                            <p>No hay archivo</p>
+                        </ng-container>
+                    </td>
+                    <td *ngIf="dato.estado" class="text-success">
+                        <h3><span class="label btn-success"> <b> Activa </b></span></h3>
+                    </td>
+                    <td *ngIf="!dato.estado" class="text-danger">
+                        <h3><span class="label btnSuccess"> <b> Inactiva </b></span></h3>
+                    </td>
+                    <td>
+                        <button (click)="getDataPut(dato)" data-toggle="modal" data-target=".modal-actualizar" data-keyboard="false" class="btn btn-sm btn-info mr-2">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button type="button" (click)="deleteEmpresa(dato)" class="btn btn-sm btnSuccess">
+                            <i class="fa fa-trash"></i>
+                        </button> 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

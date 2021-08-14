@@ -1,0 +1,380 @@
+<div class="px-3" style="background-color: white;">
+
+    <ul class="mt-3 nav nav-justified" role="tablist">
+        <li class="nav-item">
+            <a (click)="activeTab('pasantiaTab')" id="pasantiaTab" class="nav-link activeTab font-weight-bold" href="#pasantias" role="tab" data-toggle="tab">Pasantias</a>
+        </li>
+        <li class="nav-item">
+            <a (click)="activeTab('proyectoTab')" id="proyectoTab" class="nav-link text-body" href="#proyectos" role="tab" data-toggle="tab">Proyectos</a>
+        </li>
+    </ul>
+
+    <div class="tab-content px-0 py-3 px-lg-4">
+        <div role="tabpanel" class="tab-pane fade show active" id="pasantias">
+            <ng-container *ngIf="pasantias?.length > 0">
+                <div class="modal fade" id="infoPasantia">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h5><b>Titulo:</b> &nbsp; {{pasantiaSelected?.titulo}}</h5>
+                                <h5 class="mt-3"><b class="text-uppercase">ID:</b> &nbsp; {{pasantiaSelected?._id}}</h5>
+                                <div *ngIf="pasantiaSelected?.fecha_actaInicio" class="row mt-3">
+                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                        <h5><b>Fecha inicio: </b>{{pasantiaSelected?.fecha_actaInicio}}</h5>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                        <h5><b>Semana: </b>{{pasantiaSelected?.semanas}} de 24</h5>
+                                    </div>
+                                </div>
+                                <h5 class="mt-2"><b>Director: </b>{{pasantiaSelected?.tutor.nombres}} {{pasantiaSelected?.tutor.apellidos}}</h5>
+                                <h5 class="mt-3"><b>Descripción:</b></h5>
+                                <p class="px-3 text-justify" id="descripcionPasantia">{{pasantiaSelected?.descripcion}}</p>
+                                <h5 class="mt-3"> <b>Documentos:</b></h5>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-2 col-lg-2">
+                                        <a class="btn btnSuccess" [href]="pasantiaSelected?.documento_informeFinal | documento: pasantiaSelected?.estudiante._id" download="pasantiaSelected?.documento_informeFinal" target="_blank">
+                                            <small><b>Informe final</b></small>
+                                        </a>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-3 mt-3 mt-md-0 mt-lg-0">
+                                        <a class="btn btnSuccess" [href]="pasantiaSelected?.documento_aprobacionEmpresa | documento: pasantiaSelected?.estudiante._id" download="pasantiaSelected?.documento_aprobacionEmpresa" target="_blank">
+                                            <small><b>Aprobación empresa</b></small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <h5 class="mt-3"> <b>Información del estudiante:</b></h5>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                        <i class="fa fa-user-circle-o"></i> &nbsp; <small class="text-uppercase">{{ pasantiaSelected?.estudiante.nombres }} {{pasantiaSelected?.estudiante.apellidos}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                        <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{pasantiaSelected?.estudiante.codigo}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                        <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{pasantiaSelected?.estudiante.identificacion}}</small>
+                                    </div>
+                                </div>
+                                <div class="row mt-lg-3 mt-md-3">
+                                    <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                        <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{pasantiaSelected?.estudiante.correo}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4" *ngIf="pasantiaSelected?.estudiante.telefono">
+                                        <i class="fa fa-phone"></i> &nbsp; <small class="text-justify">Tel:&nbsp; {{pasantiaSelected?.estudiante.telefono}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                        <i class="fa fa-hospital-o"></i> &nbsp; <small class="text-justify">EPS:&nbsp; {{pasantiaSelected?.estudiante.eps}}</small>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="pasantiaSelected?.vacante">
+                                    <h5 class="mt-3"> <b>Información de la vacante:</b></h5>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                                            <div class="vacantesInfo">
+                                                <small><i class="fa fa-briefcase"></i> &nbsp; {{pasantiaSelected?.vacante.titulo}} - {{pasantiaSelected?.vacante.convenio.empresa.nombre}} </small><br>
+                                                <small><i class="fa fa-globe"></i> &nbsp; {{pasantiaSelected?.vacante.ubicacion}}, &nbsp;{{pasantiaSelected?.vacante.modalidad}}</small><br>
+                                                <small><i class="fa fa-code"></i> &nbsp; {{pasantiaSelected?.vacante.funciones}}</small><br>
+                                                <small><i class="fa fa-money"></i>  &nbsp; Pagada: &nbsp;{{pasantiaSelected?.vacante.pagada}}</small><br>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                            <h5> <b>Persona a Cargo:</b></h5>
+                                            <i class="fa fa-user"></i> &nbsp; <small class="text-justify"> {{pasantiaSelected?.vacante.convenio.encargado.nombres}} {{pasantiaSelected?.vacante.convenio.encargado.apellidos}}</small><br>
+                                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">{{pasantiaSelected?.vacante.convenio.encargado.correo}}</small><br>
+                                            <i class="fa fa-phone"></i> &nbsp;<small class="text-justify"> {{pasantiaSelected?.vacante.convenio.encargado.telefono}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 ml-4">
+                                        <h5> <b>Descripción:</b></h5>
+                                        <p class="mt-2 ml-2">{{pasantiaSelected?.vacante.descripcion}}</p> 
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="!pasantiaSelected?.vacante">
+                                    <h5 class="mt-3"> <b>Información de la empresa:</b></h5>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                                            <div class="vacantesInfo">
+                                                <small><i class="fa fa-briefcase"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.nombre}} </small><br>
+                                                <small><i class="fa fa-globe"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.ciudad}}, &nbsp;{{pasantiaSelected?.convenio.empresa.direccion}}</small><br>
+                                                <small><i class="fa fa-phone"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.telefono}}</small><br>
+                                                <small><i class="fa fa-money"></i> &nbsp; Naturaleza: &nbsp;{{pasantiaSelected?.convenio.empresa.naturaleza}}</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5 mt-lg-0 mt-md-0 mt-2">
+                                            <h5> <b>Persona a Cargo:</b></h5>
+                                            <i class="fa fa-user"></i> &nbsp; <small class="text-justify"> {{pasantiaSelected?.convenio.encargado.nombres}} {{pasantiaSelected?.convenio.encargado.apellidos}}</small><br>
+                                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">{{pasantiaSelected?.convenio.encargado.correo}}</small><br>
+                                            <i class="fa fa-phone"></i> &nbsp;<small class="text-justify"> {{pasantiaSelected?.convenio.encargado.telefono}}</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="modal fade" id="evaluarPasantia">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h2>Evaluar pasantía - {{pasantiaSelected?.titulo}}</h2>
+                                <hr>
+                                <form ngNativeValidate #updateInformes="ngForm" (ngSubmit)="evaluarPasantia()">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4 col-lg-4">
+                                            <label class="font-weight-bold text-dark mr-3">Estado: </label>
+                                            <select (change)="notasJuradoPasantia();" name="eva_jurado_pasantia" [(ngModel)]="eva_jurado_pasantia" class="custom-select">
+                                                <option value="">Seleccionar...</option>
+                                                <option value="Aprobada">Aprobada</option>
+                                                <option value="Ajustar">Ajustar</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-md-4 col-lg-4 mt-3 mt-md-0 mt-lg-0">
+                                            <button type="button" class="btn btn-dark ml-1" data-toggle="collapse" data-target="#notas_jurado_pasantia">Agregar notas</button>
+                                        </div>
+                                    </div>
+                                    <label class="font-weight-bold text-dark my-3 mr-3">Documento evaluación jurado: </label><br>
+
+                                    <a class="btn btnSuccess mb-2 mr-3" href="/assets/documentos/formato-para-evaluacion-trabajos-de-grado.docx" download target="_blank">
+                                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Descargar formato</b></small>
+                                    </a>
+
+                                    <div class="my-3 px-lg-5 px-md-4 text-center">
+
+                                        <label for="documento_evaluacion_pasantia" id="labelDocumentoPasantia" class="labels custom-file-upload py-3 py-md-4 py-lg-4">
+                                            Click aquí para subir el documento de evaluación
+                                        </label>
+                
+                                        <small class="font-italic">Recuerda que debe ser un archivo PDF, de tamaño menor a 1 MB.</small><br>
+                                    
+                                        <input ngModel #documentoPasantia="ngModel" name="documento_jurado" id="documento_evaluacion_pasantia" (change)="getFileEvaluacionPasantia($event.target.files[0])" type="file" accept="application/pdf" class="imagenes-secundarias" required />
+                                    </div> 
+                                    <div id="notas_jurado_pasantia" class="collapse">
+                                        <div class="form-group px-md-3 px-lg-3">
+                                            <label class="font-weight-bold text-dark" for="comment">Notas: <span *ngIf="eva_jurado_pasantia == 'Ajustar'">(requerido)</span></label>
+                                            <textarea [(ngModel)]="notas_jurado_pasantia" name="notas_jurado_pasantia" class="form-control" rows="3" id="comment" maxlength="300"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btnInfo" [disabled]="eva_jurado_pasantia === '' || !filePasantiaValid || (eva_jurado_pasantia === 'Ajustar' && notas_jurado_pasantia === '')">Evaluar</button>
+                                        <button id="btnCerrar" type="button" (click)="clearDataPasantia(); documentoPasantia.reset();" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <ng-container *ngFor="let dato of pasantias">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div>
+                                <h5 class="font-weight-bold">{{dato.titulo}}</h5>
+                                <ng-container *ngIf="!dato.evaluar">
+                                    <h5><small><b>Fecha de sustentación: </b>{{ dato.sustentacion_fecha }}</small></h5>
+                                    <h5><small><b>Lugar de sustentación: </b>{{ dato.sustentacion_lugar }}</small></h5>
+                                </ng-container>
+                                <ng-container *ngIf="dato.evaluar">
+                                    <h5 class="small"> 
+                                        <b>{{ dato.estudiante.nombres }} {{ dato.estudiante.apellidos }}</b>
+                                    </h5>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mt-2">
+                                <button class="btn btn-info mr-2" (click)="getPasantiaSelected(dato)" data-toggle="modal" data-target="#infoPasantia" data-backdrop="static"><i class="fa fa-info-circle"></i></button>
+                                <button type="button" (click)="getPasantiaSelected(dato)" data-toggle="modal" data-target="#evaluarPasantia" data-backdrop="static" class="btn btnInfo" [disabled]="!dato.evaluar">
+                                    <b>Evaluar</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </ng-container>  
+            </ng-container>
+            <ng-container *ngIf="pasantias?.length === 0">
+                <div class="text-center m-2 m-lg-5">
+                    <h2>No te han asignado como jurado de ninguna pasantia</h2>
+                </div>
+            </ng-container>
+        </div>
+        <div role="tabpanel" class="tab-pane fade show" id="proyectos">
+            <ng-container *ngIf="proyectos?.length === 0">
+                <div class="text-center m-2 m-lg-5">
+                    <h2>No te han asignado como jurado de ningún proyecto</h2>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="proyectos?.length > 0">
+                <div class="modal fade" id="infoProyecto">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-8">
+                                        <h5><b>Título:</b> &nbsp; {{proyectoSelected?.titulo}}</h5>
+                                        <h5><b>ID de la solicitud:</b> &nbsp; {{proyectoSelected?._id}}</h5>
+                                        <h5><b>Linea de investigación:</b> &nbsp; {{proyectoSelected?.lineaInvestigacion.nombre}}</h5>
+                                        <h5><b>Director:</b> &nbsp; {{proyectoSelected?.director.nombres}} {{proyectoSelected?.director.apellidos}}</h5>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-1 mt-sm-1 mt-md-1 mt-lg-4">
+                                        <h6><b>Documento del proyecto:</b></h6>
+                                        <a class="btn btnSuccess" [href]="proyectoSelected?.documento_proyecto | documentoP: proyectoSelected?._id" download="proyectoSelected?.documento_proyecto" target="_blank">
+                                            <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver proyecto</b></small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h5 class="text-uppercase"> <b>{{ proyectoSelected?.estudiante.nombres }} {{proyectoSelected?.estudiante.apellidos}}</b></h5>
+                                <div class="row mt-3">
+                                    <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                        <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante.correo}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                        <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante.codigo}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                        <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante.identificacion}}</small>
+                                    </div>
+                                </div>
+                                <div class="row mt-0 mt-lg-3">
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                        <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante.creditos_aprobados}}</small>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="proyectoSelected?.estudiante2">
+                                    <hr>
+                                    <h5 class="text-uppercase"> <b>{{ proyectoSelected?.estudiante2.nombres }} {{proyectoSelected?.estudiante2.apellidos}}</b></h5>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante2.correo}}</small>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                            <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante2.codigo}}</small>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                            <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante2.identificacion}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-0 mt-lg-3">
+                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                            <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante2.creditos_aprobados}}</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="proyectoSelected?.estudiante3">
+                                    <hr>
+                                    <h5 class="text-uppercase"> <b>{{ proyectoSelected?.estudiante3.nombres }} {{proyectoSelected?.estudiante3.apellidos}}</b></h5>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante3.correo}}</small>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                            <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante3.codigo}}</small>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                            <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante3.identificacion}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-0 mt-lg-3">
+                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                            <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante3.creditos_aprobados}}</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="modal-footer mt-3">
+                                    <button type="button" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="evaluarProyecto">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h3>Evaluar Proyecto - {{proyectoSelected?.titulo}}</h3>
+                                <hr>
+                                <form ngNativeValidate #updateInformesP="ngForm" (ngSubmit)="evaluarProyecto()">
+                                    <div class="mt-4">
+                                        <label class="font-weight-bold text-dark mr-3">Estado: </label>
+                                        <select (change)="notasJuradoProyecto();" name="eva_jurado_proyecto" [(ngModel)]="eva_jurado_proyecto" class="custom-select">
+                                            <option value="">Seleccionar...</option>
+                                            <option value="Aprobada">Aprobada</option>
+                                            <option value="Ajustar">Ajustar</option>
+                                        </select>
+                                        <button type="button" class="btn btn-dark ml-lg-3 ml-md-3 ml-1 mt-3 mt-md-0 mt-lg-0" data-toggle="collapse" data-target="#notas_jurado_proyecto">Agregar notas</button>
+                                    </div>
+
+                                    <label class="font-weight-bold text-dark my-3 mr-3">Documento evaluación jurado: </label><br>
+                                    
+                                    <a class="btn btnSuccess mb-2 mr-3" href="/assets/documentos/formato-para-evaluacion-trabajos-de-grado.docx" download target="_blank">
+                                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Descargar formato</b></small>
+                                    </a>
+
+                                    <div class="my-3 px-1 px-lg-5 text-center">
+                                        <label for="documento_evaluacion_proyecto" id="labelDocumentoProyecto" class="labels custom-file-upload p-4">
+                                            Click aquí para subir el documento de evaluación
+                                        </label>
+                
+                                        <small class="font-italic">Recuerda que debe ser un archivo PDF, de tamaño menor a 1 MB.</small><br>
+                                    
+                                        <input ngModel #documentoProyecto="ngModel" name="documento_proyecto" id="documento_evaluacion_proyecto" (change)="getFileEvaluacionProyecto($event.target.files[0])" type="file" accept="application/pdf" class="imagenes-secundarias" required />
+                                    </div> 
+                                    <div id="notas_jurado_proyecto" class="collapse">
+                                        <div class="form-group px-3">
+                                            <label class="font-weight-bold text-dark" for="comment">Notas: <span *ngIf="eva_jurado_proyecto == 'Ajustar'">(requerido)</span></label>
+                                            <textarea [(ngModel)]="notas_jurado_proyecto" name="notas_jurado_proyecto" class="form-control" rows="3" id="comment" maxlength="300"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btnInfo" [disabled]="eva_jurado_proyecto === '' || !fileProyectoValid || (eva_jurado_proyecto === 'Ajustar' && notas_jurado_proyecto === '')">Evaluar</button>
+                                        <button id="btnCerrarProyecto" type="button" (click)="clearDataProyecto(); documentoProyecto.reset();" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngFor="let dato of proyectos">
+                    <div class="row">
+                        <div class="col-12 col-lg-9">
+                            <div>
+                                <h5 class="font-weight-bold">{{dato.titulo}}</h5>
+                                <ng-container *ngIf="!dato.evaluar">
+                                    <h5><small><b>Fecha de sustentación: </b>{{ dato.sustentacion_fecha }}</small></h5>
+                                    <h5><small><b>Lugar de sustentación: </b>{{ dato.sustentacion_lugar }}</small></h5>
+                                </ng-container>
+                                <ng-container *ngIf="dato.evaluar">
+                                    <h5 class="small"> 
+                                        <b>{{ dato.estudiante.nombres }} {{ dato.estudiante.apellidos }}</b>
+                                    </h5>
+                                    <h5 *ngIf="dato.estudiante2" class="small"> 
+                                        <b>{{ dato.estudiante2.nombres }} {{ dato.estudiante2.apellidos }}</b>
+                                    </h5>
+                                    <h5 *ngIf="dato.estudiante3" class="small"> 
+                                        <b>{{ dato.estudiante3.nombres }} {{ dato.estudiante3.apellidos }}</b>
+                                    </h5>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <div class="buttons mt-1 mt-lg-3">
+                                <button class="btn btn-info btn-sm mr-2" (click)="getProyectoSelected(dato)" data-toggle="modal" data-target="#infoProyecto" data-backdrop="static">
+                                    <i class="fa fa-info-circle" style="font-size: large;"></i>
+                                </button>
+                                <button type="button" (click)="getProyectoSelected(dato)" data-toggle="modal" data-target="#evaluarProyecto" data-backdrop="static" class="btn btnInfo">
+                                    <b>Evaluar</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </ng-container>  
+            </ng-container>
+        </div>
+    </div>
+    
+</div>

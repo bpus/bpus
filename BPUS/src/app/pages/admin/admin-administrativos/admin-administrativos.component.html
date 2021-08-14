@@ -1,0 +1,215 @@
+<div class="p-3" style="background-color: white;">
+
+    <button type="button" class="btn btnSuccess mb-3" data-toggle="modal" data-target="#addAdmin" data-backdrop="static" data-keyboard="false"> 
+        Agregar admin&nbsp;&nbsp;<i class="fa fa-plus"></i>
+    </button>
+
+    <input #dataBuscar (keyup)="getDataBuscar(dataBuscar.value)" name="dataBuscar" type="text"  class="form-control" placeholder="Buscar por identificación, nombres, apellidos, teléfono, correo o cargo">
+
+    <!-- The Modal Add-->
+    <div class="modal fade" id="addAdmin">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Agregar administrador</h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form ngNativeValidate #addAdmin="ngForm" (ngSubmit)="postAdmin(addAdmin)">
+            <div class="input-group">
+                <input type="text" ngModel class="form-control" id="nombre" name="nombre" placeholder="Nombre(s)" maxlength="50" required autocomplete="off" autofocus>
+                <input type="text" ngModel class="form-control" id="apellidos" name="apellidos" placeholder="Apellidos" maxlength="50" required autocomplete="off">
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-12 col-lg-6">
+                    <label class="mt-2" for="identificacion">Identificación:</label>
+                    <input (keyup)="checkAdd()" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' 
+                        ngModel class="form-control" id="identificacion" name="identificacion" 
+                        placeholder="Identificación" maxlength="10" minlength="8" required autocomplete="off"
+                    />
+                </div>
+                <div class="col-sm-12 col-lg-6">
+                    <label class="mt-2" for="roles">Rol:&nbsp;</label><br>
+                    <select (change)="getPersonRolAdd()" ngModel id="personRol" name="rol" class="custom-select">
+                        <ng-container *ngFor="let rol of roles">
+                            <ng-container *ngIf="rol.nombre !== 'JEFE_PROGRAMA'">
+                                <option value="{{rol._id}}">{{rol.nombre}}</option>
+                            </ng-container>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-12 col-lg-6">
+                    <label class="mt-2" for="correo">Correo:</label>
+                    <input type="email" ngModel class="form-control" id="correo" name="correo" placeholder="Correo" maxlength="50" required autocomplete="off">
+                </div>
+                <div class="col-sm-12 col-lg-6">
+                    <label class="mt-2" for="telefono">Teléfono:</label>
+                    <input (keyup)="checkAdd()" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' 
+                        ngModel class="form-control" id="telefono" name="telefono" 
+                        placeholder="Teléfono" maxlength="10" minlength="10" required autocomplete="off"
+                    />
+                </div>
+            </div>
+            <ng-container *ngIf="personRolAdd == 'PROFESOR'">
+                <label class="mt-2" for="roles">Programa:&nbsp;</label><br>
+                <select id="personProgramaAdd" ngModel name="programa" class="custom-select" required>
+                    <ng-container *ngFor="let programa of programas">
+                        <option value="{{programa._id}}">{{programa.nombre}}</option>
+                    </ng-container>
+                </select>
+            </ng-container>
+            <ng-container *ngIf="personRolAdd == 'ENCARGADO_EMPRESA'">
+                <label class="mt-2" for="cargo">Cargo:</label>
+                <input type="text" ngModel class="form-control" id="cargo" name="cargo" placeholder="Cargo" maxlength="50" minlength="3" required autocomplete="off">
+            </ng-container>
+            <!-- Modal footer -->
+            <div class="modal-footer mt-2">
+              <button type="submit" class="btn btnInfo" [disabled]="addAdmin.invalid">Aceptar</button>
+              <button (click)="addAdmin.reset();" id="btnCancelarAdd" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+    </div>
+
+           <!-- The Modal Edit-->
+    <div class="modal fade" id="editAdmin">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Editar administrador</h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form (ngSubmit)="putAdmin()">
+            <div class="input-group">
+                <input (keyup)="checkEdit()" type="text" class="form-control" id="nombreEdit" maxlength="50" required autocomplete="off" autofocus>
+                <input (keyup)="checkEdit()" type="text" class="form-control" id="apellidosEdit" maxlength="50" required autocomplete="off">
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-12 col-lg-6">
+                    <label class="mt-2" for="identificacion">Identificación:</label>
+                    <input (keyup)="checkEdit()" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' class="form-control" id="identificacionEdit" maxlength="10" minlength="8" required autocomplete="off">
+                </div>
+                <div class="col-sm-12 col-lg-6">
+                    <label class="mt-2" for="roles">Rol:&nbsp;</label><br>
+                    <select [disabled]="personRolEdit == 'JEFE_PROGRAMA'" (change)="getPersonRolEdit(); checkEdit()" id="personRolEdit" class="custom-select">
+                        <ng-container *ngFor="let rol of roles">
+                            <ng-container *ngIf="personRolEdit !== 'JEFE_PROGRAMA' && rol.nombre !== 'JEFE_PROGRAMA'; else JefeElse">
+                                <option value="{{rol._id}}">{{rol.nombre}}</option>
+                            </ng-container>
+                            <ng-template #JefeElse>
+                                <ng-container *ngIf="personRolEdit == 'JEFE_PROGRAMA' && rol.nombre == 'JEFE_PROGRAMA'">
+                                    <option value="{{rol._id}}">{{rol.nombre}}</option>
+                                </ng-container>
+                            </ng-template>
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-12 col-lg-6">
+                    <label class="mt-2" for="porcentaje_creditos">Correo:</label>
+                    <input (keyup)="checkEdit()" type="email" class="form-control" id="correoEdit" maxlength="50" required autocomplete="off">
+                </div>
+                <div class="col-sm-12 col-lg-6">
+                    <label class="mt-2" for="telefono">Teléfono:</label>
+                    <input (keyup)="checkEdit()" type="text" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' class="form-control" id="telefonoEdit" maxlength="10" minlength="10" required autocomplete="off">
+                </div>
+            </div>
+            <ng-container *ngIf="personRolEdit == 'PROFESOR' || personRolEdit == 'JEFE_PROGRAMA'">
+                <label class="mt-2" for="roles">Programa:&nbsp;</label><br>
+                <select [disabled]="personRolEdit == 'JEFE_PROGRAMA'" (change)="checkEdit()" id="personProgramaEdit" class="custom-select" required>
+                    <ng-container *ngFor="let programa of programas">
+                        <option value="{{programa._id}}">{{programa.nombre}}</option>
+                    </ng-container>
+                </select>
+            </ng-container>
+            <ng-container *ngIf="personRolEdit == 'ENCARGADO_EMPRESA'">
+                <label class="mt-2" for="cargo">Cargo:</label>
+                <input (keyup)="checkEdit()" type="text" class="form-control" id="cargoEdit" maxlength="50" minlength="3" required autocomplete="off">
+            </ng-container>
+            <!-- Modal footer -->
+            <div class="modal-footer mt-2">
+              <button type="submit" class="btn btnInfo" [disabled]="editDiferente == false || editValid == false">Aceptar</button>
+              <button id="btnCancelarEdit" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+    </div>
+
+    <ul class="pagination mt-3">
+        <li class="page-item"><button class="page-link" (click)="cambiarDesde(-10)">Anteriores</button></li>
+        <li class="page-item"><input (change)="cambiarDesdeInput(input.value)" #input class="form-control" type="number" id="pagina" value="{{pagina}}" min="1" max="{{totalpaginas}}"></li>
+        <li class="page-item"><button class="page-link">/ {{totalpaginas}}</button></li>
+        <li class="page-item"><button class="page-link" (click)="cambiarDesde(10)">Siguientes</button></li>
+    </ul>
+    <div class="table-responsive">
+        <table class="table borderless">
+            <thead>
+            <tr>
+                <th colspan="2" class="text-center"></th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
+                <th class="text-center"></th>
+            </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let admin of admins; let indice=index">
+                    <tr>
+                        <td colspan="2">
+                            <h5>{{admin.nombres}} {{admin.apellidos}}</h5>
+                            <h6><span class="font-weight-bold">Identificación: </span> {{admin.identificacion}}</h6>
+                        </td>
+                        <td>
+                            <span *ngIf="admin.estado == true" class="label btn-success">Activo</span>
+                            <span *ngIf="admin.estado == false" class="label btnDanger">Inactivo</span>
+                        </td>
+                        <td colspan="2"><h6>{{admin.rol.nombre}}</h6></td>
+                        <td>
+                            <a href="#admin{{indice}}" data-toggle="collapse" class="btn btn-sm btn-info mr-2"><i class="fa fa-eye"></i></a>
+                            <button (click)=" getAdminSelected(admin)" type="button" class="btn btnInfo btn-sm mr-2"><i class="fa fa-edit"></i></button>
+                            <button type="button" id="openModalEdit" style="display: none;" data-toggle="modal" data-target="#editAdmin" data-backdrop="static" data-keyboard="false"></button>
+                            <button (click)="cambiarEstado(admin._id, false)" *ngIf="admin.estado == true" type="button" class="btn btn-sm btnDanger mr-2">
+                                Desactivar <i class="fa fa-ban"></i>
+                            </button>
+                            <button (click)="cambiarEstado(admin._id, true)" *ngIf="admin.estado == false" type="button" class="btn btn-sm btn-success mr-2 px-3">
+                                Activar <i class="fa fa-check-circle"></i>
+                            </button>
+                            <button (click)="deleteAdmin(admin)" type="button" class="btn btn-sm btnSuccess"><i class="fa fa-trash"></i></button>
+                        </td>
+                    </tr>
+                    <tr id="admin{{indice}}" class="collapse">
+                        <td colspan="2">
+                            <h6><b>Correo: </b>{{admin.correo}}</h6>
+                        </td>
+                        <td>
+                            <h6><b>tel: </b>{{admin.telefono}}</h6>
+                        </td>
+                        <td *ngIf="admin.programa" colspan="4">
+                            <h6><b>programa: </b>{{admin.programa.nombre}}</h6>
+                        </td>
+                        <td *ngIf="admin.cargo" colspan="4">
+                            <h6><b>cargo: </b>{{admin.cargo}}</h6>
+                        </td>
+                    </tr>
+                    <tr><td colspan="7"><hr style="margin: 1px;"></td></tr>
+                </ng-container>
+            </tbody>
+        </table>
+    </div>
+</div>

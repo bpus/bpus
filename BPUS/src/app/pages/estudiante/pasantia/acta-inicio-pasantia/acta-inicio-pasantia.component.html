@@ -1,0 +1,155 @@
+<div class="p-3" style="background-color: white;">
+    <div class="row px-md-5 px-lg-5">
+        <div class="col-sm-12 col-md-6 col-lg-6">
+            <h3 class="card-title text-uppercase"><b>1. Datos estudiante: </b></h3>
+            <h5><span class="font-weight-bold text-dark">Nombre: </span>{{info.nombres}}</h5>
+            <h5><span class="font-weight-bold text-dark">Apellidos: </span>{{info.apellidos}}</h5>
+            <h5><span class="font-weight-bold text-dark mr-2 mt-4">Código: </span>{{info.codigo}}</h5>
+            <h5><span class="font-weight-bold text-dark">Identificación:</span> {{info.identificacion}}</h5>
+            <h5><span class="font-weight-bold text-dark mr-2 mt-4">Programa: </span> {{programa}}</h5>
+            <h5><span class="font-weight-bold text-dark mr-2 mt-4">Correo: </span> {{info.correo}}</h5>
+            <h5 *ngIf="info.telefono"><span class="font-weight-bold text-dark mr-2 mt-4">Teléfono: </span> {{info.telefono}}</h5>
+            <h5><span class="font-weight-bold text-dark mr-2 mt-4">EPS: </span> {{info.eps}}</h5>
+            <h5 *ngIf="pasantia?.convenio"><span class="font-weight-bold text-dark mr-2 mt-4">Empresa: </span> {{pasantia?.convenio.empresa.nombre}}</h5>
+            <h5 *ngIf="pasantia?.vacante"><span class="font-weight-bold text-dark mr-2 mt-4">Empresa: </span> {{pasantia?.vacante.convenio.empresa.nombre}}</h5>
+            <h5 class="font-weight-bold text-dark mt-3">Linea de investigación:</h5>
+            <h5>{{pasantia?.lineaInvestigacion.nombre}}</h5>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 text-md-center px-md-5 px-lg-5">
+            <h3 class="card-title text-uppercase"><b>2. DATOS LEGALES DE LA PASANTIA </b></h3>
+            <h3>ARL<span *ngIf="pasantia?.documento_arl" class="small"> - <i class="fa fa-calendar-check-o"></i> {{fecha_arlToShow}}</span></h3>
+            <ng-container *ngIf="pasantia?.documento_arl">
+                <a class="btn btnSuccess mb-2" [href]="pasantia?.documento_arl | documento: info._id" download="pasantia?.documento_arl" target="_blank">
+                    <b><i class="fa fa-file-pdf-o"></i>&nbsp; ARL</b>
+                </a>
+            </ng-container>
+
+            <ng-container *ngIf="!pasantia?.documento_arl">
+                <!-- Button to Open the Modal -->
+                <button type="button" class="btn btnSuccess mb-2" data-toggle="modal" data-target="#ARL">
+                    <b><i class="fa fa-file-pdf-o"></i>&nbsp; ARL</b>
+                </button>
+                
+                <!-- The Modal -->
+                <div class="modal fade" id="ARL">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <!-- Modal body -->
+                            <div class="modal-body">
+                                <h2><b>¿Desea cargar el documento ARL?</b></h2>
+                                <div class="form-group">
+                                    <label class="text-left" for="fechaARL">Fecha ARL:</label>
+                                    <input type="date" (change)="getFechaARL()" class="form-control" id="fechaARL" name="fechaARL" min="2021-01-01" max="2050-12-31"required>
+                                    </div>
+                                <label for="fileARL" *ngIf="nombreArchivoARL == null" class="labels custom-file-upload py-3 mt-2">
+                                    Seleccione el documento a cargar</label>
+            
+                                <label for="fileARL" *ngIf="nombreArchivoARL != null"
+                                    class="labels custom-file-upload text-center py-3 mt-2" style="color: #8F141B; font-weight: bold;">
+                                    {{ nombreArchivoARL }}</label><br>
+            
+                                <input name="fileARL" id="fileARL"
+                                    (change)="getFileARL( $event.target.files[0] )" type="file" accept="application/pdf"
+                                    class="imagenes-secundarias" required />
+
+                                <div class="text-center mt-3">
+                                    <button (click)="uploadARL()" type="submit" [disabled]="!nombreArchivoARL || (fecha_arl === '' || fecha_arl === undefined)" class="btn text-white mr-2" style="background-color: #6fbf73;" data-dismiss="modal">Enviar</button>
+                                    <button class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+                                </div> 
+                            </div>
+                    
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <h3>Acta de Inicio<span *ngIf="pasantia?.documento_actaInicio" class="small"> - <i class="fa fa-calendar-check-o"></i> {{fecha_ActToShow}}</span></h3>
+            <ng-container *ngIf="pasantia?.documento_actaInicio">
+                <a class="btn btnSuccess mb-2" [href]="pasantia?.documento_actaInicio | documento: info._id" download="pasantia?.documento_actaInicio" target="_blank">
+                    <b><i class="fa fa-file-pdf-o"></i>&nbsp; Acta de Inicio</b>
+                </a>
+                <button *ngIf="pasantia?.estado_actaInicio === 'Ajustar'" class="btn btnInfo ml-1 ml-lg-3 mb-2" data-toggle="modal" data-target="#actInicio" style="width: 100x;">
+                    <b><i class="fa fa-upload"></i>&nbsp; Actualizar</b>
+                </button>
+            </ng-container>
+
+            <!-- The Modal -->
+            <div class="modal fade" id="actInicio">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <h2><b>¿Desea cargar el acta de inicio?</b></h2>
+                            <div class="form-group">
+                                <label class="text-left" for="fechaARL">Fecha acta de inicio:</label>
+                                <input type="date" (change)="getFechaActInicio()" class="form-control" id="fechaARL" name="fechaARL" min="{{fecha_arl}}" max="2050-12-31"required>
+                                </div>
+                            <label for="fileActInicio" *ngIf="nombreArchivoActIni == null" class="labels custom-file-upload py-3 mt-2">
+                                Seleccione el documento a cargar</label>
+        
+                            <label for="fileActInicio" *ngIf="nombreArchivoActIni != null"
+                                class="labels custom-file-upload text-center py-3 mt-2" style="color: #8F141B; font-weight: bold;">
+                                {{ nombreArchivoActIni }}</label><br>
+        
+                            <input name="fileActInicio" id="fileActInicio"
+                                (change)="getFileActInicio( $event.target.files[0] )" type="file" accept="application/pdf"
+                                class="imagenes-secundarias" required />
+
+                            <div class="text-center mt-3">
+                                <button (click)="uploadActInicio()" [disabled]="!nombreArchivoActIni || (fecha_artInicio === '' || fecha_artInicio === undefined)" type="submit" class="btn text-white mr-2" style="background-color: #6fbf73;" data-dismiss="modal">Enviar</button>
+                                <button class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+                            </div> 
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+
+            <ng-container *ngIf="!pasantia?.documento_actaInicio">
+                <!-- Button to Open the Modal -->
+                <button type="button" [disabled]="!pasantia?.documento_arl" class="btn btnSuccess mb-2" data-toggle="modal" data-target="#actInicio">
+                    <b><i class="fa fa-file-pdf-o"></i>&nbsp; Acta de inicio</b>
+                </button>
+            </ng-container>
+
+            
+            <h3>Carta de presentación</h3>
+            <a class="btn btnSuccess mb-2" [href]="pasantia?.carta_presentacion | documento: info._id" download="info?.modalidad.carta_presentacion" target="_blank">
+                <b><i class="fa fa-file-pdf-o"></i>&nbsp; Carta de presentación</b>
+            </a>
+
+            <h3>Propuesta</h3>
+            <a class="btn btnSuccess mb-2" [href]="pasantia?.documento_propuesta | documento: info._id" download="info?.modalidad.documento_propuesta" target="_blank">
+                <b><i class="fa fa-file-pdf-o"></i>&nbsp; Propuesta</b>
+            </a>
+            <button *ngIf="pasantia?.estado_propuesta === 'Ajustar'" class="btn btnInfo mb-2 ml-3" data-toggle="modal" data-target="#actPropuesta" style="width: 100x;">
+                <b><i class="fa fa-upload"></i>&nbsp; Actualizar</b>
+            </button>
+            <!-- The Modal -->
+            <div class="modal fade" id="actPropuesta">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <h2><b>¿Actualizar Propuesta?</b></h2>
+                            <label for="filePropuesta" *ngIf="nombreArchivoPropuesta == null" class="labels custom-file-upload py-3 mt-2">
+                                Seleccione el documento a cargar</label>
+        
+                            <label for="filePropuesta" *ngIf="nombreArchivoPropuesta != null"
+                                class="labels custom-file-upload text-center py-3 mt-2" style="color: #8F141B; font-weight: bold;">
+                                {{ nombreArchivoPropuesta }}</label><br>
+        
+                            <input name="filePropuesta" id="filePropuesta" (change)="getFilePropuesta($event.target.files[0])" type="file" accept="application/pdf" class="imagenes-secundarias" required />
+
+                            <div class="text-center mt-3">
+                                <button (click)="uploadPropuesta()" [disabled]="!nombreArchivoPropuesta" type="submit" class="btn text-white mr-2" style="background-color: #6fbf73;" data-dismiss="modal">Enviar</button>
+                                <button class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+                            </div> 
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>

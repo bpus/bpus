@@ -1,0 +1,102 @@
+<!--
+    - Proyecto:         BPUS
+    - Componente:       notificaciones.component
+    - Desarrollador:    Cristian Julián Andrade Murillo
+    - Descripción:      Front de las notificaciones
+-->
+<div style="background-color: white;">
+
+    <ul class="m-3 nav nav-justified" role="tablist">
+        <li class="nav-item">
+            <a (click)="activeTab('recibidasTab')" id="recibidasTab" class="nav-link activeTab font-weight-bold" href="#noLeidas" role="tab" data-toggle="tab">Por leer</a>
+        </li>
+        <li class="nav-item">
+            <a (click)="activeTab('enviadasTab')" id="enviadasTab" class="nav-link text-body" href="#leidas" role="tab" data-toggle="tab">Leidas</a>
+        </li>
+    </ul>
+    <!-- tabs panes -->
+
+    <div class="mt-4 px-lg-5 pl-3 tab-content">
+        <!--Notificaciones por leer -->
+        <div role="tabpanel" class="tab-pane fade show active" id="noLeidas"> 
+            <ng-container  *ngIf="numeroNotificacionesNoLeidas > 0">
+                <div style="display: flex;">
+                    <div style="align-self:flex-start">
+                        <i (click)="marcarLeidaTodas()" class="material-icons" style="color:#8F141B; cursor: pointer;">mark_email_read</i>
+                    </div>
+                    <div class="ml-2">
+                        <h4 (click)="marcarLeidaTodas()" style="color:#8F141B; text-decoration: solid 1px #8F141B underline; cursor: pointer;">Marcar todas como leidas</h4>
+                    </div>
+                </div>
+                <hr>
+                <ng-container *ngFor="let notificacion of notificacionesNoLeidas">
+                    <div class="row">
+                        <div class="col-12 col-md-10 col-lg-11">
+                            <h5 class="font-weight-bold">
+                                {{notificacion.mensaje}}
+                                <div class="show-small">
+                                    <i data-toggle="dropdown" style="font-size: 26px; border-radius: 16px; padding: 0px 10px;" class="material-icons waves-effect waves-dark">more_horiz</i>
+                                    <div class="dropdown-menu" style="background-color: #1E262B;">
+                                        <li (click)="marcarLeida(notificacion._id)" class="dropdown-item" style="color: #fff;">Marcar como leída</li>
+                                    </div>
+                                </div>
+                            </h5>
+                            <h6 class="notiMensaje">{{notificacion.mensajeDetalle}}</h6>
+                            <h6><b>{{notificacion.fecha}}</b></h6>
+                        </div>
+                        <div class="col-0 col-md-2 col-lg-1 mt-3">
+                            <button type="button" class="btn btn-dark hide-small" (click)="marcarLeida(notificacion._id)">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                </ng-container>
+            </ng-container>
+            <div *ngIf="numeroNotificacionesNoLeidas <= 0" class="my-5 py-5 text-center">
+                <h4>No tienes ninguna notificación por leer...</h4>
+            </div>
+        </div>
+        <!--Notificaciones leidas -->
+        <div role="tabpanel" class="tab-pane fade show" id="leidas">
+            <ng-container  *ngIf="numeroNotificacionesLeidas > 0">
+                <div style="display: flex;">
+                    <div style="align-self:flex-start">
+                        <i (click)="borrarTodasNotificacion()" class="material-icons" style="color:#8F141B; cursor: pointer;">clear_all</i>
+                    </div>
+                    <div class="ml-2">
+                        <h4 (click)="borrarTodasNotificacion()" style="color:#8F141B; text-decoration: solid 1px #8F141B underline; cursor: pointer;">Eliminar todas</h4>
+                    </div>
+                </div>
+                <hr>
+                <ng-container  *ngFor="let notificacion of notificacionesLeidas">
+                    <div class="row">
+                        <div class="col-12 col-md-10 col-lg-11">
+                            <h5 class="font-weight-bold">
+                                {{notificacion.mensaje}}
+                                <div class="show-small">
+                                    <i data-toggle="dropdown" style="font-size: 26px; border-radius: 16px; padding: 0px 10px;" class="material-icons waves-effect waves-dark">more_horiz</i>
+                                    <div class="dropdown-menu" style="background-color: #1E262B;">
+                                        <li (click)="borrarNotificacion(notificacion)" class="dropdown-item" style="color: #fff;">Eliminar</li>
+                                    </div>
+                                </div>
+                            </h5>
+                            <h6 class="notiMensaje">{{notificacion.mensajeDetalle}}</h6>
+                            <h6><b>{{notificacion.fecha}}</b></h6>
+                        </div>
+                        <div class="col-0 col-md-2 col-lg-1">
+                            <button type="button" class="btn btnSuccess hide-small" (click)="borrarNotificacion(notificacion)">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <hr>
+                </ng-container >
+            </ng-container>
+            <div *ngIf="numeroNotificacionesLeidas <= 0" class="my-5 py-5 text-center">
+                <h4>No tienes ninguna notificación...</h4>
+            </div>
+        </div>
+    </div>
+    
+</div>

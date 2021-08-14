@@ -1,0 +1,393 @@
+<div class="px-3" style="background-color: white;">
+
+    <ul class="mt-3 nav nav-justified" role="tablist">
+        <li class="nav-item">
+            <a (click)="activeTab('pasantiaTab')" id="pasantiaTab" class="nav-link activeTab font-weight-bold" href="#pasantias" role="tab" data-toggle="tab">Pasantias</a>
+        </li>
+        <li class="nav-item">
+            <a (click)="activeTab('proyectoTab')" id="proyectoTab" class="nav-link text-body" href="#proyectos" role="tab" data-toggle="tab">Proyectos</a>
+        </li>
+    </ul>
+
+    <div class="tab-content px-0 py-1 py-lg-3 px-lg-4">
+        <div role="tabpanel" class="tab-pane fade show active" id="pasantias">
+            <ng-container *ngIf="pasantias?.length > 0">
+                <div class="modal fade" id="infoPasantia">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h5><b>Título:</b> &nbsp; {{pasantiaSelected?.titulo}}</h5>
+                                <h5 class="mt-3"><b class="text-uppercase">ID:</b> &nbsp; {{pasantiaSelected?._id}}</h5>
+                                <div *ngIf="pasantiaSelected?.fecha_actaInicio" class="row mt-3">
+                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                        <h5><b>Fecha inicio: </b>{{pasantiaSelected?.fecha_actaInicio}}</h5>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                        <h5><b>Semana: </b>{{pasantiaSelected?.semanas}} de 24</h5>
+                                    </div>
+                                </div>
+                                <h5 class="mt-2"><b>Director: </b>{{pasantiaSelected?.tutor.nombres}} {{pasantiaSelected?.tutor.apellidos}}</h5>
+                                <h5 class="mt-3"><b>Descripción:</b></h5>
+                                <p class="px-3 text-justify" id="descripcionPasantia">{{pasantiaSelected?.descripcion}}</p>
+                                <h5 class="mt-3"> <b>Información del estudiante:</b></h5>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                        <i class="fa fa-user-circle-o"></i> &nbsp; <small class="text-uppercase">{{ pasantiaSelected?.estudiante.nombres }} {{pasantiaSelected?.estudiante.apellidos}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                        <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{pasantiaSelected?.estudiante.codigo}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                        <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{pasantiaSelected?.estudiante.identificacion}}</small>
+                                    </div>
+                                </div><br>
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                        <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{pasantiaSelected?.estudiante.correo}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4" *ngIf="pasantiaSelected?.estudiante.telefono">
+                                        <i class="fa fa-phone"></i> &nbsp; <small class="text-justify">Tél:&nbsp; {{pasantiaSelected?.estudiante.telefono}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                        <i class="fa fa-hospital-o"></i> &nbsp; <small class="text-justify">EPS:&nbsp; {{pasantiaSelected?.estudiante.eps}}</small>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="pasantiaSelected?.vacante">
+                                    <h5 class="mt-3"> <b>Información de la vacante:</b></h5>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                                            <div class="vacantesInfo">
+                                                <small><i class="fa fa-briefcase"></i> &nbsp; {{pasantiaSelected?.vacante.titulo}} - {{pasantiaSelected?.vacante.convenio.empresa.nombre}} </small><br>
+                                                <small><i class="fa fa-globe"></i> &nbsp; {{pasantiaSelected?.vacante.ubicacion}}, &nbsp;{{pasantiaSelected?.vacante.modalidad}}</small><br>
+                                                <small><i class="fa fa-code"></i> &nbsp; {{pasantiaSelected?.vacante.funciones}}</small><br>
+                                                <small><i class="fa fa-money"></i>  &nbsp; Pagada: &nbsp;{{pasantiaSelected?.vacante.pagada}}</small><br>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                            <h5 class="text-uppercase"> <b>Persona a Cargo:</b></h5>
+                                            <i class="fa fa-user"></i> &nbsp; <small class="text-justify"> {{pasantiaSelected?.vacante.convenio.encargado.nombres}} {{pasantiaSelected?.vacante.convenio.encargado.apellidos}}</small><br>
+                                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">{{pasantiaSelected?.vacante.convenio.encargado.correo}}</small><br>
+                                            <i class="fa fa-phone"></i> &nbsp;<small class="text-justify"> {{pasantiaSelected?.vacante.convenio.encargado.telefono}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 ml-4">
+                                        <h5 class="text-uppercase"> <b>Descripción:</b></h5>
+                                        <p class="mt-2 ml-2">{{pasantiaSelected?.vacante.descripcion}}</p> 
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="!pasantiaSelected?.vacante">
+                                    <h5 class="mt-3"> <b>Información de la vacante:</b></h5>
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                                            <div class="vacantesInfo">
+                                                <small><i class="fa fa-briefcase"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.nombre}} </small><br>
+                                                <small><i class="fa fa-globe"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.ciudad}}, &nbsp;{{pasantiaSelected?.convenio.empresa.direccion}}</small><br>
+                                                <small><i class="fa fa-phone"></i> &nbsp; {{pasantiaSelected?.convenio.empresa.telefono}}</small><br>
+                                                <small><i class="fa fa-money"></i>  &nbsp; Pagada: &nbsp;{{pasantiaSelected?.convenio.empresa.naturaleza}}</small><br>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                            <h5 class="text-uppercase"> <b>Persona a Cargo:</b></h5>
+                                            <i class="fa fa-user"></i> &nbsp; <small class="text-justify"> {{pasantiaSelected?.convenio.encargado.nombres}} {{pasantiaSelected?.convenio.encargado.apellidos}}</small><br>
+                                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">{{pasantiaSelected?.convenio.encargado.correo}}</small><br>
+                                            <i class="fa fa-phone"></i> &nbsp;<small class="text-justify"> {{pasantiaSelected?.convenio.encargado.telefono}}</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="modal fade" id="modalJurados">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h2>Asignación de jurados</h2>
+                                <hr>
+                                <form ngNativeValidate #asignarJurados="ngForm" (ngSubmit)="AsignarJuradosPasantia(pasantiaSelected._id, asignarJurados)">
+                                    <div *ngIf="pasantiaSelected" class="row">
+                                        <div class="col-6">
+                                            <label class="font-weight-bold">Primer jurado:</label>
+                                            <select name="juradoPasantia1" [(ngModel)]="juradoPasantia1" class="form-control custom-select" id="juradoPasantia1" (change)="checkJuradosPasantia()" required>
+                                                <option value="" selected>Selecciona un jurado...</option>
+                                                <ng-container *ngFor="let jurado of jurados">
+                                                    <ng-container *ngIf="jurado._id === pasantiaSelected.tutor._id; else elsejuradoPasantia1">
+                                                        <option value="{{jurado._id}}" style="display: none;">{{jurado.nombres}} {{jurado.apellidos}}</option>
+                                                    </ng-container>
+                                                    <ng-template #elsejuradoPasantia1>
+                                                        <option value="{{jurado._id}}">{{jurado.nombres}} {{jurado.apellidos}}</option>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="font-weight-bold">Segundo jurado:</label>
+                                            <select name="juradoPasantia2" [(ngModel)]="juradoPasantia2" class="form-control custom-select" id="juradoPasantia2" (change)="checkJuradosPasantia()" required>
+                                                <option value="" selected>Selecciona un jurado...</option>
+                                                <ng-container *ngFor="let jurado of jurados">
+                                                    <ng-container *ngIf="jurado._id === pasantiaSelected.tutor._id; else elsejuradoPasantia2">
+                                                        <option value="{{jurado._id}}" style="display: none;">{{jurado.nombres}} {{jurado.apellidos}}</option>
+                                                    </ng-container>
+                                                    <ng-template #elsejuradoPasantia2>
+                                                        <option value="{{jurado._id}}">{{jurado.nombres}} {{jurado.apellidos}}</option>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <p class="font-weight-bold ml-4 my-3" id="errorJuradosPasantia" style="display: none;">Los jurados deben ser diferentes</p>
+                                    <div class="row mt-4">
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold" for="fechaP">Fecha de la sustentación:</label>
+                                                <input type="date" class="form-control" ngModel #fechaP="ngModel" id="fechaP" name="fecha" min="{{fechamin}}" max="{{fechamax}}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold" for="horaP">Hora de la sustentación:</label>
+                                                <input type="time" class="form-control" ngModel #horaP="ngModel" id="horaP" name="hora" min="07:00" max="18:00" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-bold" for="lugar">Lugar de sustentación:</label>
+                                        <input type="text" class="form-control" ngModel #lugarP="ngModel" id="lugar" name="lugar" maxlength="50" placeholder="Lugar de sustentación" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btnInfo" [disabled]="juradoPasantia1 === '' || juradoPasantia2 === '' || juradoPasantia1 === juradoPasantia2 || asignarJurados.invalid">Asignar jurados</button>
+                                        <button type="button" id="btnCerrar" (click)="lugarP.reset(); fechaP.reset(); horaP.reset(); clearDataPasantia();" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <ng-container *ngFor="let dato of pasantias">
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <div class="vacantes">
+                                <h5 class="text-uppercase"> <b>{{ dato.estudiante.nombres }}
+                                        {{ dato.estudiante.apellidos }}</b></h5>
+                                <small *ngIf="dato.vacante"><i class="fa fa-briefcase"></i> &nbsp;
+                                    {{dato.vacante.convenio.empresa.nombre}}
+                                </small><br *ngIf="dato.vacante">
+                                <small *ngIf="!dato.vacante"><i class="fa fa-briefcase">
+                                    </i> &nbsp; {{dato.convenio.empresa.nombre}}
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="buttons">
+                                <button class="btn btn-info mr-2" (click)="getPasantiaSelected(dato)" data-toggle="modal" data-target="#infoPasantia" data-backdrop="static"><i class="fa fa-info-circle"></i></button>
+                                <button type="button" (click)="getPasantiaSelected(dato)" data-toggle="modal" data-target="#modalJurados" data-backdrop="static" class="btn btnInfo">
+                                    <b>Asignar jurados</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </ng-container>  
+            </ng-container>
+            <ng-container *ngIf="pasantias?.length === 0">
+                <div class="text-center m-2 m-lg-5">
+                    <h2>No hay pasantias que requieran asignación de jurados</h2>
+                </div>
+            </ng-container>
+        </div>
+        <div role="tabpanel" class="tab-pane fade show" id="proyectos">
+            <ng-container *ngIf="proyectos?.length === 0">
+                <div class="text-center m-2 m-lg-5">
+                    <h2>No hay proyectos que requieran asignación de jurados</h2>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="proyectos?.length > 0">
+                <div class="modal fade" id="infoProyecto">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-8">
+                                        <h5><b>Título:</b> &nbsp; {{proyectoSelected?.titulo}}</h5>
+                                        <h5><b>ID de la solicitud:</b> &nbsp; {{proyectoSelected?._id}}</h5>
+                                        <h5><b>Linea de investigación:</b> &nbsp; {{proyectoSelected?.lineaInvestigacion.nombre}}</h5>
+                                        <h5><b>Director:</b> &nbsp; {{proyectoSelected?.director.nombres}} {{proyectoSelected?.director.apellidos}}</h5>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-4 mt-1 mt-sm-1 mt-md-1 mt-lg-4">
+                                        <h6><b>Documento del proyecto:</b></h6>
+                                        <a class="btn descargar btnSuccess" [href]="proyectoSelected?.documento_proyecto | documentoP: proyectoSelected?._id" download="proyectoSelected?.documento_proyecto" target="_blank">
+                                            <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver proyecto</b></small>
+                                        </a>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h5 class="text-uppercase"> <b>{{ proyectoSelected?.estudiante.nombres }} {{proyectoSelected?.estudiante.apellidos}}</b></h5>
+                                <div class="row mt-3">
+                                    <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                        <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante.correo}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                        <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante.codigo}}</small>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                        <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante.identificacion}}</small>
+                                    </div>
+                                </div>
+                                <div class="row mt-0 mt-lg-3">
+                                    <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                        <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante.creditos_aprobados}}</small>
+                                    </div>
+                                </div>
+                                <ng-container *ngIf="proyectoSelected?.estudiante2">
+                                    <hr>
+                                    <h5 class="text-uppercase"> <b>{{ proyectoSelected?.estudiante2.nombres }} {{proyectoSelected?.estudiante2.apellidos}}</b></h5>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante2.correo}}</small>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                            <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante2.codigo}}</small>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                            <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante2.identificacion}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-0 mt-lg-3">
+                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                            <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante2.creditos_aprobados}}</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-container *ngIf="proyectoSelected?.estudiante3">
+                                    <hr>
+                                    <h5 class="text-uppercase"> <b>{{ proyectoSelected?.estudiante3.nombres }} {{proyectoSelected?.estudiante3.apellidos}}</b></h5>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                                            <i class="fa fa-envelope"></i> &nbsp;<small class="text-justify">Correo:&nbsp; {{proyectoSelected?.estudiante3.correo}}</small>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                            <i class="fa fa-id-card"></i> &nbsp; <small class="text-justify">Cód:&nbsp; {{proyectoSelected?.estudiante3.codigo}}</small>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                            <i class="fa fa-id-card-o"></i> &nbsp; <small class="text-justify">ID:&nbsp; {{proyectoSelected?.estudiante3.identificacion}}</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-0 mt-lg-3">
+                                        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                            <i class="fa fa-book"></i> &nbsp; <small class="text-justify">Creditos aprobados:&nbsp; {{proyectoSelected?.estudiante3.creditos_aprobados}}</small>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="modal-footer mt-3">
+                                    <button type="button" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalJuradosPr">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <h2>Asignación de jurados</h2>
+                                <hr>
+                                <form ngNativeValidate #juradosProyecto="ngForm" (ngSubmit)="AsignarJuradosProyecto(juradosProyecto)">
+                                    <div *ngIf="proyectoSelected" class="row">
+                                        <div class="col-12 col-lg-6">
+                                            <label class="font-weight-bold">Primer jurado:</label>
+                                            <select name="juradoProyecto1" [(ngModel)]="juradoProyecto1" class="form-control custom-select" id="juradoProyecto1" (change)="checkJuradosProyecto()" required>
+                                                <option value="" selected>Selecciona un jurado...</option>
+                                                <ng-container *ngFor="let jurado of jurados">
+                                                    <ng-container *ngIf="jurado._id === proyectoSelected.director._id; else elsejuradoProyecto1">
+                                                        <option value="{{jurado._id}}" style="display: none;">{{jurado.nombres}} {{jurado.apellidos}}</option>
+                                                    </ng-container>
+                                                    <ng-template #elsejuradoProyecto1>
+                                                        <option value="{{jurado._id}}">{{jurado.nombres}} {{jurado.apellidos}}</option>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-lg-6 mt-3 mt-lg-0">
+                                            <label class="font-weight-bold">Segundo jurado:</label>
+                                            <select name="juradoProyecto2" [(ngModel)]="juradoProyecto2" class="form-control custom-select" id="juradoProyecto2" (change)="checkJuradosProyecto()" required>
+                                                <option value="" selected>Selecciona un jurado...</option>
+                                                <ng-container *ngFor="let jurado of jurados">
+                                                    <ng-container *ngIf="jurado._id === proyectoSelected.director._id; else elsejuradoProyecto2">
+                                                        <option value="{{jurado._id}}" style="display: none;">{{jurado.nombres}} {{jurado.apellidos}}</option>
+                                                    </ng-container>
+                                                    <ng-template #elsejuradoProyecto2>
+                                                        <option value="{{jurado._id}}">{{jurado.nombres}} {{jurado.apellidos}}</option>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <p class="font-weight-bold ml-4 my-3" id="errorJuradosProyecto" style="display: none;">Los jurados deben ser diferentes</p>
+                                    <div class="row mt-4">
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold" for="fecha">Fecha de la sustentación:</label>
+                                                <input type="date" class="form-control" ngModel #fecha="ngModel" id="fecha" name="fecha" min="{{fechamin}}" max="{{fechamax}}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-group">
+                                                <label class="font-weight-bold" for="fecha">Hora de la sustentación:</label>
+                                                <input type="time" class="form-control" ngModel #hora="ngModel" id="hora" name="hora" min="07:00" max="18:00" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="font-weight-bold" for="lugar">Lugar de sustentación:</label>
+                                        <input type="text" class="form-control" ngModel #lugar="ngModel" id="lugar" name="lugar" maxlength="50" placeholder="Lugar de sustentación" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btnInfo" [disabled]="juradoProyecto1 === '' || juradoProyecto2 === '' || juradoProyecto1 === juradoProyecto2 || juradosProyecto.invalid">Asignar jurados</button>
+                                        <button type="button" id="btnCerrarProyecto" (click)="lugar.reset(); fecha.reset(); hora.reset(); clearDataProyecto();" class="btn btnSuccess" data-dismiss="modal">Cerrar <i class="fa fa-times"></i></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <ng-container *ngFor="let dato of proyectos">
+                    <div class="row">
+                        <div class="col-12 col-lg-9">
+                            <div class="vacantes">
+                                <h5>{{dato.titulo}}</h5>
+                                <h5 class="small"> 
+                                    <b>{{ dato.estudiante.nombres }} {{ dato.estudiante.apellidos }}</b>
+                                </h5>
+                                <h5 *ngIf="dato.estudiante2" class="small"> 
+                                    <b>{{ dato.estudiante2.nombres }} {{ dato.estudiante2.apellidos }}</b>
+                                </h5>
+                                <h5 *ngIf="dato.estudiante3" class="small"> 
+                                    <b>{{ dato.estudiante3.nombres }} {{ dato.estudiante3.apellidos }}</b>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-3">
+                            <div class="buttons mt-1 mt-lg-2">
+                                <button class="btn btn-info btn-sm mr-2" (click)="getProyectoSelected(dato)" data-toggle="modal" data-target="#infoProyecto" data-backdrop="static">
+                                    <i class="fa fa-info-circle" style="font-size: large;"></i>
+                                </button>
+                                <button type="button" (click)="getProyectoSelected(dato)" data-toggle="modal" data-target="#modalJuradosPr" data-backdrop="static" class="btn btnInfo">
+                                    <b>Asignar jurados</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </ng-container>  
+            </ng-container>
+        </div>
+    </div>
+
+</div>

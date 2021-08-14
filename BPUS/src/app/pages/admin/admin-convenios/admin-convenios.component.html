@@ -1,0 +1,56 @@
+<div class="p-3" style="background-color: white;">
+    
+    <button type="button" data-toggle="modal" data-target=".bs-example-modal-lg" class="btn btnSuccess mb-3" data-keyboard="false"> 
+        Agregar convenio &nbsp;<i class="fa fa-plus"></i>
+    </button>
+    
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="text-center"><b>Empresa</b></th>
+                    <th class="text-center"><b>Encargado</b></th>
+                    <th class="text-center"><b>Programa</b></th>
+                    <th class="text-center"><b>Convenio</b></th>
+                    <th class="text-center"><b>Estado</b></th>
+                    <th class="text-center"><b>Acción</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let dato of convenios" class="text-center">
+                    <td>{{ dato.empresa.nombre }}</td>
+                    <td>{{ dato.encargado.nombres }} {{ dato.encargado.apellidos }}</td>
+                    <td>{{ dato.programa.nombre }}</td>
+                    <td>
+                        <ng-container *ngIf="dato.rutapdf">
+                            <button class="btn btn-sm descargar btnSuccess mb-2">
+                                <a class="btnSuccess" [href]="dato.rutapdf | documentoConvenio: dato.empresa._id" download="dato.rutapdf" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver convenio</b></small>
+                                </a>
+                            </button>
+                        </ng-container>
+                        <ng-container *ngIf="!dato.rutapdf">
+                            <p>No hay archivo</p>
+                        </ng-container>
+                    </td>
+                    <td *ngIf="dato.estado == 'Activo'" class="text-success">
+                        <h4><span class="label btn-success"> <b> {{ dato.estado }} </b></span></h4>
+                    </td>
+                    <td *ngIf="dato.estado == 'Inactivo'" class="text-danger">
+                        <h4><span class="label btnDanger"> <b> {{ dato.estado }} </b></span></h4>
+                    </td>
+                    <td>
+                        <button *ngIf="dato.estado == 'Activo'" type="button" class="btn btn-sm btnSuccess mr-2">
+                            Desactivar <i class="fa fa-ban"></i>
+                        </button>
+                        <button *ngIf="dato.estado == 'Inactivo'" type="button" class="btn btn-danger">Activar</button>
+                        <button type="button" class="btn btn-info btn-sm mr-2"><i class="fa fa-edit"></i></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+

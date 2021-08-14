@@ -1,0 +1,188 @@
+<div id="main-wrapper">
+
+    <!-- Selector del header -->
+    <app-navbar-inscripcion></app-navbar-inscripcion>
+
+    <div class="container py-5">
+
+        <div class="clearfix mt-5">
+            <div class="float-left">
+                <button routerLink='/modalidades' class="d-inline btn btn-sm btnSuccess btn-sm px-3" type="submit">
+                    <i class="fa fa-arrow-left"></i>
+                </button>
+            </div>
+            <h2 class="text-center font-weight-bold mt-5 mb-3">Inscripción proyecto de grado</h2>
+            <hr>
+        </div>
+
+        <button *ngIf="!estudiante3" id="btnShowSearch" type="button" class="btn btn-sm btnSuccess mb-2" (click)="mostrarBuscar()">
+            Agregar compañero <i class="fa fa-plus"></i>
+        </button>
+        <div class="col-12 col-lg-4" id="buscarEstudiante" style="display: none;">
+            <div class="input-group mb-3">
+                <input (keyup)="checkUserToAdd()" onkeypress='return (event.charCode >= 48 && event.charCode <= 57)' type="text" id="buscarUser" placeholder="Código" class="form-control form-control-sm" minlength="11" maxlength="11" autocomplete="off">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-sm btnInfo" (click)="buscarEstudiante()" [disabled]="userToAddValid == false">Agregar</button>
+                    <button type="button" class="btn btn-sm btn-danger" (click)="esconderBuscar()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <p class="font-weight-bold" id="msgError" style="display: none;">error</p> 
+
+        <div class="row pt-3">
+            <div class="col-12 col-md-4 col-lg-4">
+            <h6><span class="font-weight-bold text-dark">Nombre: </span>{{user.nombres}} {{user.apellidos}}</h6>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+            <h6><span class="font-weight-bold text-dark">Código: </span>{{user.codigo}}</h6>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+            <h6><span class="font-weight-bold text-dark">Identificación:</span> {{user.identificacion}}</h6>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-12 col-md-4 col-lg-4">
+                <h6><span class="font-weight-bold text-dark mr-2 mt-4">Programa: </span> {{programa?.nombre}}</h6>
+            </div>
+            <div class="col-12 col-md-4 col-lg-4">
+                <h6><span class="font-weight-bold text-dark mr-2 mt-4">Correo: </span> {{user.correo}}</h6>
+            </div>
+        </div>
+        
+        <div class="row my-3">
+            <div class="col-12 col-md-3 col-lg-3">
+                <h6 class="font-weight-bold text-dark">Ficha académica:</h6>
+            </div>
+            <div class="col-12 col-md-9 col-lg-9">
+                <label for="fileFicha" id="labelFicha" class="labels custom-file-upload">
+                    Click aquí para subir la ficha academica
+                </label>
+
+                <input name="fileFicha" id="fileFicha" (change)="getFileFicha( $event.target.files[0] )" 
+                type="file" accept="application/pdf" class="imagenes-secundarias" required />
+            </div>
+        </div>
+
+        <ng-container *ngIf="estudiante2">
+            <hr>
+            <div class="row">
+                <div class="col-12 col-md-10 col-lg-10">
+                    <div class="row pt-3">
+                        <div class="col-12 col-md-4 col-lg-4">
+                        <h6><span class="font-weight-bold text-dark">Nombre: </span>{{estudiante2.nombres}} {{estudiante2.apellidos}}</h6>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                        <h6><span class="font-weight-bold text-dark">Código: </span>{{estudiante2.codigo}}</h6>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                        <h6><span class="font-weight-bold text-dark">Identificación:</span> {{estudiante2.identificacion}}</h6>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-12 col-md-4 col-lg-4">
+                            <h6><span class="font-weight-bold text-dark mr-2 mt-4">Programa: </span> {{estudiante2.programa.nombre}}</h6>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                            <h6><span class="font-weight-bold text-dark mr-2 mt-4">Correo: </span> {{estudiante2.correo}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2 col-lg-2">
+                    <button type="button" class="btn btn-sm btnSuccess mt-4 px-4" (click)="eliminarEstudiante2()">Eliminar <i class="fa fa-close"></i></button>  
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="estudiante3">
+            <hr>
+            <div class="row">
+                <div class="col-12 col-md-10 col-lg-10">
+                    <div class="row pt-3">
+                        <div class="col-12 col-md-4 col-lg-4">
+                        <h6><span class="font-weight-bold text-dark">Nombre: </span>{{estudiante3.nombres}} {{estudiante3.apellidos}}</h6>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                        <h6><span class="font-weight-bold text-dark">Código: </span>{{estudiante3.codigo}}</h6>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                        <h6><span class="font-weight-bold text-dark">Identificación:</span> {{estudiante3.identificacion}}</h6>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-12 col-md-4 col-lg-4">
+                            <h6><span class="font-weight-bold text-dark mr-2 mt-4">Programa: </span> {{estudiante3.programa.nombre}}</h6>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                            <h6><span class="font-weight-bold text-dark mr-2 mt-4">Correo: </span> {{estudiante3.correo}}</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-2 col-lg-2">
+                    <button type="button" class="btn btn-sm btnSuccess mt-4 px-4" (click)="eliminarEstudiante3()">Eliminar <i class="fa fa-close"></i></button>  
+                </div>
+            </div>
+        </ng-container>
+        <form (ngSubmit)="postProyecto()">
+            <div class="my-4">
+                <hr>
+                <div class="row mb-3">
+                    <div class="col-12 col-md-3 col-lg-3">
+                        <label for="tituloPasantia" class="font-weight-bold text-dark">Titulo del proyecto:</label>
+                    </div>
+                    <div class="col-12 col-md-9 col-lg-9">
+                        <input (keyup)="check()" name="tituloPasantia" type="text" class="form-control" id="tituloPasantia" placeholder="Titulo del proyecto" required autofocus autocomplete="off">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-12 col-md-3 col-lg-3">
+                        <label for="lineaInvestigacion" class="font-weight-bold text-dark mr-5">Linea de investigación:</label>
+                    </div>
+                    <div class="col-12 col-md-9 col-lg-9">
+                        <select (change)="check()" class="custom-select w-100" id="lineaInvestigacion" name="lineaInvestigacion">
+                            <option value="" selected>Seleccione...</option>
+                            <ng-container *ngFor="let linea of lineas">
+                                <option value="{{linea._id}}">{{linea.nombre}}</option>
+                            </ng-container>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12 col-md-3 col-lg-3">
+                        <label for="director" class="font-weight-bold text-dark mt-2">Director del proyecto:</label>
+                    </div>
+                    <div class="col-12 col-md-9 col-lg-9">
+                        <input (keyup)="check()" class="form-control" id="director" list="docentes" required autocomplete="off">
+                        <datalist id="docentes">
+                            <ng-container *ngFor="let docente of docentes">
+                                <option value="{{docente.nombres}}">
+                            </ng-container>
+                        </datalist>
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+            <button type="button" class="btn descargar btnSuccess mb-3">
+                <a class="btnSuccess" href="/assets/documentos/Formato-Proyecto-de-investigacion- INSOF.doc" download target="_blank">
+                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Descargar formato</b></small>
+                </a>
+            </button>
+
+            <label for="fileInscripcion" id="labelInscripcion" class="labels custom-file-upload py-2 py-lg-4">
+                Click aquí para subir el documento de la propuesta
+            </label>
+
+            <input name="fileInscripcion" id="fileInscripcion" (change)="getFileInscripcion( $event.target.files[0] )" 
+            type="file" accept="application/pdf" class="imagenes-secundarias" required />
+
+            <div class="text-center my-3 my-lg-5">
+                <button type="submit" class="btn btnSuccess px-5 py-3" [disabled]="formularioValid === false || fichaValid === false || inscripcionValid === false">ENVIAR</button> 
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

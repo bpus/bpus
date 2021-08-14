@@ -1,0 +1,73 @@
+<div class="p-3" style="background-color: white;">
+    <ng-container *ngIf="modalidad?.sustentacion_fecha && !modalidad.evaluacion">
+        <div class="row ml-lg-3 ml-0 py-1 py-lg-4">
+            <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+                <h4><i class="fa fa-calendar-check-o"></i> &nbsp; <b>Fecha:</b> {{modalidad?.sustentacion_fecha}}</h4>
+                <h4 class="mt-3"><i class="fa fa-clock-o"></i> &nbsp; <b>Hora:</b> {{modalidad?.hora}}</h4>
+                <h4 class="mt-3"><i class="fa fa-map-marker"></i> &nbsp;&nbsp; <b>Lugar:</b> {{modalidad?.sustentacion_lugar}}</h4>
+            </div>
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                <h4><i class="fa fa-legal"></i> &nbsp; <b>Jurados asignados:</b></h4>
+                <ul>
+                    <li class="ml-0 ml-lg-3"><h4>{{modalidad?.jurado1.nombres}} {{modalidad?.jurado1.apellidos}}</h4></li>
+                    <li class="ml-0 ml-lg-3"><h4>{{modalidad?.jurado2.nombres}} {{modalidad?.jurado2.apellidos}}</h4></li>
+                </ul>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="modalidad.evaluacion">
+        <div class="row ml-lg-5 ml-0 py-1 py-lg-4">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <h4><b>Jurado:</b> {{modalidad?.jurado1.nombres}} {{modalidad?.jurado1.apellidos}}</h4>
+                <h4>
+                    <b>Calificación: </b>
+                    <span class="label btnDanger" *ngIf="!modalidad?.evaluacion_jurado1"> Aun no ha calificado</span>
+                    <span class="label" style="background-color: green;" *ngIf="modalidad?.evaluacion_jurado1 === 'Aprobada'">{{modalidad.evaluacion_jurado1}}</span>
+                    <span class="label btnSuccess" *ngIf="modalidad?.evaluacion_jurado1 === 'Ajustar'">{{modalidad.evaluacion_jurado1}}</span>
+                </h4>
+                <h4><b>Documento de la evaluación:</b></h4>
+                <div class="ml-1 ml-md-3 ml-lg-3">
+                    <a *ngIf="modalidad?.documento_evaluacion_jurado1 && info.onModel === 'Proyecto'" class="btn btnSuccess" [href]="modalidad?.documento_evaluacion_jurado1 | documentoP: modalidad?._id" download="modalidad?.documento_evaluacion_jurado1" target="_blank">
+                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Evaluación</b></small>
+                    </a>
+                    <a *ngIf="modalidad?.documento_evaluacion_jurado1 && info.onModel === 'Pasantia'" class="btn btnSuccess" [href]="modalidad?.documento_evaluacion_jurado1 | documento: info?._id" download="modalidad?.documento_evaluacion_jurado1" target="_blank">
+                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Evaluación</b></small>
+                    </a>
+                    <span class="label btnDanger" *ngIf="!modalidad?.documento_evaluacion_jurado1"> Aun no ha calificado</span>
+                </div>
+                <h4 class="mt-3"><b>Notas:</b></h4>
+                <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="!modalidad.notas_jurado1">No hay notas...</p>
+                <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="modalidad.notas_jurado1">{{modalidad.notas_jurado1}}</p>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <h4><b>Jurado:</b> {{modalidad?.jurado2.nombres}} {{modalidad?.jurado2.apellidos}}</h4>
+                <h4>
+                    <b>Calificación: </b>
+                    <span class="label btnDanger" *ngIf="!modalidad?.evaluacion_jurado2"> Aun no ha calificado</span>
+                    <span class="label" style="background-color: green;" *ngIf="modalidad?.evaluacion_jurado2 === 'Aprobada'">{{modalidad.evaluacion_jurado2}}</span>
+                    <span class="label btnSuccess" *ngIf="modalidad?.evaluacion_jurado2 === 'Ajustar'">{{modalidad.evaluacion_jurado2}}</span>
+                </h4>
+                <h4><b>Documento de la evaluación:</b></h4>
+                <div class="ml-1 ml-md-3 ml-lg-3">
+                    <a *ngIf="modalidad?.documento_evaluacion_jurado2 && info.onModel === 'Proyecto'" class="btn btnSuccess" [href]="modalidad?.documento_evaluacion_jurado2 | documentoP: modalidad?._id" download="modalidad?.documento_evaluacion_jurado2" target="_blank">
+                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Evaluación</b></small>
+                    </a>
+                    <a *ngIf="modalidad?.documento_evaluacion_jurado2 && info.onModel === 'Pasantia'" class="btn btnSuccess" [href]="modalidad?.documento_evaluacion_jurado2 | documento: info?._id" download="modalidad?.documento_evaluacion_jurado2" target="_blank">
+                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Evaluación</b></small>
+                    </a>
+                    <span class="label btnDanger" *ngIf="!modalidad?.documento_evaluacion_jurado2"> Aun no ha calificado</span>
+                </div>
+                <h4 class="mt-3"><b>Notas:</b></h4>
+                <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="!modalidad.notas_jurado2">No hay notas...</p>
+                <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="modalidad.notas_jurado2">{{modalidad.notas_jurado2}}</p>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!modalidad?.sustentacion_fecha ">
+        <div class="container-main">
+            <div class="center">
+              <h2>No te han asignado sustención</h2>
+            </div>
+        </div>
+    </ng-container>
+</div>

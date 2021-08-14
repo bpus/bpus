@@ -1,0 +1,712 @@
+<div class="p-2 p-lg-3" style="background-color: white;">
+    <ng-container *ngIf="pasantia">
+        <div class="p-3" style="background-color: white;">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+                    <h4 *ngIf="pasantia.estado !== 'PreInscrita'"><b>ID: </b>{{pasantia?._id}}</h4>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <h4 *ngIf="pasantia.fecha_actaInicio"><b>Fecha inicio: </b>{{fechaInicio}}</h4>
+                </div>
+                <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                    <h4 *ngIf="pasantia.fecha_actaInicio"><b>Semana: </b>{{semanas}} de 24</h4>
+                </div>
+            </div>
+            <div *ngIf="pasantia.estado !== 'PreInscrita'">
+                <h4 *ngIf="pasantia.titulo"><span class="font-weight-bold">Título:</span> {{pasantia?.titulo}}</h4>
+                <h4><span class="font-weight-bold">Linea de investigación:</span> {{pasantia?.lineaInvestigacion.nombre}}</h4>
+                <h4 *ngIf="pasantia.descripcion" class="font-weight-bold">Descripción:</h4>
+                <h5 *ngIf="pasantia.descripcion" class="pl-md-4 pl-lg-4">{{pasantia?.descripcion}}</h5>
+            </div>
+            <hr>
+            <div class="row text-md-center pl-3 pl-md-0 pl-lg-3">
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <h3><b>Modalidad seleccionada:</b></h3>
+                    <h4>Pasantía Supervisada</h4>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <h3><b>Tutor Asignado:</b></h3>
+                    <ng-container *ngIf="pasantia.tutor == null" class="text-success">
+                        <span class="label btnDanger"><b> No asignado </b></span>
+                    </ng-container>
+                    <ng-container *ngIf="pasantia.tutor" class="text-success">
+                        <span class="label btnSuccess"><b> {{pasantia?.tutor.nombres}} {{pasantia?.tutor.apellidos}}</b></span>
+                    </ng-container>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
+                    <h3><b>Estado:</b> </h3>
+                    <ng-container *ngIf="pasantia.estado == 'Sustentación'" class="text-success">
+                        <span class="label btn-dark"> <b> {{ pasantia.estado }} </b></span>
+                    </ng-container>
+                    <ng-container *ngIf="pasantia.estado == 'Enviada' || pasantia.estado == 'PreInscrita'" class="text-success">
+                        <span class="label btnInfo"> <b> {{ pasantia.estado }} </b></span>
+                    </ng-container>
+                    <ng-container *ngIf="pasantia.estado == 'En ejecución'" class="text-success">
+                        <span class="label btnDanger"> <b> {{ pasantia.estado }} </b></span>
+                    </ng-container>
+                    <ng-container *ngIf="pasantia.estado == 'Ajustar'" class="text-success">
+                        <span class="label btnSuccess"> <b> {{ pasantia.estado }} </b></span>
+                    </ng-container>
+                    <ng-container *ngIf="pasantia.estado == 'Aprobada'" class="text-success">
+                        <span style="background-color: green;" class="label text-white"> <b> {{ pasantia.estado }} </b></span>
+                    </ng-container>
+                </div>
+            </div>
+            <br>
+            <!--Acordeon de información -->
+            <div id="accordion">
+                <div *ngIf="pasantia?.vacante" class="card">
+                  <div class="card-header">
+                    <h3>
+                        <a class="collapsed card-link" data-toggle="collapse" href="#preinscripcion">
+                            <b>Pre-inscripción & información de la vacante &nbsp;</b>
+                            <i *ngIf="pasantia?.aprobacionEmpresa === true" class="fa fa-check" style="color: green;"></i>
+                            <i *ngIf="pasantia?.aprobacionEmpresa === false" class="fa fa-times" style="color:#77181C"></i>
+                        </a>
+                    </h3>
+                  </div>
+                  <div id="preinscripcion" class="collapse" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-start mb-3">
+                            <h5 class="mr-3">
+                                <b>Aprobacion de la empresa:</b>&nbsp;
+                                <i *ngIf="pasantia?.aprobacionEmpresa === true" class="fa fa-check" style="color: green;"></i>
+                                <i *ngIf="pasantia?.aprobacionEmpresa === false" class="fa fa-times" style="color:#77181C"></i>
+                            </h5>
+                            <h5><i class="fa fa-money"></i> &nbsp; <b>Pagada: </b>{{pasantia?.vacante.pagada}}</h5>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                <h5><i class="fa fa-briefcase"></i> &nbsp; <b>Vacante: </b>{{pasantia?.vacante.titulo}}</h5>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                <h5><i class="fa fa-building"></i> &nbsp; <b>Empresa: </b>{{pasantia?.vacante.convenio.empresa.nombre}}</h5>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                <h5><i class="fa fa-home"></i> &nbsp; <b>Dirección: </b>{{pasantia?.vacante.ubicacion}}</h5>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3">
+                                <h5><i class="fa fa-car"></i> &nbsp; <b>Modalidad: </b>{{pasantia?.vacante.modalidad}}</h5>
+                            </div>
+                        </div>
+                        <h5><i class="fa fa-code"></i> &nbsp; <b>Funciones: </b>{{pasantia?.vacante.funciones}}</h5>              
+                        <div class="mt-3 ml-4">
+                            <h4> <b>Descripción:</b></h4>
+                            <p class="mt-2">{{pasantia?.vacante.descripcion}}</p> 
+                        </div>
+                        <hr>
+                        <h5> <b>Persona a Cargo:</b></h5>
+                        <div class="row mt-3">
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 mw-100">
+                                <h5>
+                                    <i class="fa fa-user"></i> 
+                                    &nbsp; {{pasantia?.vacante.convenio.encargado.nombres}}
+                                    {{pasantia?.vacante.convenio.encargado.apellidos}}
+                                </h5>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 mw-100">
+                                <h5><i class="fa fa-envelope"></i> &nbsp;{{pasantia?.vacante.convenio.encargado.correo}}</h5>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 mw-100">
+                                <h5><i class="fa fa-phone"></i> &nbsp;{{pasantia?.vacante.convenio.encargado.telefono}}</h5>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 mw-100">
+                                <h5><i class="fa fa-id-badge"></i> &nbsp;{{pasantia?.vacante.convenio.encargado.cargo}}</h5>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              
+                <div class="card">
+                  <div class="card-header">
+                    <h3>
+                        <a class="collapsed card-link" data-toggle="collapse" href="#propuesta">
+                            <b>Propuesta </b><span class="text-dark font-italic small" *ngIf="!pasantia?.estado_propuesta">(No enviado)</span>
+                            <i *ngIf="pasantia?.estado_propuesta === 'Enviada'" class="fa fa-send" style="color:#C7B363"></i>
+                            <i *ngIf="pasantia?.estado_propuesta === 'Aprobada'" class="fa fa-check" style="color: green;"></i>
+                            <i *ngIf="pasantia?.estado_propuesta === 'Ajustar'" class="fa fa-times" style="color:#77181C"></i>
+                        </a>
+                    </h3>
+                  </div>
+                  <div id="propuesta" class="collapse" data-parent="#accordion">
+                    <div *ngIf="pasantia?.documento_propuesta !== undefined && pasantia?.documento_propuesta !== null && pasantia?.documento_propuesta !== ''"class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4 text-center">
+                                <h3><b>Estado:</b> </h3>
+                                <ng-container *ngIf="pasantia.estado_propuesta == 'Enviada'" class="text-success">
+                                    <span class="label btnInfo"> <b> {{ pasantia.estado_propuesta }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="pasantia.estado_propuesta == 'Aprobada'" class="text-success">
+                                    <span class="label" style="background-color: green;"> <b> {{ pasantia.estado_propuesta }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="pasantia.estado_propuesta == 'Ajustar'" class="text-success">
+                                    <span class="label btnSuccess"> <b> {{ pasantia.estado_propuesta }} </b></span>
+                                </ng-container>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4 text-center">
+                                <h5><b>Documento propuesta:</b></h5>
+                                <a class="btn btnSuccess" [href]="pasantia?.documento_propuesta | documento: info._id" download="pasantia?.documento_propuesta" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver propuesta</b></small>
+                                </a>
+                            </div>
+                            <br>
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4 text-center">
+                                <h5><b>Documento ficha:</b></h5>
+                                <a class="btn btnSuccess" [href]="pasantia?.documento_fichaAcademica | documento: info._id" download="pasantia?.documento_fichaAcademica" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ficha académica</b></small>
+                                </a>
+                            </div>  
+                        </div>
+                        <div class="mt-5 ml-3">
+                            <h4><b>Notas de la propuesta:</b></h4>
+                            <p *ngIf="pasantia.notas_propuesta && pasantia.notas_propuesta !== ''" class="pl-3 mt-2">{{pasantia?.notas_propuesta}}</p>
+                            <p *ngIf="!pasantia.notas_propuesta || pasantia.notas_propuesta == ''" class="pl-3 mt-2 font-italic">No hay notas...</p>  
+                        </div>        
+                    </div>
+                    <div *ngIf="pasantia?.documento_propuesta == null || pasantia?.documento_propuesta == ''"class="card-body">
+                        <h3 class="pl-3 font-italic">No has enviado la propuesta...</h3>
+                    </div>
+                  </div>
+                </div>
+    
+                <div class="card">
+                    <div class="card-header">
+                      <h3><a class="collapsed card-link" data-toggle="collapse" href="#inicioPasantia"><b>Inicio pasantia </b>
+                            <i *ngIf="pasantia?.estado_actaInicio === 'Enviada'" class="fa fa-send" style="color:#C7B363"></i>
+                            <i *ngIf="pasantia?.estado_actaInicio === 'Aprobada'" class="fa fa-check" style="color: green;"></i>
+                            <i *ngIf="pasantia?.estado_actaInicio === 'Ajustar'" class="fa fa-times" style="color:#77181C"></i>
+                        </a>
+                    </h3>
+                    </div>
+                    <div id="inicioPasantia" class="collapse" data-parent="#accordion">
+                      <div *ngIf="pasantia?.documento_propuesta || pasantia.estado_propuesta === 'Aprobada'" class="card-body">
+                        <div class="row mt-1">
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 text-center">
+                                <h3><b>Estado:</b> </h3>
+                                <ng-container *ngIf="!pasantia.estado_actaInicio" class="text-success">
+                                    <span class="label btnDanger"> <b>No Enviada</b></span>
+                                </ng-container>
+                                <ng-container *ngIf="pasantia.estado_actaInicio == 'Enviada'" class="text-success">
+                                    <span class="label btnInfo"> <b> {{ pasantia.estado_actaInicio }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="pasantia.estado_actaInicio == 'Aprobada'" class="text-success">
+                                    <span class="label" style="background-color: green;"> <b> {{ pasantia.estado_actaInicio }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="pasantia.estado_actaInicio == 'Ajustar'" class="text-success">
+                                    <span class="label btnSuccess"> <b> {{ pasantia.estado_actaInicio }} </b></span>
+                                </ng-container>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 text-center">
+                                <h5><b>Acta de inicio:</b></h5>
+                                <button *ngIf="!pasantia?.documento_actaInicio" class="btn btnSuccess descargar" disabled>
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver acta</b></small>
+                                </button>
+                                <a *ngIf="pasantia?.documento_actaInicio" class="btn btnSuccess descargar" [href]="pasantia?.documento_actaInicio | documento: info._id" download="pasantia?.documento_actaInicio" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver acta</b></small>
+                                </a>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 text-center">
+                                <h5><b>ARL:</b></h5>
+                                <button *ngIf="!pasantia?.documento_arl" class="btn btnSuccess descargar px-4" disabled>
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver ARL</b></small>
+                                </button>
+                                <a *ngIf="pasantia?.documento_arl" class="btn btnSuccess descargar px-4" [href]="pasantia?.documento_arl | documento: info._id" download="pasantia?.documento_arl" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver ARL</b></small>
+                                </a>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-3 col-lg-3 text-center">
+                                <h5><b>Carta presentación:</b></h5>
+                                <button *ngIf="!pasantia?.carta_presentacion" class="btn btnSuccess descargar" disabled>
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Carta</b></small>
+                                </button>
+                                <a *ngIf="pasantia?.carta_presentacion" class="btn btnSuccess descargar" [href]="pasantia?.carta_presentacion | documento: info._id" download="pasantia?.carta_presentacion" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Carta</b></small>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mt-5 ml-3">
+                            <h4><b>Notas del acta de inicio:</b></h4>
+                            <p *ngIf="pasantia.notas_actaInicio && pasantia.notas_actaInicio !== ''" class="pl-3 mt-2">{{pasantia?.notas_actaInicio}}</p>
+                            <p *ngIf="!pasantia.notas_actaInicio || pasantia.notas_actaInicio == ''" class="pl-3 mt-2 font-italic">No hay notas...</p>  
+                        </div>  
+                      </div>
+                      <div *ngIf="pasantia?.documento_propuesta == null || pasantia?.documento_propuesta == ''"class="card-body">
+                          <h3 class="pl-3 font-italic">No has enviado la propuesta...</h3>
+                      </div>
+                      <div *ngIf="pasantia?.documento_propuesta && pasantia.estado_propuesta !== 'Aprobada' && !pasantia.estado_actaInicio" class="card-body">
+                        <h3 class="pl-3 font-italic">No te han aceptado la propuesta...</h3>
+                    </div>
+                    </div>
+                  </div>
+    
+                
+              
+                <div class="card">
+                  <div class="card-header">
+                    <h3>
+                        <a class="collapsed card-link" data-toggle="collapse" href="#informe7">
+                            <b>Informe 7 </b><span class="text-dark font-italic small" *ngIf="!pasantia?.estado_informe7">(No enviado)</span>
+                            <i *ngIf="pasantia?.estado_informe7 === 'Enviado'" class="fa fa-send" style="color:#C7B363"></i>
+                            <i *ngIf="pasantia?.estado_informe7 === 'Aprobado'" class="fa fa-check" style="color: green;"></i>
+                            <i *ngIf="pasantia?.estado_informe7 === 'Ajustar'" class="fa fa-times" style="color:#77181C"></i>
+                        </a>
+                    </h3>
+                  </div>
+                  <div id="informe7" class="collapse" data-parent="#accordion">
+                    <div *ngIf="pasantia?.documento_informe7 !== undefined && pasantia?.documento_informe7 !== null && pasantia?.documento_informe7 !== ''" class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                <h3><b>Estado:</b> </h3>
+                                <ng-container *ngIf="pasantia.estado_informe7 == 'Enviado'" class="text-success">
+                                    <span class="label btnInfo"> <b> {{ pasantia.estado_informe7 }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="pasantia.estado_informe7 == 'Aprobado'" class="text-success">
+                                    <span class="label" style="background-color: green;"> <b> {{ pasantia.estado_informe7 }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="pasantia.estado_informe7 == 'Ajustar'" class="text-success">
+                                    <span class="label btnSuccess"> <b> {{ pasantia.estado_informe7 }} </b></span>
+                                </ng-container>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                <h5><b>Documento informe 7:</b></h5>
+                                <a class="btn btnSuccess" [href]="pasantia?.documento_informe7 | documento: info._id" download="pasantia?.documento_informe7" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver informe 7</b></small>
+                                </a>
+                            </div>
+                            <br> 
+                        </div>
+                        <div class="mt-5 ml-3">
+                            <h4><b>Notas del informe 7:</b></h4>
+                            <p *ngIf="pasantia.notas_informe7 && pasantia.notas_informe7 !== ''" class="pl-3 mt-2">{{pasantia?.notas_informe7}}</p>
+                            <p *ngIf="!pasantia.notas_informe7 || pasantia.notas_informe7 == ''" class="pl-3 mt-2 font-italic">No hay notas...</p>  
+                        </div>        
+                    </div>
+                    <div *ngIf="pasantia?.documento_informe7 == null || pasantia?.documento_informe7 == ''"class="card-body">
+                        <h3 class="pl-3 font-italic">No has enviado el informe 7...</h3>
+                    </div>
+                  </div>
+                </div>
+        
+                <div class="card">
+                    <div class="card-header">
+                      <h3>
+                          <a class="collapsed card-link" data-toggle="collapse" href="#informe14">
+                              <b>Informe 14 </b><span class="text-dark font-italic small" *ngIf="!pasantia?.estado_informe14">(No enviado)</span>
+                              <i *ngIf="pasantia?.estado_informe14 === 'Enviado'" class="fa fa-send" style="color:#C7B363"></i>
+                              <i *ngIf="pasantia?.estado_informe14 === 'Aprobado'" class="fa fa-check" style="color: green;"></i>
+                              <i *ngIf="pasantia?.estado_informe14 === 'Ajustar'" class="fa fa-times" style="color:#77181C"></i>
+                          </a>
+                      </h3>
+                    </div>
+                    <div id="informe14" class="collapse" data-parent="#accordion">
+                      <div *ngIf="pasantia?.documento_informe14 !== undefined && pasantia?.documento_informe14 !== null && pasantia?.documento_informe14 !== ''" class="card-body">
+                          <div class="row">
+                              <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                  <h3><b>Estado:</b> </h3>
+                                  <ng-container *ngIf="pasantia.estado_informe14 == 'Enviado'" class="text-success">
+                                      <span class="label btnInfo"> <b> {{ pasantia.estado_informe14 }} </b></span>
+                                  </ng-container>
+                                  <ng-container *ngIf="pasantia.estado_informe14 == 'Aprobado'" class="text-success">
+                                      <span class="label" style="background-color: green;"> <b> {{ pasantia.estado_informe14 }} </b></span>
+                                  </ng-container>
+                                  <ng-container *ngIf="pasantia.estado_informe14 == 'Ajustar'" class="text-success">
+                                      <span class="label btnSuccess"> <b> {{ pasantia.estado_informe14 }} </b></span>
+                                  </ng-container>
+                              </div>
+                              <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                  <h5><b>Documento informe 14:</b></h5>
+                                    <a class="btn btnSuccess" [href]="pasantia?.documento_informe14 | documento: info._id" download="pasantia?.documento_informe14" target="_blank">
+                                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver informe 14</b></small>
+                                    </a>
+                              </div>
+                              <br> 
+                          </div>
+                          <div class="mt-5 ml-3">
+                              <h4><b>Notas del informe 14:</b></h4>
+                              <p *ngIf="pasantia.notas_informe14 && pasantia.notas_informe14 !== ''" class="pl-3 mt-2">{{pasantia?.notas_informe14}}</p>
+                              <p *ngIf="!pasantia.notas_informe14 || pasantia.notas_informe14 == ''" class="pl-3 mt-2 font-italic">No hay notas...</p>  
+                          </div>        
+                      </div>
+                      <div *ngIf="pasantia?.documento_informe14 == null || pasantia?.documento_informe14 == ''"class="card-body">
+                          <h3 class="pl-3 font-italic">No has enviado el informe 14...</h3>
+                      </div>
+                    </div>
+                </div>
+        
+                <div class="card">
+                    <div class="card-header">
+                      <h3>
+                          <a class="collapsed card-link" data-toggle="collapse" href="#informeFinal">
+                              <b>Informe final </b><span class="text-dark font-italic small" *ngIf="!pasantia?.estado_informeFinal">(No enviado)</span>
+                              <i *ngIf="pasantia?.estado_informeFinal === 'Enviado'" class="fa fa-send" style="color:#C7B363"></i>
+                              <i *ngIf="pasantia?.estado_informeFinal === 'Aprobado'" class="fa fa-check" style="color: green;"></i>
+                              <i *ngIf="pasantia?.estado_informeFinal === 'Ajustar'" class="fa fa-times" style="color:#77181C"></i>
+                          </a>
+                      </h3>
+                    </div>
+                    <div id="informeFinal" class="collapse" data-parent="#accordion">
+                      <div *ngIf="pasantia?.documento_informeFinal !== undefined && pasantia?.documento_informeFinal !== null && pasantia?.documento_informeFinal !== ''" class="card-body">
+                          <div class="row">
+                              <div class="col-12 col-sm-12 col-md-4 col-lg-4 text-center">
+                                  <h3><b>Estado:</b> </h3>
+                                  <ng-container *ngIf="pasantia.estado_informeFinal == 'Enviado'" class="text-success">
+                                      <span class="label btnInfo"> <b> {{ pasantia.estado_informeFinal }} </b></span>
+                                  </ng-container>
+                                  <ng-container *ngIf="pasantia.estado_informeFinal == 'Aprobado'" class="text-success">
+                                      <span class="label" style="background-color: green;"> <b> {{ pasantia.estado_informeFinal }} </b></span>
+                                  </ng-container>
+                                  <ng-container *ngIf="pasantia.estado_informeFinal == 'Ajustar'" class="text-success">
+                                      <span class="label btnSuccess"> <b> {{ pasantia.estado_informeFinal }} </b></span>
+                                  </ng-container>
+                              </div>
+                              <div class="col-12 col-sm-12 col-md-4 col-lg-4 text-center">
+                                    <h5><b>Documento informe final:</b></h5>
+                                    <a class="btn btnSuccess" [href]="pasantia?.documento_informeFinal | documento: info._id" download="pasantia?.documento_informeFinal" target="_blank">
+                                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver informe final</b></small>
+                                    </a>
+                              </div>
+                              <div class="col-12 col-sm-12 col-md-4 col-lg-4 text-center">
+                                <h5><b>Documento aprobación empresa:</b></h5>
+                                <a class="btn btnSuccess" [href]="pasantia?.documento_aprobacionEmpresa | documento: info._id" download="pasantia?.documento_aprobacionEmpresa" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver aprobación</b></small>
+                                </a>
+                            </div>
+                              <br> 
+                          </div>
+                          <div class="mt-5 ml-3">
+                              <h4><b>Notas del informe final:</b></h4>
+                              <p *ngIf="pasantia.notas_informeFinal && pasantia.notas_informeFinal !== ''" class="pl-3 mt-2">{{pasantia?.notas_informeFinal}}</p>
+                              <p *ngIf="!pasantia.notas_informeFinal || pasantia.notas_informeFinal == ''" class="pl-3 mt-2 font-italic">No hay notas...</p>  
+                          </div>        
+                      </div>
+                      <div *ngIf="pasantia?.documento_informeFinal == null || pasantia?.documento_informeFinal == ''"class="card-body">
+                          <h3 class="pl-3 font-italic">No has enviado el informe final...</h3>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="card" *ngIf="pasantia.estado === 'Aprobada' || pasantia.estado === 'Sustentación'">
+                    <div class="card-header">
+                    <h3>
+                        <a class="collapsed card-link" data-toggle="collapse" href="#sustentacion"><b>Sustentación </b></a>
+                    </h3>
+                    </div>
+                    <div id="sustentacion" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <div class="row ml-lg-5 ml-0">
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                    <h4><b>Jurado:</b> {{pasantia.jurado1.nombres}} {{pasantia.jurado1.apellidos}}</h4>
+                                    <h4>
+                                        <b>Calificación: </b>
+                                        <span class="label btnDanger" *ngIf="!pasantia.evaluacion_jurado1"> Aun no ha calificado</span>
+                                        <span class="label" style="background-color: green;" *ngIf="pasantia.evaluacion_jurado1 === 'Aprobada'">{{pasantia.evaluacion_jurado1}}</span>
+                                        <span class="label btnSuccess" *ngIf="pasantia.evaluacion_jurado1 === 'Ajustar'">{{pasantia.evaluacion_jurado1}}</span>
+                                    </h4>
+                                    <h4><b>Documento de la evaluación:</b></h4>
+                                    <div class="ml-1 ml-md-3 ml-lg-3">
+                                        <a *ngIf="pasantia.documento_evaluacion_jurado1" class="btn btnSuccess" [href]="pasantia.documento_evaluacion_jurado1 | documento: info?._id" download="pasantia.documento_evaluacion_jurado1" target="_blank">
+                                            <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Evaluación</b></small>
+                                        </a>
+                                        <span class="label btnDanger" *ngIf="!pasantia.documento_evaluacion_jurado1"> Aun no ha calificado</span>
+                                    </div>
+                                    <h4 class="mt-3"><b>Notas:</b></h4>
+                                    <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="!pasantia.notas_jurado1">No hay notas...</p>
+                                    <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="pasantia.notas_jurado1">{{pasantia.notas_jurado1}}</p>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                    <h4><b>Jurado:</b> {{pasantia.jurado2.nombres}} {{pasantia.jurado2.apellidos}}</h4>
+                                    <h4>
+                                        <b>Calificación: </b>
+                                        <span class="label btnDanger" *ngIf="!pasantia.evaluacion_jurado2"> Aun no ha calificado</span>
+                                        <span class="label" style="background-color: green;" *ngIf="pasantia.evaluacion_jurado2 === 'Aprobada'">{{pasantia.evaluacion_jurado2}}</span>
+                                        <span class="label btnSuccess" *ngIf="pasantia.evaluacion_jurado2 === 'Ajustar'">{{pasantia.evaluacion_jurado2}}</span>
+                                    </h4>
+                                    <h4><b>Documento de la evaluación:</b></h4>
+                                    <div class="ml-1 ml-md-3 ml-lg-3">
+                                        <a *ngIf="pasantia.documento_evaluacion_jurado2" class="btn btnSuccess" [href]="pasantia.documento_evaluacion_jurado2 | documento: info?._id" download="pasantia.documento_evaluacion_jurado2" target="_blank">
+                                            <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Evaluación</b></small>
+                                        </a>
+                                        <span class="label btnDanger" *ngIf="!pasantia.documento_evaluacion_jurado2"> Aun no ha calificado</span>
+                                    </div>
+                                    <h4 class="mt-3"><b>Notas:</b></h4>
+                                    <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="!pasantia.notas_jurado2">No hay notas...</p>
+                                    <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="pasantia.notas_jurado2">{{pasantia.notas_jurado2}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+    
+    </ng-container>
+
+    <ng-container *ngIf="proyecto">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <h4><b>ID: </b>{{proyecto?._id}}</h4>
+                <h4><span class="font-weight-bold">Título: </span>{{proyecto?.titulo}}</h4>
+                <h4><span class="font-weight-bold">Linea de investigación: </span>{{proyecto?.lineaInvestigacion.nombre}}</h4>
+                <h4><span class="font-weight-bold">fecha de inicio: </span>{{fechaInicio}} ({{semanas}} semanas)</h4>
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                <ng-container *ngIf="proyecto.estudiante2 || proyecto.estudiante3">
+                    <h4 class="font-weight-bold">Integrantes: </h4>
+                    <ul>
+                        <li>
+                            <h6>
+                                {{proyecto?.estudiante.nombres}} {{proyecto?.estudiante.apellidos}}
+                                <span *ngIf="proyecto.estudiante._id === info._id" class="font-weight-bold">(Tú)</span>
+                            </h6>
+                        </li>
+                        <li *ngIf="proyecto.estudiante2">
+                            <h6>
+                                {{proyecto?.estudiante2.nombres}} {{proyecto?.estudiante2.apellidos}}
+                                <span *ngIf="proyecto.estudiante2._id === info._id" class="font-weight-bold">(Tú)</span>
+                                <span *ngIf="proyecto.estudiante2._id !== info._id && !proyecto.aprobacionEstudiante2" class="font-weight-bold">(Pendiente de aprobación)</span>
+                            </h6>
+                        </li>
+                        <li *ngIf="proyecto.estudiante3">
+                            <h6>
+                                {{proyecto?.estudiante3.nombres}} {{proyecto?.estudiante3.apellidos}}
+                                <span *ngIf="proyecto.estudiante3._id === info._id" class="font-weight-bold">(Tú)</span>
+                                <span *ngIf="proyecto.estudiante3._id !== info._id && !proyecto.aprobacionEstudiante3" class="font-weight-bold">(Pendiente de aprobación)</span>
+                            </h6>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+        <hr> 
+        <div class="row text-md-center pl-3 pl-md-0 pl-lg-3">
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                <h3><b>Modalidad seleccionada:</b></h3>
+                <h4>Proyecto de Grado</h4>
+            </div>
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                <h3><b>Director:</b></h3>
+                <ng-container *ngIf="proyecto.director == null">
+                    <span class="label btnDanger"><b> No asignado </b></span>
+                </ng-container>
+                <ng-container *ngIf="proyecto.director">
+                    <span class="label btnSuccess"><b> {{proyecto?.director.nombres}} {{proyecto?.director.apellidos}}</b></span>
+                </ng-container>
+            </div>
+            <div class="col-12 col-sm-12 col-md-4 col-lg-4 mt-3 mt-sm-3 mt-md-0 mt-lg-0">
+                <h3><b>Estado:</b> </h3>
+                <ng-container *ngIf="proyecto.estado == 'Pendiente' || proyecto.estado == 'En ejecución' || proyecto.estado == 'Sustentación'">
+                    <span class="label btnDanger"> <b> {{ proyecto.estado }} </b></span>
+                </ng-container>
+                <ng-container *ngIf="proyecto.estado == 'Enviado'">
+                    <span class="label btnInfo"> <b> {{ proyecto.estado }} </b></span>
+                </ng-container>
+                <ng-container *ngIf="proyecto.estado == 'Ajustar'">
+                    <span class="label btnSuccess"> <b> {{ proyecto.estado }} </b></span>
+                </ng-container>
+                <ng-container *ngIf="proyecto.estado == 'Aprobado'">
+                    <span class="label" style="background-color: green;"> <b> {{ proyecto.estado }} </b></span>
+                </ng-container>
+            </div>
+        </div>
+        <hr>
+    
+        <div class="mt-4" id="accordionProyecto">
+            <div class="card">
+                <div class="card-header">
+                <h3><a class="collapsed card-link" data-toggle="collapse" href="#propuesta"><b>Propuesta </b>
+                        <i *ngIf="proyecto?.estado_propuesta === 'Enviada'" class="fa fa-send" style="color:#C7B363"></i>
+                        <i *ngIf="proyecto?.estado_propuesta === 'Aprobada'" class="fa fa-check" style="color: green;"></i>
+                        <i *ngIf="proyecto?.estado_propuesta === 'Ajustar'" class="fa fa-times" style="color:#77181C"></i>
+                    </a>
+                </h3>
+                </div>
+                <div id="propuesta" class="collapse" data-parent="#accordionProyecto">
+                    <div *ngIf="proyecto?.estado_propuesta; else elseInscripcion"class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                <h3><b>Estado:</b> </h3>
+                                <ng-container *ngIf="proyecto?.estado_propuesta == 'Pendiente'" class="text-success">
+                                    <span class="label btnDanger"> <b> {{ proyecto?.estado_propuesta }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="proyecto?.estado_propuesta == 'Enviada'" class="text-success">
+                                    <span class="label btnInfo"> <b> {{ proyecto?.estado_propuesta }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="proyecto?.estado_propuesta == 'Aprobada'" class="text-success">
+                                    <span class="label" style="background-color: green;"> <b> {{ proyecto?.estado_propuesta }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="proyecto?.estado_propuesta == 'Ajustar'" class="text-success">
+                                    <span class="label btnSuccess"> <b> {{ proyecto?.estado_propuesta }} </b></span>
+                                </ng-container>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                <h5><b>Documento de la propuesta:</b></h5>
+                                <a class="btn btnSuccess" [href]="proyecto?.documento_propuesta | documentoP: proyecto._id" download="proyecto?.documento_propuesta" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver documento propuesta</b></small>
+                                </a>
+                            </div>
+                            <br> 
+                        </div>
+                        <div class="mt-5 ml-3">
+                            <h4><b>Notas de la propuesta:</b></h4>
+                            <p *ngIf="proyecto.notas_propuesta && proyecto.notas_propuesta !== ''" class="pl-3 mt-2">{{proyecto?.notas_propuesta}}</p>
+                            <p *ngIf="!proyecto.notas_propuesta || proyecto.notas_propuesta == ''" class="pl-3 mt-2 font-italic">No hay notas...</p>  
+                        </div> 
+                    </div>
+                    <ng-template #elseInscripcion>
+                        <div class="card-body">
+                            <h2>No has enviado la propuesta....</h2>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                <h3><a class="collapsed card-link" data-toggle="collapse" href="#anteproyecto"><b>Anteproyecto </b>
+                        <i *ngIf="proyecto?.estado_anteproyecto === 'Enviado'" class="fa fa-send" style="color:#C7B363"></i>
+                        <i *ngIf="proyecto?.estado_anteproyecto === 'Aprobado'" class="fa fa-check" style="color: green;"></i>
+                        <i *ngIf="proyecto?.estado_anteproyecto === 'Ajustar'" class="fa fa-times" style="color:#77181C"></i>
+                    </a>
+                </h3>
+                </div>
+                <div id="anteproyecto" class="collapse" data-parent="#accordionProyecto">
+                    <div *ngIf="proyecto?.estado_anteproyecto; else elseAnteproyecto"class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                <h3><b>Estado:</b> </h3>
+                                <ng-container *ngIf="proyecto?.estado_anteproyecto == 'Enviado'" class="text-success">
+                                    <span class="label btnInfo"> <b> {{ proyecto?.estado_anteproyecto }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="proyecto?.estado_anteproyecto == 'Aprobado'" class="text-success">
+                                    <span class="label" style="background-color: green;"> <b> {{ proyecto?.estado_anteproyecto }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="proyecto?.estado_anteproyecto == 'Ajustar'" class="text-success">
+                                    <span class="label btnSuccess"> <b> {{ proyecto?.estado_anteproyecto }} </b></span>
+                                </ng-container>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                <h5><b>Documento anteproyecto:</b></h5>
+                                <a class="btn btnSuccess" [href]="proyecto?.documento_anteproyecto | documentoP: proyecto._id" download="proyecto?.documento_anteproyecto" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Anteproyecto</b></small>
+                                </a>
+                            </div>
+                            <br> 
+                        </div>
+                        <div class="mt-5 ml-3">
+                            <h4><b>Notas del anteproyecto:</b></h4>
+                            <p *ngIf="proyecto.notas_anteproyecto && proyecto.notas_anteproyecto !== ''" class="pl-3 mt-2">{{proyecto?.notas_anteproyecto}}</p>
+                            <p *ngIf="!proyecto.notas_anteproyecto || proyecto.notas_anteproyecto == ''" class="pl-3 mt-2 font-italic">No hay notas...</p>  
+                        </div> 
+                    </div>
+                    <ng-template #elseAnteproyecto>
+                        <div class="card-body">
+                            <h2>No has enviado el anteproyecto....</h2>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                <h3><a class="collapsed card-link" data-toggle="collapse" href="#proyecto"><b>Proyecto </b>
+                        <i *ngIf="proyecto?.estado_proyecto === 'Enviado'" class="fa fa-send" style="color:#C7B363"></i>
+                        <i *ngIf="proyecto?.estado_proyecto === 'Aprobado'" class="fa fa-check" style="color: green;"></i>
+                        <i *ngIf="proyecto?.estado_proyecto === 'Ajustar'" class="fa fa-times" style="color:#77181C"></i>
+                    </a>
+                </h3>
+                </div>
+                <div id="proyecto" class="collapse" data-parent="#accordionProyecto">
+                    <div *ngIf="proyecto?.estado_proyecto; else elseProyecto"class="card-body">
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                <h3><b>Estado:</b> </h3>
+                                <ng-container *ngIf="proyecto?.estado_proyecto == 'Enviado'" class="text-success">
+                                    <span class="label btnInfo"> <b> {{ proyecto?.estado_proyecto }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="proyecto?.estado_proyecto == 'Aprobado'" class="text-success">
+                                    <span class="label" style="background-color: green;"> <b> {{ proyecto?.estado_proyecto }} </b></span>
+                                </ng-container>
+                                <ng-container *ngIf="proyecto?.estado_proyecto == 'Ajustar'" class="text-success">
+                                    <span class="label btnSuccess"> <b> {{ proyecto?.estado_proyecto }} </b></span>
+                                </ng-container>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 text-center">
+                                <h5><b>Documento proyecto:</b></h5>
+                                <a class="btn btnSuccess" [href]="proyecto?.documento_proyecto | documentoP: proyecto._id" download="proyecto?.documento_proyecto" target="_blank">
+                                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver proyecto</b></small>
+                                </a>
+                            </div>
+                            <br> 
+                        </div>
+                        <div class="mt-5 ml-3">
+                            <h4><b>Notas del proyecto:</b></h4>
+                            <p *ngIf="proyecto.notas_proyecto && proyecto.notas_proyecto !== ''" class="pl-3 mt-2">{{proyecto?.notas_proyecto}}</p>
+                            <p *ngIf="!proyecto.notas_proyecto || proyecto.notas_proyecto == ''" class="pl-3 mt-2 font-italic">No hay notas...</p>  
+                        </div> 
+                    </div>
+                    <ng-template #elseProyecto>
+                        <div class="card-body">
+                            <h2>No has enviado el proyecto....</h2>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="card" *ngIf="proyecto.estado === 'Aprobado' || proyecto.estado === 'Sustentación'">
+                <div class="card-header">
+                <h3>
+                    <a class="collapsed card-link" data-toggle="collapse" href="#sustentacion"><b>Sustentación </b></a>
+                </h3>
+                </div>
+                <div id="sustentacion" class="collapse" data-parent="#accordionProyecto">
+                    <div class="card-body">
+                        <div class="row ml-lg-5 ml-0">
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <h4><b>Jurado:</b> {{proyecto.jurado1.nombres}} {{proyecto.jurado1.apellidos}}</h4>
+                                <h4>
+                                    <b>Calificación: </b>
+                                    <span class="label btnDanger" *ngIf="!proyecto.evaluacion_jurado1"> Aun no ha calificado</span>
+                                    <span class="label" style="background-color: green;" *ngIf="proyecto.evaluacion_jurado1 === 'Aprobada'">{{proyecto.evaluacion_jurado1}}</span>
+                                    <span class="label btnSuccess" *ngIf="proyecto.evaluacion_jurado1 === 'Ajustar'">{{proyecto.evaluacion_jurado1}}</span>
+                                </h4>
+                                <h4><b>Documento de la evaluación:</b></h4>
+                                <div class="ml-1 ml-md-3 ml-lg-3">
+                                    <a *ngIf="proyecto.documento_evaluacion_jurado1" class="btn btnSuccess" [href]="proyecto.documento_evaluacion_jurado1 | documentoP: proyecto._id" download="proyecto.documento_evaluacion_jurado1" target="_blank">
+                                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Evaluación</b></small>
+                                    </a>
+                                    <span class="label btnDanger" *ngIf="!proyecto.documento_evaluacion_jurado1"> Aun no ha calificado</span>
+                                </div>
+                                <h4 class="mt-3"><b>Notas:</b></h4>
+                                <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="!proyecto.notas_jurado1">No hay notas...</p>
+                                <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="proyecto.notas_jurado1">{{proyecto.notas_jurado1}}</p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                                <h4><b>Jurado:</b> {{proyecto.jurado2.nombres}} {{proyecto.jurado2.apellidos}}</h4>
+                                <h4>
+                                    <b>Calificación: </b>
+                                    <span class="label btnDanger" *ngIf="!proyecto.evaluacion_jurado2"> Aun no ha calificado</span>
+                                    <span class="label" style="background-color: green;" *ngIf="proyecto.evaluacion_jurado2 === 'Aprobada'">{{proyecto.evaluacion_jurado2}}</span>
+                                    <span class="label btnSuccess" *ngIf="proyecto.evaluacion_jurado2 === 'Ajustar'">{{proyecto.evaluacion_jurado2}}</span>
+                                </h4>
+                                <h4><b>Documento de la evaluación:</b></h4>
+                                <div class="ml-1 ml-md-3 ml-lg-3">
+                                    <a *ngIf="proyecto.documento_evaluacion_jurado2" class="btn btnSuccess" [href]="proyecto.documento_evaluacion_jurado2 | documentoP: proyecto._id" download="proyecto.documento_evaluacion_jurado2" target="_blank">
+                                        <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Ver Evaluación</b></small>
+                                    </a>
+                                    <span class="label btnDanger" *ngIf="!proyecto.documento_evaluacion_jurado2"> Aun no ha calificado</span>
+                                </div>
+                                <h4 class="mt-3"><b>Notas:</b></h4>
+                                <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="!proyecto.notas_jurado2">No hay notas...</p>
+                                <p class="ml-1 ml-md-3 ml-lg-3" *ngIf="proyecto.notas_jurado2">{{proyecto.notas_jurado2}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!info.modalidad">
+        <h1 class="mx-auto py-5">No has seleccionado ninguna modalidad</h1>
+    </ng-container>
+
+</div>

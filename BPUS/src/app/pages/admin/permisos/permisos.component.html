@@ -1,0 +1,126 @@
+<div class="p-3" style="background-color: white;">
+  <button type="button" class="btn btnSuccess my-3" data-toggle="modal" data-target="#addPermiso" data-backdrop="static" data-keyboard="false">
+    Agregar permiso&nbsp;&nbsp;<i class="fa fa-plus"></i>
+  </button>
+
+  <input #dataBuscar (keyup)="getDataBuscar(dataBuscar.value)" name="dataBuscar" type="text"  class="form-control" placeholder="Buscar por nombre o URL">
+  
+   <!-- The Modal Add-->
+  <div class="modal fade" id="addPermiso">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Agregar Permiso</h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form ngNativeValidate #addPermiso="ngForm" (ngSubmit)="postPermiso(addPermiso)">
+            <label for="nombre">Nombre del permiso:</label>
+            <input type="text" ngModel class="form-control" id="nombre" name="nombre" placeholder="Nombre" maxlength="150" required>
+            <label class="mt-2" for="nombre">URL de la pagina:</label>
+            <input type="text" ngModel class="form-control" id="pagina" name="pagina" placeholder="Pagina" maxlength="150" required>
+            <label class="mt-2" for="roles">Roles:</label><br>
+            <div class="row">
+              <div class="col-5">
+                <select (click)="permisoRolesAdd()" id="permiso_roles" name="roles" class="custom-select">
+                  <option selected>Seleccione...</option>
+                  <ng-container *ngFor="let rol of roles">
+                    <option>{{rol.nombre}}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="col-7">
+                  <ng-container *ngFor="let rol of permiso_roles;let indice=index">
+                    <span class="label btnSuccess mr-1">{{rol.nombre}}<i class="fa fa-times-circle ml-1" (click)="permisoRolesRemove(indice)"></i></span>
+                  </ng-container>
+              </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btnInfo" [disabled]="addPermiso.invalid || permiso_roles_ids.length == 0">Aceptar</button>
+              <button (click)="addPermiso.reset(); clearDataAdd();" id="btnCancelarAdd" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- The Modal edit -->
+  <div class="modal fade" id="editPermiso">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Editar Permiso</h4>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form ngNativeValidate #f="ngForm" (ngSubmit)="putPermiso()">
+            <label for="nombreEdit">Nombre del permiso:</label>
+            <input type="text" [(ngModel)]="new_nombre" class="form-control" id="nombreEdit" name="nombreEdit" placeholder="Nombre" maxlength="150" required autofocus>
+            <label class="mt-2" for="paginaEdit">URL de la pagina:</label>
+            <input type="text" [(ngModel)]="new_pagina" class="form-control" id="paginaEdit" name="paginaEdit" placeholder="Pagina" maxlength="150" required>
+            <label class="mt-2" for="roles">Roles:</label><br>
+            <div class="row">
+              <div class="col-5">
+                <select (change)="permisoEditAddRol()" id="permiso_roles_edit" name="roles" class="custom-select">
+                  <option selected>Seleccione...</option>
+                  <ng-container *ngFor="let rol of roles">
+                    <option>{{rol.nombre}}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="col-7" *ngIf="permisoSelected !== undefined">
+                  <ng-container *ngFor="let rol of new_permiso_roles;let indice=index">
+                    <span class="label btnSuccess mr-1">{{rol.nombre}}<i class="fa fa-times-circle ml-1" (click)="permisoRolesEditRemove(indice)"></i></span>
+                  </ng-container>
+              </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="submit" class="btn btnInfo" [disabled]="new_pagina == '' || new_nombre == '' || new_permiso_roles_ids.length == 0 || (new_nombre == permisoSelected?.nombre && new_pagina == permisoSelected?.pagina && isEqual)">Aceptar</button>
+              <button (click)="clearDataEdit(); f.reset()" id="btnCancelarEdit" type="button" class="btn btnSuccess" data-dismiss="modal">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive mt-3">
+    <table class="table table-bordered table-hover text-center">
+        <thead>
+          <tr>
+            <th class="text-center">Nombre</th>
+            <th class="text-center">Pagina</th>
+            <th class="text-center">Roles</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let permiso of permisos">
+                <td style="width: 350px;">{{permiso.nombre}}</td>
+                <td>/{{permiso.pagina}}</td>
+                <td style="width: 250px;">
+                  <ng-container *ngFor="let rol of permiso.roles">
+                    <span class="label btnSuccess mr-1">{{rol.nombre}}</span>
+                  </ng-container>
+                </td>
+                <td>
+                    <button (click)="getPermisoSelected(permiso)" type="button" class="btn btn-info mr-2" data-toggle="modal" data-target="#editPermiso" data-backdrop="static" data-keyboard="false"><i class="fa fa-edit"></i></button>
+                    <button (click)="deletePermiso(permiso._id)" type="button" class="btn btnSuccess"><i class="fa fa-trash"></i></button>
+                </td>
+          </tr>
+        </tbody>
+    </table>
+  </div>
+  
+</div>

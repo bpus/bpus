@@ -1,0 +1,82 @@
+<div class="cloud-container p-3 p-lg-5" style="background-color: #5C0E12;">
+    
+    <div class="p-2 p-lg-4 m-0 mx-lg-5 mt-lg-2 mb-lg-5 shadow-lg rounded" style="background-color: white;">
+        <div class="clearfix">
+            <div class="float-left">
+                <a routerLink='/login' class="btn btnSuccess btn-sm text-uppercase" type="submit">
+                    <i class="fa fa-times"></i>&nbsp;<b>salir</b>
+                </a>
+            </div>
+            <div class="text-center mb-3">
+                <img src="assets/images/logos/logo-horizontal.png" alt="" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+
+        <ng-container *ngIf="proyecto">
+            <h2 class="font-weight-bold text-center">Aceptas ser parte de un proyecto?</h2>
+            <h5 class="text-center">{{proyecto.estudiante.nombres}} {{proyecto.estudiante.apellidos}} te inscribio en el proyecto {{proyecto.titulo}}</h5>
+            <h3 class="font-weight-bold mt-1 mt-lg-4">Información del proyecto:</h3>
+            <div class="row px-2 px-lg-5 pt-1 pt-lg-3">
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                    <h5 *ngIf="proyecto.estado !== 'PreInscrita'"><b>ID: </b>{{proyecto?._id}}</h5>
+                    <h5><span class="font-weight-bold">Título: </span>{{proyecto?.titulo}}</h5>
+                    <h5><span class="font-weight-bold">Linea de investigación: </span>{{proyecto?.lineaInvestigacion}}</h5>
+                    <h5><span class="font-weight-bold">Director: </span>{{proyecto?.director.nombres}} {{proyecto?.director.apellidos}}</h5>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+                    <h5 class="font-weight-bold">Integrantes: </h5>
+                    <ul>
+                        <li>
+                            <h5>
+                                {{proyecto?.estudiante.nombres}} {{proyecto?.estudiante.apellidos}}
+                            </h5>
+                        </li>
+                        <li>
+                            <h5>
+                                {{proyecto?.estudiante2.nombres}} {{proyecto?.estudiante2.apellidos}}
+                                <span *ngIf="proyecto.estudiante2._id === info._id" class="font-weight-bold">(Tú)</span>
+                            </h5>
+                        </li>
+                        <li *ngIf="proyecto.estudiante3">
+                            <h5>
+                                {{proyecto?.estudiante3.nombres}} {{proyecto?.estudiante3.apellidos}}
+                                <span *ngIf="proyecto.estudiante3._id === info._id" class="font-weight-bold">(Tú)</span>
+                            </h5>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="px-2 px-lg-5 pt-1 pt-lg-3">
+                <h5 class="font-weight-bold">Revisa el documento de inscripción: </h5>
+                <a class="btn descargar btnSuccess mb-2 mr-5" [href]="proyecto.documento_inscripcion | documentoP: proyecto._id" download="dato.documento_inscripcion" target="_blank">
+                    <small><b><i class="fa fa-file-pdf-o"></i>&nbsp; Documento inscripción</b></small>
+                </a>
+            </div>
+
+            <div class="text-center mt-2 mt-lg-5">
+                <button class="btn btnInfo mr-2" data-toggle="collapse" data-target="#aceptarProyecto">Aceptar</button>
+                <button (click)="rechazarProyecto()" class="btn btnSuccess mr-2">Rechazar</button>
+            </div>
+
+            <div class="collapse mt-3 mt-lg-5 px-1 px-lg-5 mx-lg-5" id="aceptarProyecto">
+
+                <p class="font-weight-bold">Por favor sube tu ficha académica:</p>
+                
+                <div class="text-center">
+                    <label for="fileFicha" id="labelFicha" class="labels custom-file-upload py-3 py-lg-4 px-2">
+                        Click aquí para subir la ficha academica
+                    </label>
+    
+                    <input name="fileFicha" id="fileFicha" (change)="getFileFicha( $event.target.files[0] )" 
+                    type="file" accept="application/pdf" class="imagenes-secundarias" required />
+    
+                    <button (click)="aceptarProyecto()" type="button" class="btn btnSuccess mt-3 px-5 py-3" [disabled]="fichaValid === false">ENVIAR</button> 
+                </div>
+
+            </div>
+        
+        </ng-container>
+    </div>
+    
+</div>

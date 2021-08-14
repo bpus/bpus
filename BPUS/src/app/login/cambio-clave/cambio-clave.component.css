@@ -1,0 +1,51 @@
+html{
+    min-height:100%;/* make sure it is at least as tall as the viewport */
+    position:absolute;
+    overflow-x: hidden;
+}
+body{
+    height:100%; /* force the BODY element to match the height of the HTML element */
+    position: absolute;
+    overflow-x: hidden;
+}
+.cloud-container{
+    position:absolute;
+    padding-left: 15%;
+    padding-right: 15%;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    overflow-x: hidden;
+    z-index:-1; /* Remove this line if it's not going to be a background! */
+}
+
+/* RESPONSIVE */
+
+@media only screen and (max-width: 576px) {
+    .cloud-container{
+        position:absolute;
+        padding-left: 4%;
+        padding-right: 4%;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        overflow-x: hidden;
+        z-index:-1; /* Remove this line if it's not going to be a background! */
+    }
+}
+
+@media only screen and (max-width: 576px) and (orientation: landscape) {
+    .cloud-container{
+        position:absolute;
+        padding-left: 4%;
+        padding-right: 4%;
+        top:0;
+        bottom:0;
+        left:0;
+        right:0;
+        overflow-x: scroll;
+        z-index:-1; /* Remove this line if it's not going to be a background! */
+    }
+}

@@ -1,0 +1,31 @@
+<div class="py-3 cloud-container">
+    <div class="py-3 px-2 px-lg-4 mx-lg-5" style="background-color: white; border-radius: 15px;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
+        <h2>
+            {{usuario.nombres}} {{usuario.apellidos}}
+            <i *ngIf="!usuario.telefono" class="fa fa-edit btn btnSuccess btn-sm" (click)="showEditTelefono()"></i>
+            <i *ngIf="usuario.telefono" class="fa fa-edit btn btnSuccess btn-sm" (click)="showEditTelefono()"></i>
+        </h2>
+        <h6 class="font-italic"><b>{{usuario.rol}}</b></h6>
+        <hr>
+        <h5 class="mt-3"><i class="fa fa-id-card"></i>&nbsp; <b>ID:</b> {{usuario.identificacion}}</h5>
+        <h5 class="mt-3"><i class="fa fa-envelope"></i>&nbsp; <b>Correo:</b> {{usuario.correo}}</h5>
+        <h5 class="mt-3" *ngIf="programa"><i class="fa fa-university"></i>&nbsp; <b>Programa:</b> {{programa.nombre}}</h5>
+        <h5 class="mt-3" *ngIf="usuario.cargo"><i class="fa fa-suitcase"></i>&nbsp; <b>Cargo:</b> {{usuario.cargo}}</h5>
+        <h5 class="mt-3" *ngIf="usuario.codigo"><i class="fa fa-id-card-o"></i>&nbsp; <b>Código:</b> {{usuario.codigo}}</h5>
+        <h5 class="mt-3" *ngIf="usuario.creditos_aprobados"><i class="fa fa-book"></i>&nbsp; <b>Creditos aprobados:</b> {{usuario.creditos_aprobados}}</h5>
+        <form ngNativeValidate id="telForm" class="collapse">
+            <div style="display: flex;">
+                <div class="pt-2 mr-2">
+                    <h5 style="align-self: center"><i class="fa fa-phone"></i>&nbsp; <b>Teléfono:</b></h5>
+                </div>
+                <input *ngIf="!usuario.telefono" (keyup)="editTelefono(notHaveTel)" #notHaveTel id="telEdit" type="text" placeholder="Teléfono" class="telInput" name="telefono" [(ngModel)]="telefono" maxlength="10" minlength="10" readonly autocomplete="off">
+                <input *ngIf="usuario.telefono" (keyup)="editTelefono(haveTel)" #haveTel id="telEdit" type="text" class="telInput" name="telefono" [(ngModel)]="telefono" maxlength="10" minlength="10" readonly autocomplete="off">
+            </div>
+            <div class="mt-2 text-center" style="display: none;" id="btnEdit">
+                <button (click)="putTelefono()" class="btn btnInfo mr-2" [disabled]="!telValid">Aceptar</button>
+                <button type="button" (click)="cancelEdit()" class="btn btnSuccess">Cancelar</button>
+            </div> 
+        </form>
+    </div>
+</div>
+            
